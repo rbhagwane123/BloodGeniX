@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">BloodGeniX</string>
+
+    <string name="blood_donation">Find out what blood type you are!\n Register with one of our approved \n task  and get started.</string>
+    <string name="Search_blood_donor">Need a donor? Register with one of\n our approved donor and get \n started!</string>
+    <string name="Explore_update">Explore the different area and \n facility over app and find or \n donate Blood.</string>
+    <string name="description">Description</string>
+    <string name="donate_blood">Donate Blood</string>
+    <string name="finish">Finish</string>
 </resources>

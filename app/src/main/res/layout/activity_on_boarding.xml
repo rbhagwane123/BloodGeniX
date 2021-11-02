@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_dashboard"
+    tools:context=".DashBoard">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/sliderView"
+        android:layout_width="match_parent"
+        android:layout_height="623dp"
+        tools:ignore="SpeakableTextPresentCheck">
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <LinearLayout
+        android:id="@+id/dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sliderView"
+        android:layout_marginLeft="165dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/FinishButton"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="655dp"
+        android:layout_weight="1"
+        android:saveEnabled="false"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_finish_button"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+</RelativeLayout>

@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_dashboard.xml" value="0.37447916666666664" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_drawer_1.xml" value="0.37447916666666664" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_facebook.xml" value="0.37447916666666664" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_finish_button.xml" value="0.37447916666666664" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/layout/activity_dash_board.xml" value="0.3541666666666667" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/layout/activity_main.xml" value="0.3359375" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/layout/activity_on_boarding.xml" value="0.33" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/layout/slide_layout_dashboard.xml" value="0.3541666666666667" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
