@@ -3,10 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/addbutton_style.xml" value="0.33287037037037037" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/cross_style.xml" value="0.33287037037037037" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_app_icon.xml" value="0.33287037037037037" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.33287037037037037" />
         <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_baseline_call_24.xml" value="0.33287037037037037" />
         <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.33287037037037037" />
         <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.33287037037037037" />
         <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.33287037037037037" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_baseline_picture_as_pdf_24.xml" value="0.33287037037037037" />
+        <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_cancel.xml" value="0.33287037037037037" />
         <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_dashboard.xml" value="0.37447916666666664" />
         <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_drawer_1.xml" value="0.37447916666666664" />
         <entry key="..\:/AndroidProjects/BloodGeniX/app/src/main/res/drawable/ic_facebook.xml" value="0.37447916666666664" />

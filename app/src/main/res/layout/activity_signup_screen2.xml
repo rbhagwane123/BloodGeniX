@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="31dp"
-        android:layout_marginTop="67dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/create_account"
         android:textColor="@color/Header_1"
-        android:textSize="18sp"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="38dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="38dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,57 +42,98 @@
             android:textColor="@color/content_1"
             android:textSize="18sp" />
 
-<!--        Gender-->
-        <RelativeLayout
+
+        <DatePicker
+            android:id="@+id/Dob"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="14dp">
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:calendarViewShown="false"
+            android:layout_marginTop="0dp"
+            android:datePickerMode="spinner" />
 
-            <DatePicker
-                android:id="@+id/Dob"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"
-                android:layout_centerHorizontal="true"/>
+        <!--        Gender-->
 
-        </RelativeLayout>
-
-<!--        Gender-->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp">
+            android:layout_marginTop="3dp">
 
             <AutoCompleteTextView
                 android:id="@+id/Gender"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="none"
-                android:hint="Gender"
-                 />
+                android:hint="@string/gender"
+                android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--        File Uploading-->
 
+
+        <!--        File Uploading-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="27dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/identity_proof"
+                    android:paddingEnd="10dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/content_1"
+                    android:fontFamily="@font/poppins"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:layout_marginStart="125dp">
+
+                <ImageButton
+                    android:id="@+id/docSelection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+<!--        Document name field-->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="24dp"
-            android:hint="Document Upload">
+            app:startIconDrawable="@drawable/ic_baseline_picture_as_pdf_24"
+            android:visibility="invisible">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 />
+                android:layout_height="match_parent"
+                android:background="@drawable/docupload_field_style" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
 
         <ImageButton
             android:id="@+id/nextButton_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="50dp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:src="@drawable/ic_nextbutton"/>
 
@@ -101,8 +142,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_home_indicator"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            />
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 
 

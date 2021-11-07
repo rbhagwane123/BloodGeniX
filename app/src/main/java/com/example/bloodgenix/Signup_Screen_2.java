@@ -1,7 +1,5 @@
 package com.example.bloodgenix;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +8,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Signup_Screen_2 extends AppCompatActivity {
 

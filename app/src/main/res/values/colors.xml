@@ -10,6 +10,7 @@
 
     <color name="App_colour">#FF4848</color>
     <color name="irregular_shape_colour">#FFDDDD</color>
+    <color name="cross">#FFEDED</color>
     <color name="Header_1">#393F79</color>
     <color name="content_1">#545454</color>
     <color name="Active">#14DE03</color>
