@@ -1,0 +1,11 @@
+
+<TextView
+    android:id="@+id/TextView8"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Gender"
+    android:padding="14dp"
+    android:textColor="@color/content_1"
+    android:fontFamily="@font/poppins"
+    android:textSize="14sp"
+    xmlns:android="http://schemas.android.com/apk/res/android"/>

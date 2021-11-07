@@ -3,6 +3,7 @@ package com.example.bloodgenix;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -13,22 +14,20 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class DashBoard extends AppCompatActivity {
+public class OnBoardingScreen extends AppCompatActivity {
 
     //Defining Layouts
     ViewPager sliderView;
     LinearLayout dots;
     private TextView[] mDots;
-    private ImageButton FinishButton;
+    private Button FinishButton;
     private int mCurrentPage;
 
     private SliderAdapter sliderAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_on_boarding);
         sliderView =(ViewPager) findViewById(R.id.sliderView);
         dots = (LinearLayout) findViewById(R.id.dots);
@@ -71,6 +70,14 @@ public class DashBoard extends AppCompatActivity {
                 dots.setVisibility(View.INVISIBLE);
                 FinishButton.setEnabled(true);
                 FinishButton.setVisibility(View.VISIBLE);
+
+                FinishButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent welcome = new Intent(OnBoardingScreen.this, Welcome.class);
+                        startActivity(welcome);
+                    }
+                });
             }else{
                 dots.setEnabled(true);
                 dots.setVisibility(View.VISIBLE);

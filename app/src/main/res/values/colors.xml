@@ -13,6 +13,7 @@
     <color name="Header_1">#393F79</color>
     <color name="content_1">#545454</color>
     <color name="Active">#14DE03</color>
+    <color name="Header_1_light">#3F3D56</color>
     <color name="search_block">#FFF1F1</color>
     <color name="content_2">#999999</color>
 </resources>

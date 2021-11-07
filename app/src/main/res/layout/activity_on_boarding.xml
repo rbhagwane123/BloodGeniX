@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_dashboard"
-    tools:context=".DashBoard">
+    android:gravity="center"
+    android:background="@drawable/ic_welcomepage"
+    tools:context=".OnBoardingScreen">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/sliderView"
         android:layout_width="match_parent"
         android:layout_height="623dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck">
 
     </androidx.viewpager.widget.ViewPager>
@@ -21,22 +25,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sliderView"
-        android:layout_marginLeft="165dp"
-        android:layout_marginTop="40dp"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/FinishButton"
+        app:layout_constraintEnd_toEndOf="@+id/FinishButton"
+        app:layout_constraintStart_toStartOf="@+id/FinishButton"
+        app:layout_constraintTop_toTopOf="@+id/FinishButton">
 
     </LinearLayout>
 
-    <ImageButton
+    <Button
         android:id="@+id/FinishButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
         android:layout_width="100dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="150dp"
-        android:layout_marginTop="655dp"
-        android:layout_weight="1"
-        android:saveEnabled="false"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:text="@string/next"
+        android:textColor="@color/Header_1"
         android:visibility="invisible"
-        app:srcCompat="@drawable/ic_finish_button"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        app:cornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sliderView"
+        app:strokeColor="@color/content_2"
+        app:strokeWidth="2dp" />
 
-</RelativeLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_home_indicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FinishButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

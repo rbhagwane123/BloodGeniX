@@ -10,10 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BloodGeniX">
         <activity
-            android:name=".DashBoard_Screen"
+            android:name=".Signup_Screen_2"
             android:exported="false" />
         <activity
-            android:name=".DashBoard"
+            android:name=".Signup_Screen_1"
+            android:exported="false" />
+        <activity
+            android:name=".LoginScreen"
+            android:exported="false" />
+        <activity
+            android:name=".Welcome"
+            android:exported="false" />
+        <activity
+            android:name=".OnBoardingScreen"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

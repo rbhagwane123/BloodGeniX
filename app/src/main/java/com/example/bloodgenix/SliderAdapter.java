@@ -35,21 +35,9 @@ public class SliderAdapter extends PagerAdapter {
             "Explore update near you"
     };
 
-    public String [] desc={
-//            String.valueOf(R.string.blood_donation),
-//            String.valueOf(R.string.Search_blood_donor),
-//            String.valueOf(R.string.Explore_update)
-            "Find out what blood type you are!\n" +
-                    "Register with one of our approved\n" +
-                    "task  and get started.",
-
-            "Need a donor? Register with one of\n" +
-                    "     our approved donor and get\n" +
-                    "                      started!",
-
-            "Explore the different area & \n" +
-                    "facility over app and find or \n" +
-                    "           donate Blood."
+    public int[] desc={R.string.blood_donation,
+            R.string.Search_blood_donor,
+            R.string.Explore_update
     };
 
     @Override

@@ -22,9 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
-        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_main);
 
         appTitle = findViewById(R.id.appTitle);
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(MainActivity.this,DashBoard.class);
+                Intent intent = new Intent(MainActivity.this, OnBoardingScreen.class);
                 startActivity(intent);
             }
         },SPLASH_SCREEN);
