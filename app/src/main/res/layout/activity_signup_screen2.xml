@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="31dp"
         android:layout_marginTop="50dp"
@@ -17,7 +17,6 @@
         android:text="@string/create_account"
         android:textColor="@color/Header_1"
         android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,8 +47,6 @@
             android:id="@+id/Dob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="0dp"
             android:calendarViewShown="false"
             android:datePickerMode="spinner" />
 
@@ -79,8 +76,8 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -95,40 +92,71 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="125dp"
-                android:gravity="end"
-                android:orientation="horizontal">
+                android:layout_marginStart="125dp">
 
                 <ImageButton
                     android:id="@+id/docSelection"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
-            </LinearLayout>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_add_circle_24" />
+
+                <ImageButton
+                    android:id="@+id/docDeSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="@+id/docSelection"
+                    app:layout_constraintStart_toStartOf="@+id/docSelection"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_baseline_remove_circle_24"
+                    tools:visibility="invisible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
-        <!--        Document name field-->
-        <com.google.android.material.textfield.TextInputLayout
+        <!--        Document name field -->
+        <androidx.cardview.widget.CardView
             android:id="@+id/docLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="14dp"
+            app:cardBackgroundColor="@color/cross"
             android:visibility="invisible"
-            app:startIconDrawable="@drawable/ic_baseline_picture_as_pdf_24">
+            app:cardCornerRadius="8dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/docText"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/docupload_field_style" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_baseline_picture_as_pdf_24"/>
+
+                <TextView
+                    android:id="@+id/docText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/content_1"
+                    android:textSize="15sp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
@@ -151,8 +179,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="@+id/linearLayout" />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

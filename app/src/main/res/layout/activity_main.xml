@@ -27,6 +27,7 @@
         android:layout_marginStart="49dp"
         android:layout_marginEnd="49dp"
         android:layout_marginBottom="15dp"
+        android:autoText="true"
         android:fontFamily="@font/montserrat_bold"
         android:text="BloodGeniX"
         android:textAlignment="center"

@@ -10,22 +10,23 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import androidx.cardview.widget.CardView;
 
 public class Signup_Screen_2 extends AppCompatActivity {
 
     private AutoCompleteTextView gender;
     ArrayAdapter <String> arrayAdapter;
     DatePicker datePicker;
-    ImageButton docSelection;
-    ImageButton nextButton_2;
-    TextInputEditText docText;
-    TextInputLayout docLayout;
+    ImageButton docSelection, nextButton_2,docDeSelect;
+    TextView docText;
+    CardView docLayout;
+    public String details [] = new String[15];
+    String gender_type;
+    Uri docUri;
     int Requestcode =1;
 
 
@@ -33,6 +34,11 @@ public class Signup_Screen_2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_screen2);
+
+//        Getting Profile 1 Values
+        Intent i = getIntent();
+        details = i.getStringArrayExtra("details_1");
+
 
 //        for gender selection code
         gender = findViewById(R.id.Gender);
@@ -42,8 +48,7 @@ public class Signup_Screen_2 extends AppCompatActivity {
         gender.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-//                Toast.makeText(Signup_Screen_2.this, item, Toast.LENGTH_SHORT).show();
+                gender_type = parent.getItemAtPosition(position).toString();
             }
         });
         Context context = getApplicationContext();
@@ -52,6 +57,7 @@ public class Signup_Screen_2 extends AppCompatActivity {
 //        file Uploading code
         docText = findViewById(R.id.docText);
         docLayout = findViewById(R.id.docLayout);
+        docDeSelect = findViewById(R.id.docDeSelect);
 
         docSelection = findViewById(R.id.docSelection);
         docSelection.setOnClickListener(new View.OnClickListener() {
@@ -64,14 +70,30 @@ public class Signup_Screen_2 extends AppCompatActivity {
             }
         });
 
+        docDeSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                docLayout.setVisibility(View.INVISIBLE);
+                docSelection.setVisibility(View.VISIBLE);
+                docDeSelect.setVisibility(View.INVISIBLE);
+            }
+        });
+
         nextButton_2 = findViewById(R.id.nextButton_2);
         nextButton_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int day = datePicker.getDayOfMonth();
-                int month = datePicker.getMonth();
+                int month = datePicker.getMonth()+1;
                 int year = datePicker.getYear();
-//                Toast.makeText(Signup_Screen_2.this, day+" "+month+" "+year, Toast.LENGTH_SHORT).show();
+                String dateOfBirth = day+"/"+month+"/"+year;
+
+                details[5] = dateOfBirth.toString();
+                details[6] = gender_type.toString();
+                details[7] = docUri.toString();
+                Intent Otp_1 = new Intent(Signup_Screen_2.this,Otp_Screen_1.class);
+                Otp_1.putExtra("details_2",details);
+                startActivity(Otp_1);
             }
         });
     }
@@ -85,8 +107,11 @@ public class Signup_Screen_2 extends AppCompatActivity {
                 return;
             }
             docLayout.setVisibility(View.VISIBLE);
-            Uri docUri = data.getData();
+            docUri = data.getData();
             docText.setText(data.getDataString().substring(data.getDataString().lastIndexOf("/")+1)+".pdf");
+            docSelection.setVisibility(View.INVISIBLE);
+            docDeSelect.setVisibility(View.VISIBLE);
+
         }
         else {
             Toast.makeText(Signup_Screen_2.this, "Please try again ", Toast.LENGTH_SHORT).show();

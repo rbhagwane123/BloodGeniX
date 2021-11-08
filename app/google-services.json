@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "362227774495",
+    "project_id": "bloodgenix-bb937",
+    "storage_bucket": "bloodgenix-bb937.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362227774495:android:2406a2a4f7fd615f24112a",
+        "android_client_info": {
+          "package_name": "com.example.bloodgenix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362227774495-bb1qmkf7o3s9f393jc38mu5muqabkv6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWdU7_YsD3zuhOSltDCnHGRjgYtQj62TI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362227774495-bb1qmkf7o3s9f393jc38mu5muqabkv6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
