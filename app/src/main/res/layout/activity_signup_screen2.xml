@@ -22,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="38dp"
@@ -48,8 +49,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:calendarViewShown="false"
             android:layout_marginTop="0dp"
+            android:calendarViewShown="false"
             android:datePickerMode="spinner" />
 
         <!--        Gender-->
@@ -69,13 +70,12 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-
         <!--        File Uploading-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="27dp">
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -88,19 +88,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/identity_proof"
+                    android:fontFamily="@font/poppins"
                     android:paddingEnd="10dp"
-                    android:textSize="18sp"
+                    android:text="@string/identity_proof"
                     android:textColor="@color/content_1"
-                    android:fontFamily="@font/poppins"/>
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
                 android:gravity="end"
-                android:orientation="horizontal"
-                android:layout_marginStart="125dp">
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/docSelection"
@@ -113,37 +113,44 @@
 
         </LinearLayout>
 
-<!--        Document name field-->
+        <!--        Document name field-->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/docLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="24dp"
-            app:startIconDrawable="@drawable/ic_baseline_picture_as_pdf_24"
-            android:visibility="invisible">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:visibility="invisible"
+            app:startIconDrawable="@drawable/ic_baseline_picture_as_pdf_24">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/docText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/docupload_field_style" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <ImageButton
-            android:id="@+id/nextButton_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-            android:src="@drawable/ic_nextbutton"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_home_indicator"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/nextButton_2"
+        android:background="@android:color/transparent"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_nextbutton"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_home_indicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout" />
 
 
 
