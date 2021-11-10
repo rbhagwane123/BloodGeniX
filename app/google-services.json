@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "362227774495",
+    "firebase_url": "https://bloodgenix-bb937-default-rtdb.firebaseio.com",
     "project_id": "bloodgenix-bb937",
     "storage_bucket": "bloodgenix-bb937.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "362227774495-118959uod9hcm1gvcftk5es1s51lkqd8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bloodgenix",
+            "certificate_hash": "388dc8d511abb78db70b0d98b01a1d7a6d111fbd"
+          }
+        },
         {
           "client_id": "362227774495-bb1qmkf7o3s9f393jc38mu5muqabkv6i.apps.googleusercontent.com",
           "client_type": 3

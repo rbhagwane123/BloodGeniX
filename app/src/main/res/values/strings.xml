@@ -27,6 +27,11 @@
     <string name="select_date_of_birth">Select Date Of Birth</string>
     <string name="identity_proof">Identity Proof</string>
     <string name="gender">Gender</string>
+    <string name="otp_details">We Will send you a one -time password\n to this mobile number</string>
+    <string name="_91">+91-</string>
+    <string name="enter_the_otp_sent_to">Enter the OTP sent to</string>
+    <string name="_91_9768522052">+91 9768522052</string>
+    <string name="didn_t_you_receive_the_otp">Didn’t you receive the OTP?</string>
 
     <string-array name="gender">
         <item>Male</item>

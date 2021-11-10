@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.hbb20.CountryCodePicker;
 
 public class LoginScreen extends AppCompatActivity {
@@ -18,6 +19,8 @@ public class LoginScreen extends AppCompatActivity {
     Button loginBtn;
     TextInputEditText mobile,Password;
     CountryCodePicker picker;
+    TextInputLayout mobLayout;
+    String countryWithPlus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class LoginScreen extends AppCompatActivity {
         setContentView(R.layout.activity_login_screen);
 
         back_btn = findViewById(R.id.back_btn);
+        mobLayout = findViewById(R.id.mobLayout);
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +38,7 @@ public class LoginScreen extends AppCompatActivity {
         });
         initializeViews();
         listners();
+        mobLayout.setPrefixText(countryWithPlus.toString());
         loginBtn = findViewById(R.id.loginBtn);
     }
 
@@ -44,9 +49,9 @@ public class LoginScreen extends AppCompatActivity {
 
     private void listners() {
         String code = picker.getSelectedCountryCode();
-        String countryWithPlus = picker.getSelectedCountryCodeWithPlus();
+        countryWithPlus = picker.getSelectedCountryCodeWithPlus();
         Toast.makeText(LoginScreen.this, countryWithPlus, Toast.LENGTH_SHORT).show();
-        mobile.setText(countryWithPlus);
+
     }
 
     private void initializeViews() {

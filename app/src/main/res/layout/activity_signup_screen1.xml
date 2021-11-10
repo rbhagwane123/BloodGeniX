@@ -74,8 +74,12 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:startIconDrawable="@drawable/ic_baseline_edit_24"
-                    android:hint="@string/full_name">
+                    android:hint="@string/full_name"
+                    app:helperText="Required*"
+                    app:helperTextTextColor="@color/red"
+                    app:hintTextColor="#CC1919"
+                    android:inputType="text"
+                    app:startIconDrawable="@drawable/ic_baseline_edit_24">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/fullName"
@@ -90,13 +94,17 @@
                     android:layout_height="wrap_content"
                     app:startIconDrawable="@drawable/ic_baseline_assignment_ind_24"
                     android:layout_marginTop="24dp"
-                    android:hint="User Name">
+                    android:hint="User Name"
+                    app:helperText="Required*"
+                    app:helperTextTextColor="@color/red"
+                    app:hintTextColor="#CC1919">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/userName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins" />
+                        android:fontFamily="@font/poppins"
+                        android:inputType="text"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--        Email-->
@@ -106,7 +114,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     app:startIconDrawable="@drawable/ic_baseline_email_24"
-                    android:hint="Email">
+                    android:hint="Email"
+                    app:helperText="Required*"
+                    app:helperTextTextColor="@color/red"
+                    app:hintTextColor="#CC1919">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/emailId"
@@ -121,17 +132,19 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:endIconMode="password_toggle"
-                    app:startIconDrawable="@drawable/ic_baseline_lock_24"
                     android:layout_marginTop="24dp"
-                    android:hint="Password">
+                    android:hint="Password"
+                    app:endIconMode="password_toggle"
+                    app:helperText="Required*"
+                    app:helperTextTextColor="@color/red"
+                    app:startIconDrawable="@drawable/ic_baseline_lock_24">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:fontFamily="@font/poppins" />
+                        android:fontFamily="@font/poppins"
+                        android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 

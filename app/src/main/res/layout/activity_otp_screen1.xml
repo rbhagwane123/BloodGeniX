@@ -4,4 +4,103 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Otp_Screen_1"/>
+    tools:context=".Otp_Screen_1">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="260dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="82dp"
+                android:src="@drawable/ic_ottp_1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone Number"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:textColor="@color/Header_1"
+                android:layout_marginTop="32dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/otp_details"
+                android:gravity="center"
+                android:textColor="@color/Header_1"
+                android:textSize="16sp" />
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/codePicker_2"
+                android:layout_width="272dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/text_box_style"
+                android:gravity="center"/>
+
+
+                <EditText
+                    android:id="@+id/mobileNumb"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:layout_marginStart="37dp"
+                    android:layout_marginEnd="37dp"
+                    android:layout_marginTop="30dp"
+                    android:hint="123456789"
+                    android:gravity="center"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:textColor="@color/Header_1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="70dp"
+                android:background="@color/content_1" />
+            <Button
+                android:id="@+id/getOtpBtn"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:text="Get OTP"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="20dp"
+                android:layout_marginStart="37dp"
+                android:layout_marginEnd="37dp"
+                android:layout_marginTop="100dp"
+                android:gravity="center"
+                app:cornerRadius="8dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_home_indicator"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

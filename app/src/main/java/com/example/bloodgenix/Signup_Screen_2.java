@@ -64,7 +64,7 @@ public class Signup_Screen_2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setType("*/*");
+                intent.setType("application/pdf");
                 intent.setAction(intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent,Requestcode);
             }
@@ -88,9 +88,9 @@ public class Signup_Screen_2 extends AppCompatActivity {
                 int year = datePicker.getYear();
                 String dateOfBirth = day+"/"+month+"/"+year;
 
-                details[5] = dateOfBirth.toString();
-                details[6] = gender_type.toString();
-                details[7] = docUri.toString();
+                details[5] = dateOfBirth;
+                details[6] = gender_type;
+                details[7] = String.valueOf(docUri);
                 Intent Otp_1 = new Intent(Signup_Screen_2.this,Otp_Screen_1.class);
                 Otp_1.putExtra("details_2",details);
                 startActivity(Otp_1);
