@@ -1,5 +1,6 @@
 package com.example.bloodgenix;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,9 +18,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Signup_Screen_1 extends AppCompatActivity {
 
     ImageButton nextButton_1, profilePickerBtn;
-    CircleImageView profileImage;
+    CircleImageView profileImage, profileImage2;
     TextInputEditText fullName, userName, emailId, password;
     Uri profile_uri;
+    Context context;
     public String details [] = new String[15];
 
     @Override
@@ -28,6 +30,7 @@ public class Signup_Screen_1 extends AppCompatActivity {
         setContentView(R.layout.activity_signup_screen1);
 
         profileImage = findViewById(R.id.profileImage);
+        profileImage2 = findViewById(R.id.profileImage2);
         profilePickerBtn = findViewById(R.id.profilePickerBtn);
         fullName = findViewById(R.id.fullName);
         userName = findViewById(R.id.userName);
@@ -57,10 +60,12 @@ public class Signup_Screen_1 extends AppCompatActivity {
                 password.getText().toString().isEmpty()){
                     Toast.makeText(Signup_Screen_1.this, "Many fields left empty", Toast.LENGTH_SHORT).show();
                 }else{
-                    if(profileImage.equals(null)){
-                        Toast.makeText(Signup_Screen_1.this, "Select Image", Toast.LENGTH_SHORT).show();
-                    }
 
+                    if (profileImage.getDrawable() ==null){
+                        profile_uri = Uri.parse("android.resource://com.example.bloodgenix/drawable/ic_male_avatar");
+                        profileImage2.setImageURI(profile_uri);
+                        Toast.makeText(Signup_Screen_1.this, profile_uri.toString(), Toast.LENGTH_SHORT).show();
+                    }
                     if (fullName.getText().toString().isEmpty()){
                         fullName.setError("Enter name");
                     }
@@ -73,8 +78,8 @@ public class Signup_Screen_1 extends AppCompatActivity {
                     }
                     try {
                         Intent signup_2 = new Intent(Signup_Screen_1.this,Signup_Screen_2.class);
-                        
-                        details[0]= profile_uri.toString();
+
+                        details[0]=profile_uri.toString();
                         details[1]=(fullName.getText().toString());
                         details[2]=(userName.getText().toString());
                         details[3]=(emailId.getText().toString());

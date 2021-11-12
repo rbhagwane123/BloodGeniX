@@ -62,7 +62,7 @@ public class Otp_Screen2 extends AppCompatActivity {
         Number_entered_by_user = Otp_details[8].substring(4,Otp_details[8].length());
 
 
-        Toast.makeText(Otp_Screen2.this, "+91"+Number_entered_by_user, Toast.LENGTH_SHORT).show();
+
 
         //firebase values
         auth= FirebaseAuth.getInstance();
@@ -179,7 +179,8 @@ public class Otp_Screen2 extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
+                            LoadingDialog dialog = new LoadingDialog(Otp_Screen2.this);
+                            dialog.startDialog();
                             FirebaseUser user = task.getResult().getUser();
                             DatabaseReference reference = database.getReference().child("Users").child(Number_entered_by_user);
                             StorageReference storageReference_image = storage.getReference().child("profilePic").child(Number_entered_by_user);
@@ -201,10 +202,12 @@ public class Otp_Screen2 extends AppCompatActivity {
                                                                 public void onSuccess(Uri uri) {
                                                                     pdfUri = uri.toString();
                                                                     Users users = new Users(auth.getUid(),imageURI,Otp_details[1],Otp_details[2],Otp_details[3],Otp_details[4],Otp_details[5],Otp_details[6],pdfUri,Otp_details[8]);
+
                                                                     reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()){
+                                                                                dialog.dismissDialog();
                                                                                 Intent dashBoard = new Intent(Otp_Screen2.this,DashBoard_Screen.class);
                                                                                 startActivity(dashBoard);
                                                                             }
