@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 public class LoadingDialog {
 
     Activity activity;
     AlertDialog alertDialog;
+    BottomSheetDialog sheetDialog;
 
     public LoadingDialog(Activity myActivity){
         activity = myActivity;
     }
+
 
     public void startDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -23,6 +27,8 @@ public class LoadingDialog {
         alertDialog.show();
 
     }
+
+
     public void dismissDialog(){
         alertDialog.dismiss();
     }

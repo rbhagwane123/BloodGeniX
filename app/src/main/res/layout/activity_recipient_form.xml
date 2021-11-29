@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecipientForm"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
+
+        <ImageButton
+            android:id="@+id/cancelBtnRecipient"
+            android:layout_width="38dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/cross_style"
+            android:src="@drawable/ic_cancel" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="45dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Blood request form"
+            android:textColor="@color/Header_1"
+            android:textSize="24sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/bloodGroupLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="37dp"
+            app:errorEnabled="false"
+            app:helperText="Required*"
+            app:helperTextTextColor="@color/red">
+
+            <AutoCompleteTextView
+                android:id="@+id/bloodGroupRecipient"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/blood_group"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="37dp"
+            android:hint="Location"
+            app:helperText="Required*"
+            app:helperTextTextColor="@color/red">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/locationRecipient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reasonBloodLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="37dp"
+            app:errorEnabled="false"
+            app:helperText="Required*"
+            app:helperTextTextColor="@color/red">
+
+            <AutoCompleteTextView
+                android:id="@+id/reasonBlood"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/what_s_the_reason_of_this_request"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="37dp"
+            android:hint="Write a message for potential donors"
+            app:helperText="Required*"
+            app:helperTextTextColor="@color/red">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/requirementRecipient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/authoriseRecipient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="37dp"
+            android:fontFamily="@font/poppins"
+            android:gravity="start"
+            android:onClick="authorise"
+            android:text="@string/authorizeValue"
+            android:textAlignment="textStart"
+            android:textColor="@color/content_1"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/applyRecipient"
+            android:layout_width="297dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="37dp"
+            android:defaultFocusHighlightEnabled="false"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_24"
+            android:elevation="2dp"
+            android:enabled="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Apply as Recipient"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            app:cornerRadius="8dp" />
+
+
+    </LinearLayout>
+
+
+</ScrollView>

@@ -17,8 +17,8 @@ public class Otp_Screen_1 extends AppCompatActivity {
     Button getOtpBtn;
     CountryCodePicker codePicker_2;
     EditText mobileNumb;
-
-    String countryWithPlus="+91";
+    String phoneNumberPattern="^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$";
+    String countryWithPlus, _full_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class Otp_Screen_1 extends AppCompatActivity {
             @Override
             public void onCountrySelected() {
                 countryWithPlus = codePicker_2.getSelectedCountryCodeWithPlus();
+                _full_number=countryWithPlus+" "+mobileNumb.getText().toString();
             }
         });
 
@@ -45,7 +46,7 @@ public class Otp_Screen_1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!mobileNumb.getText().toString().trim().isEmpty()){
-                    if((mobileNumb.getText().toString().trim()).length() == 10){
+                    if(_full_number.matches(phoneNumberPattern)){
                         Intent Otp2 = new Intent(Otp_Screen_1.this,Otp_Screen2.class);
                         details_2[8] = countryWithPlus+" "+mobileNumb.getText().toString();
                         Otp2.putExtra("Otp_value",details_2);

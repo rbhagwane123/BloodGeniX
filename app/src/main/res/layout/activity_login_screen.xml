@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/login_sheet_background"
-    tools:context=".LoginScreen"
     android:paddingBottom="25dp">
 
     <ImageButton
@@ -67,7 +66,6 @@
             app:helperText="Required*"
             app:helperTextTextColor="@color/red"
             app:hintTextColor="#CC1919"
-            app:prefixText="+91"
             app:prefixTextColor="@color/App_colour">
 
             <com.google.android.material.textfield.TextInputEditText

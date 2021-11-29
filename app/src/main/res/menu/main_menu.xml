@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/nav_notification"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/notification" />
+
+    <item android:id="@+id/nav_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_setting"/>
+
+    <item android:id="@+id/nav_about"
+        android:title="@string/about_us"
+        android:icon="@drawable/ic_about"/>
+
+    <item
+        android:id="@+id/nav_sharing"
+        android:icon="@drawable/ic_baseline_share_24"
+        android:title="@string/sharing" />
+
+
+</menu>

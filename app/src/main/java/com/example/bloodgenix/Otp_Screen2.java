@@ -209,6 +209,7 @@ public class Otp_Screen2 extends AppCompatActivity {
                                                                             if (task.isSuccessful()){
                                                                                 dialog.dismissDialog();
                                                                                 Intent dashBoard = new Intent(Otp_Screen2.this,DashBoard_Screen.class);
+                                                                                dashBoard.putExtra("profile Values", Otp_details[8]);
                                                                                 startActivity(dashBoard);
                                                                             }
                                                                             else {

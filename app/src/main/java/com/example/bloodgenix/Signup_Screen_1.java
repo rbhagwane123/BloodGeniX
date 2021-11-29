@@ -38,7 +38,6 @@ public class Signup_Screen_1 extends AppCompatActivity {
         password = findViewById(R.id.password);
 
 
-
         profilePickerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
