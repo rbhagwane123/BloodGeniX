@@ -1,18 +1,33 @@
 package com.example.bloodgenix;
 
 import android.os.Bundle;
-import android.view.View;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class BloodDnonorSearch extends AppCompatActivity {
 
     EditText searchBar;
     RecyclerView searchRecycler;
+    String text;
+    ArrayList<DonationDetails> donationList;
+    ImageButton searchBtn;
+    myAdapter adapter;
+
+
+    FirebaseDatabase database;
+    DatabaseReference userReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,21 +36,40 @@ public class BloodDnonorSearch extends AppCompatActivity {
         searchBar = findViewById(R.id.searchBar);
         searchRecycler = findViewById(R.id.searchRecycler);
 
-        searchBar.setOnClickListener(new View.OnClickListener() {
+
+        FirebaseRecyclerOptions<DonationDetails> options = new FirebaseRecyclerOptions.Builder<DonationDetails>()
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("DonationDetails"),DonationDetails.class)
+                .build();
+        adapter = new myAdapter(options);
+        adapter.startListening();
+        searchRecycler.setAdapter(adapter);
+
+        searchBar.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(BloodDnonorSearch.this, searchBar.getText().toString(), Toast.LENGTH_SHORT).show();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                filter(s.toString());
             }
         });
-
     }
 
-    public class UserViewHolder extends RecyclerView.ViewHolder{
+    private void filter(String text) {
 
-        View mView;
-        public UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
+        FirebaseRecyclerOptions<DonationDetails> options = new FirebaseRecyclerOptions.Builder<DonationDetails>()
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("DonationDetails").orderByChild("donorLocation").startAt(text).endAt(text+"\uf8ff"),DonationDetails.class)
+                .build();
+
+        adapter = new myAdapter(options);
+        adapter.startListening();
+        searchRecycler.setAdapter(adapter);
     }
 }

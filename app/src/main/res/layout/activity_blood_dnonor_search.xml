@@ -13,12 +13,24 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="25dp"
+        android:background="@drawable/searchbar_background_style"
         android:drawableStart="@drawable/ic_baseline_search_24"
         android:hint="@string/search"
-        android:background="@drawable/searchbar_background_style"
-        android:padding="16dp"
         android:inputType="text"
-        android:paddingStart="16dp"/>
+        android:padding="16dp"
+        android:paddingStart="16dp" />
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/searchBtn"-->
+<!--        android:layout_width="65dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginStart="2dp"-->
+<!--        android:layout_marginTop="52dp"-->
+<!--        android:layout_marginEnd="7dp"-->
+<!--        android:layout_toEndOf="@+id/searchBar"-->
+<!--        android:background="@drawable/blood_roup_background_style"-->
+<!--        android:src="@drawable/ic_baseline_search_24_white" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecycler"
@@ -27,8 +39,12 @@
         android:layout_below="@+id/searchBar"
         android:layout_marginStart="16dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:padding="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
 
     </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>
+
+

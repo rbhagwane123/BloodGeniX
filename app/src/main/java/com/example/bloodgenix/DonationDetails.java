@@ -6,12 +6,13 @@ public class DonationDetails {
     String ruDiabetic, diabeticCount, otherDisease;
     String ruDonated, donateMonth, weight;
     String donorLocation;
+    String personFullName, personProfileImg;
 
     public DonationDetails(){
 
     }
 
-    public DonationDetails(String uid, String phoneNumber, String blGroup, String ruDiabetic, String diabeticCount, String otherDisease, String ruDonated, String donateMonth, String weight, String donorLocation) {
+    public DonationDetails(String uid, String phoneNumber, String blGroup, String ruDiabetic, String diabeticCount, String otherDisease, String ruDonated, String donateMonth, String weight, String donorLocation, String personFullName, String personProfileImg) {
         this.uid = uid;
         this.phoneNumber = phoneNumber;
         this.blGroup = blGroup;
@@ -22,6 +23,24 @@ public class DonationDetails {
         this.donateMonth = donateMonth;
         this.weight = weight;
         this.donorLocation = donorLocation;
+        this.personFullName = personFullName;
+        this.personProfileImg = personProfileImg;
+    }
+
+    public String getPersonProfileImg() {
+        return personProfileImg;
+    }
+
+    public void setPersonProfileImg(String personProfileImg) {
+        this.personProfileImg = personProfileImg;
+    }
+
+    public String getPersonFullName() {
+        return personFullName;
+    }
+
+    public void setPersonFullName(String personFullName) {
+        this.personFullName = personFullName;
     }
 
     public String getDonorLocation() {

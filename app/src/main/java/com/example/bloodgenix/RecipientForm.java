@@ -86,6 +86,7 @@ public class RecipientForm extends AppCompatActivity {
         AdapterReasonBlood = new ArrayAdapter<String>(this,R.layout.item_list_reason,reason);
         reasonBlood.setAdapter(AdapterReasonBlood);
 
+        //CURRENT LOCATION FETCHING
         if (ActivityCompat.checkSelfPermission(RecipientForm.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
@@ -95,8 +96,14 @@ public class RecipientForm extends AppCompatActivity {
                         Geocoder geocoder = new Geocoder(RecipientForm.this, Locale.getDefault());
                         try {
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
-                            locationRecipient.setText(addresses.get(0).getAddressLine(0));
+                            if (addresses.size()>0){
+                                for (Address adr: addresses){
+                                    if (adr.getLocality() != null && adr.getLocality().length()>0){
+                                        locationRecipient.setText(adr.getLocality());
+                                        break;
+                                    }
+                                }
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -132,7 +139,9 @@ public class RecipientForm extends AppCompatActivity {
         Okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(RecipientForm.this, "Okay clicked", Toast.LENGTH_SHORT).show();
+                Intent searchPage = new Intent(RecipientForm.this, BloodDnonorSearch.class);
+
+                startActivity(searchPage);
                 dialog.dismiss();
             }
         });

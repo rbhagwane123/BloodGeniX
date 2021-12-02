@@ -35,9 +35,10 @@ public class Otp_Screen_1 extends AppCompatActivity {
             @Override
             public void onCountrySelected() {
                 countryWithPlus = codePicker_2.getSelectedCountryCodeWithPlus();
-                _full_number=countryWithPlus+" "+mobileNumb.getText().toString();
+
             }
         });
+
 
         mobileNumb = findViewById(R.id.mobileNumb);
 
@@ -46,7 +47,10 @@ public class Otp_Screen_1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!mobileNumb.getText().toString().trim().isEmpty()){
-                    if(_full_number.matches(phoneNumberPattern)){
+                    _full_number=countryWithPlus+" "+mobileNumb.getText().toString();
+                    Toast.makeText(Otp_Screen_1.this, "Enter correct number", Toast.LENGTH_SHORT).show();
+                    if(mobileNumb.getText().length() == 10){
+//                        _full_number.matches(phoneNumberPattern)
                         Intent Otp2 = new Intent(Otp_Screen_1.this,Otp_Screen2.class);
                         details_2[8] = countryWithPlus+" "+mobileNumb.getText().toString();
                         Otp2.putExtra("Otp_value",details_2);

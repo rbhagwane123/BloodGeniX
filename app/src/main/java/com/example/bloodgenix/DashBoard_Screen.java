@@ -52,6 +52,7 @@ public class DashBoard_Screen extends AppCompatActivity {
 
     public String full_number;
     public String fetch_details [] = new String[15];
+    public String donationAdding [] = new String[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +141,10 @@ public class DashBoard_Screen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent donationIntent = new Intent(DashBoard_Screen.this,DonationForm.class);
-                donationIntent.putExtra("Donation",full_number);
+                donationAdding [0] = fetch_details[0];
+                donationAdding [1] = full_number;
+                donationAdding [2] = fetch_details[5];
+                donationIntent.putExtra("Donation",donationAdding);
                 startActivity(donationIntent);
             }
         });

@@ -60,7 +60,7 @@ public class DonationForm extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapterBGroup, arrayAdapterBCount, arrayAdapterDPeriod;
     String phoneNumber;
     String bGroup[], DiabeticCount[], Weight[], DPeriod[];
-    String formFillData[] = new String[15];
+    public String formFillData [] = new String[3];
     NumberPicker weight;
     FusedLocationProviderClient fusedLocationProviderClientDon;
 
@@ -74,9 +74,10 @@ public class DonationForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation_form);
 
-        //getting values from different activities
+        //getting values from previous activities
         Intent i3 = getIntent();
-        phoneNumber = i3.getStringExtra("Donation");
+        formFillData = i3.getStringArrayExtra("Donation");
+        phoneNumber = formFillData[1];
 
         //giving id to the respective views
         diabeticCountLayout = findViewById(R.id.diabeticCountLayout);
@@ -99,26 +100,39 @@ public class DonationForm extends AppCompatActivity {
         weight.setMaxValue(100);
 
         //SETTING CURRENT LOCATION FOR PERSON
-        fusedLocationProviderClientDon = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(DonationForm.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationProviderClientDon.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    Location location = task.getResult();
-                    if (location != null) {
-                        Geocoder geocoder = new Geocoder(DonationForm.this, Locale.getDefault());
-                        try {
-                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            locationDonation.setText(addresses.get(0).getAddressLine(0));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+        try{
+            fusedLocationProviderClientDon = LocationServices.getFusedLocationProviderClient(this);
+            if (ActivityCompat.checkSelfPermission(DonationForm.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationProviderClientDon.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        Location location = task.getResult();
+                        if (location != null) {
+                            Geocoder geocoder = new Geocoder(DonationForm.this, Locale.getDefault());
+                            try {
+                                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                if (addresses.size()>0){
+                                    for (Address adr: addresses){
+                                        if (adr.getLocality() != null && adr.getLocality().length()>0){
+                                            locationDonation.setText(adr.getLocality());
+                                            break;
+                                        }
+                                    }
+                                }
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-                }
-            });
+                });
 
-        } else {
-            ActivityCompat.requestPermissions(DonationForm.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+            } else {
+                ActivityCompat.requestPermissions(DonationForm.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(DonationForm.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +231,7 @@ public class DonationForm extends AppCompatActivity {
                                 database = FirebaseDatabase.getInstance();
                                 auth = FirebaseAuth.getInstance();
                                 reference = database.getReference().child("DonationDetails").child(phoneNumber);
-                                DonationDetails donationDetails = new DonationDetails(auth.getUid(),phoneNumber,bloodGroup.getText().toString(),radioButton.getText().toString(),diabeticCount.getText().toString(),otherSpecify.getText().toString(),radioButton2.getText().toString(),DonationPeriod.getText().toString(),wight,locationDonation.getText().toString());
+                                DonationDetails donationDetails = new DonationDetails(auth.getUid(),phoneNumber,bloodGroup.getText().toString(),radioButton.getText().toString(),diabeticCount.getText().toString(),otherSpecify.getText().toString(),radioButton2.getText().toString(),DonationPeriod.getText().toString(),wight,locationDonation.getText().toString(),formFillData[0], formFillData[2]);
                                 reference.setValue(donationDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
