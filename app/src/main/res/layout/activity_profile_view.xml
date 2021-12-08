@@ -7,34 +7,18 @@
     tools:context=".ProfileView">
 
     <LinearLayout
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="44dp"
-            android:layout_marginEnd="15dp">
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:layout_marginTop="3dp"
-                app:srcCompat="@drawable/ic_active" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/poppins"
-                android:text="@string/active"
-                android:textColor="@color/content_1"
-                android:textSize="14sp" />
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/cancelBtnProfile"
+            android:layout_width="38dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="18dp"
+            android:background="@drawable/cross_style"
+            android:src="@drawable/ic_cancel" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImageView"
@@ -43,23 +27,36 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp" />
 
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/verified"
-            android:textColor="@color/verified"
-            android:textSize="20sp" />
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_success"/>
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/verified"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/verified"
+                android:textSize="20sp"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="20dp"
             android:gravity="center"
             android:padding="15dp"
@@ -113,6 +110,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
                     android:text="Name"
+                    android:layout_marginStart="5dp"
                     android:textColor="@color/Header_1"
                     android:textSize="14sp" />
 
@@ -121,9 +119,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:enabled="false"
-                    android:fontFamily="@font/poppins_semibold"
+                    android:fontFamily="@font/poppins_medium"
                     android:inputType="none"
-
+                    android:layout_marginTop="-8dp"
                     android:textColor="@color/Header_1"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -139,6 +137,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
                     android:text="Blood Group"
+                    android:layout_marginStart="5dp"
                     android:textColor="@color/Header_1"
                     android:textSize="14sp" />
 
@@ -147,9 +146,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:enabled="false"
-                    android:fontFamily="@font/poppins_semibold"
+                    android:fontFamily="@font/poppins_medium"
                     android:inputType="none"
-
+                    android:layout_marginTop="-8dp"
                     android:textColor="@color/Header_1"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -165,6 +164,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
                     android:text="Gender"
+                    android:layout_marginStart="5dp"
                     android:textColor="@color/Header_1"
                     android:textSize="14sp" />
 
@@ -172,11 +172,12 @@
                     android:id="@+id/personGender"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:textColor="@color/Header_1"
-                    android:textSize="18sp"
+                    android:layout_marginTop="-8dp"
+                    android:enabled="false"
+                    android:fontFamily="@font/poppins_medium"
                     android:inputType="none"
-                    android:enabled="false"/>
+                    android:textColor="@color/Header_1"
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

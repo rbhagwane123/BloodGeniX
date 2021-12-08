@@ -56,6 +56,7 @@ public class RecipientForm extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseDatabase database;
     DatabaseReference reference;
+    RecipientDetails recipientDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,10 +140,25 @@ public class RecipientForm extends AppCompatActivity {
         Okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent searchPage = new Intent(RecipientForm.this, BloodDnonorSearch.class);
+                database = FirebaseDatabase.getInstance();
+                auth = FirebaseAuth.getInstance();
+                reference = database.getReference().child("RecipientDetails").child(phoneNumb);
+                recipientDetails = new RecipientDetails(auth.getUid(), bloodGroupRecipient.getText().toString(), locationRecipient.getText().toString(), requirementRecipient.getText().toString(),reasonBlood.getText().toString(),phoneNumb);
+                reference.setValue(recipientDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Intent searchPage = new Intent(RecipientForm.this, BloodDnonorSearch.class);
+                            searchPage.putExtra("Blood Group",bloodGroupRecipient.getText().toString());
+                            startActivity(searchPage);
+                            dialog.dismiss();
+                        }else{
+                            dialog.dismiss();
+                            Toast.makeText(RecipientForm.this, "Try Again !..", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
-                startActivity(searchPage);
-                dialog.dismiss();
             }
         });
 
@@ -178,22 +194,7 @@ public class RecipientForm extends AppCompatActivity {
                             if (snapshot.exists()){
                                 Toast.makeText(RecipientForm.this, "You have applied for Donation", Toast.LENGTH_SHORT).show();
                             }else{
-                                database = FirebaseDatabase.getInstance();
-                                auth = FirebaseAuth.getInstance();
-                                reference = database.getReference().child("RecipientDetails").child(phoneNumb);
-                                RecipientDetails recipientDetails = new RecipientDetails(auth.getUid(), bloodGroupRecipient.getText().toString(), locationRecipient.getText().toString(), requirementRecipient.getText().toString(),reasonBlood.getText().toString(),phoneNumb);
-                                reference.setValue(recipientDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            dialog.show();
-
-                                        }else{
-                                            dialog.dismiss();
-                                            Toast.makeText(RecipientForm.this, "Not added", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                                dialog.show();
                             }
                         }
 

@@ -117,7 +117,7 @@ public class Welcome extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
                                 String system_password = snapshot.child(_number).child("password").getValue(String.class);
-                                assert system_password != null;
+
                                 if (system_password.equals(_password)) {
 
 //                                    String _fullName = snapshot.child(_number).child("fullName").getValue(String.class);

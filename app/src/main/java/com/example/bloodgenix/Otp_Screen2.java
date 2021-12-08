@@ -62,8 +62,6 @@ public class Otp_Screen2 extends AppCompatActivity {
         Number_entered_by_user = Otp_details[8].substring(4,Otp_details[8].length());
 
 
-
-
         //firebase values
         auth= FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance("https://bloodgenix-bb937-default-rtdb.firebaseio.com/");
@@ -223,11 +221,13 @@ public class Otp_Screen2 extends AppCompatActivity {
                                                     });
                                                 }else{
                                                     Toast.makeText(Otp_Screen2.this, "pdf inserting error", Toast.LENGTH_SHORT).show();
+                                                    dialog.dismissDialog();
                                                 }
                                             }
                                         });
                                     }else{
                                         Toast.makeText(Otp_Screen2.this, "image inserting error", Toast.LENGTH_SHORT).show();
+                                        dialog.dismissDialog();
                                     }
                                 }
                             });

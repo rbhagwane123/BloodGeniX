@@ -5,252 +5,40 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/App_colour"
     android:fitsSystemWindows="true"
     tools:context=".DashBoard_Screen"
     tools:openDrawer="start">
-
-    <include
-        layout="@layout/header"
-        android:id="@+id/layout_1"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:paddingBottom="64dp"
-            app:headerLayout="@layout/header"
-            app:itemIconTint="@color/App_colour"
-            app:itemTextColor="@color/App_colour"
-            app:menu="@menu/main_menu">
-
-
-            <Button
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                android:id="@+id/Logout"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:elevation="5dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center_vertical"
-                android:text="Log out"
-                android:textAllCaps="false"
-                android:textSize="17sp"
-                app:cornerRadius="8dp"
-                app:icon="@drawable/ic_signout"
-                app:iconGravity="end" />
-
-        </com.google.android.material.navigation.NavigationView>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/AppBar"
-            style="@style/Theme.BloodGeniX"
+        <fragment
+            android:id="@+id/main_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:fitsSystemWindows="true">
+            android:layout_height="wrap_content"
+            app:defaultNavHost="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/bottom_nav"/>
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsingToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
-
-
-                <TextView
-                    android:id="@+id/salutationText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="80dp"
-                    android:fontFamily="@font/poppins"
-                    android:text="@string/salutation"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/active_person"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="80dp"
-                    android:layout_marginEnd="25dp"/>
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="125dp"
-                    android:layout_marginEnd="30dp"
-                    android:src="@drawable/ic_active" />
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:backgroundTint="@color/white"
-                    app:layout_collapseMode="pin"
-                    app:titleTextColor="@color/App_colour" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/stats_style"
-            android:padding="20dp"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                //Donatin Card view
-                <RelativeLayout
-                    android:id="@+id/relativeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="190dp"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="170dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/card_style">
-
-                        <TextView
-                            android:id="@+id/reasonBloodRequest"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="13dp"
-                            android:layout_marginTop="13dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="@string/apply_for_donation"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/applyDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/reasonBloodRequest"
-                            android:layout_alignStart="@+id/reasonBloodRequest"
-                            android:layout_alignEnd="@+id/reasonBloodRequest"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="start"
-                            android:text="Find blood donors near your location and request the needed blood type."
-                            android:textSize="14sp" />
-
-                        <Button
-                            android:id="@+id/donationExpand"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:background="@android:color/transparent"
-                            android:fontFamily="@font/poppins_medium"
-                            android:text="EXPAND"
-                            android:textColor="@color/Header_1" />
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:background="?android:attr/windowBackground"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_menu" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                    </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:layout_alignParentRight="true"
-                        android:paddingStart="10dp"
-                        android:paddingRight="-50dp"
-                        android:src="@drawable/ic_donationsymbol" />
-                </RelativeLayout>
-
-
-                //Receiving Card View
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="190dp"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="170dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/card_style">
-
-                        <TextView
-                            android:id="@+id/receiveView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginStart="13dp"
-                            android:layout_marginTop="13dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:text="Apply for Recipient"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:id="@+id/receiveDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/receiveView"
-                            android:layout_alignStart="@+id/receiveView"
-                            android:layout_alignEnd="@+id/receiveView"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="start"
-                            android:text="Apply for donation and help people to safe their life."
-                            android:textSize="14sp" />
-
-                        <Button
-                            android:id="@+id/RecipientExpand"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_marginTop="33dp"
-                            android:background="@android:color/transparent"
-                            android:fontFamily="@font/poppins_medium"
-                            android:text="EXPAND"
-                            android:textAlignment="textStart"
-                            android:textColor="@color/Header_1" />
-
-
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:layout_width="137dp"
-                        android:layout_height="118dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="-5dp"
-                        android:paddingEnd="-30dp"
-                        android:src="@drawable/ic_receiversymbol" />
-                </RelativeLayout>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

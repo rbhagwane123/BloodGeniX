@@ -1,22 +1,23 @@
 package com.example.bloodgenix;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +45,10 @@ public class DashBoard_Screen extends AppCompatActivity {
     CircleImageView sliderProfile;
     TextView sliderName, sliderEmail;
 
+
+    BottomNavigationView bottomNavigation;
+    NavController navController;
+
     //Bottom layout initialisation
     ChipNavigationBar bottom_nav_menu;
 
@@ -59,104 +64,112 @@ public class DashBoard_Screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board_screen);
 
-        // Setting values to components
-        salutationText = findViewById(R.id.salutationText);
-        active_person = findViewById(R.id.active_person);
-        donationExpand = findViewById(R.id.donationExpand);
-        RecipientExpand = findViewById(R.id.RecipientExpand);
-        Logout = findViewById(R.id.Logout);
-        layout_1 = findViewById(R.id.layout_1);
-
-        //Extracting values
-        Intent val = getIntent();
-        full_number = val.getStringExtra("profile Values");
-        profileDetailsFetch(full_number);
-
-        //drawer layout coding
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navView);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        navigationView.bringToFront();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(DashBoard_Screen.this,drawerLayout,toolbar,R.string.navigation_open,R.string.navigation_close);
-
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        View hView =  navigationView.getHeaderView(0);
-        sliderProfile = (CircleImageView) hView.findViewById(R.id.sliderProfile);
-        sliderEmail = (TextView) hView.findViewById(R.id.sliderEmail);
-        sliderName = (TextView) hView.findViewById(R.id.sliderName);;
+        bottomNavigation = findViewById(R.id.bottomNavigation);
+        navController = Navigation.findNavController(this,R.id.main_fragment);
+        NavigationUI.setupWithNavController(bottomNavigation,navController);
 
 
-        active_person.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent profile = new Intent(DashBoard_Screen.this,ProfileView.class);
-                profile.putExtra("mobile number",full_number);
-                startActivity(profile);
-            }
-        });
-
-        Logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent logout = new Intent(DashBoard_Screen.this,Welcome.class);
-                startActivity(logout);
-                finish();
-            }
-        });
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                switch (item.getItemId()){
-                    case R.id.nav_notification:
-                        Toast.makeText(DashBoard_Screen.this, "Notification area", Toast.LENGTH_SHORT).show();
-
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-
-                    case R.id.nav_settings:
-                        Toast.makeText(DashBoard_Screen.this, "Settings area", Toast.LENGTH_SHORT).show();
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                    case R.id.nav_about:
-                        Toast.makeText(DashBoard_Screen.this, "About area", Toast.LENGTH_SHORT).show();
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                    case R.id.nav_sharing:
-                        Toast.makeText(DashBoard_Screen.this, "Sharing area", Toast.LENGTH_SHORT).show();
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        break;
-                }
-                return true;
-            }
-        });
-
-        //setting click listener over buttons
-        donationExpand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent donationIntent = new Intent(DashBoard_Screen.this,DonationForm.class);
-                donationAdding [0] = fetch_details[0];
-                donationAdding [1] = full_number;
-                donationAdding [2] = fetch_details[5];
-                donationIntent.putExtra("Donation",donationAdding);
-                startActivity(donationIntent);
-            }
-        });
-
-        RecipientExpand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent RecipientIntent = new Intent(DashBoard_Screen.this,RecipientForm.class);
-                RecipientIntent.putExtra("Recipient",full_number);
-                startActivity(RecipientIntent);
-            }
-        });
+//        // Setting values to components
+//        salutationText = findViewById(R.id.salutationText);
+//        active_person = findViewById(R.id.active_person);
+//        donationExpand = findViewById(R.id.donationExpand);
+//        RecipientExpand = findViewById(R.id.RecipientExpand);
+//        Logout = findViewById(R.id.Logout);
+//        layout_1 = findViewById(R.id.layout_1);
+//        bottomNavigation = findViewById(R.id.bottomNavigation);
+//
+//        //Extracting values
+//        Intent val = getIntent();
+//        full_number = val.getStringExtra("profile Values");
+//        profileDetailsFetch(full_number);
+//
+//        //drawer layout coding
+//        drawerLayout = findViewById(R.id.drawerLayout);
+//        navigationView = findViewById(R.id.navView);
+//        toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        navigationView.bringToFront();
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(DashBoard_Screen.this,drawerLayout,toolbar,R.string.navigation_open,R.string.navigation_close);
+//
+//        drawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        View hView =  navigationView.getHeaderView(0);
+//        sliderProfile = (CircleImageView) hView.findViewById(R.id.sliderProfile);
+//
+////        sliderEmail = (TextView) hView.findViewById(R.id.sliderEmail);
+//        sliderName = (TextView) hView.findViewById(R.id.sliderName);
+//
+//
+//        active_person.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent profile = new Intent(DashBoard_Screen.this,User_Profile_View.class);
+//                profile.putExtra("mobile number",full_number);
+//                startActivity(profile);
+//            }
+//        });
+//
+//        Logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent logout = new Intent(DashBoard_Screen.this,Welcome.class);
+//                startActivity(logout);
+//                finish();
+//            }
+//        });
+//
+//
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//
+//                switch (item.getItemId()){
+//                    case R.id.nav_notification:
+//                        Toast.makeText(DashBoard_Screen.this, "Notification area", Toast.LENGTH_SHORT).show();
+//
+//                        drawerLayout.closeDrawer(GravityCompat.START);
+//                        break;
+//
+//                    case R.id.nav_settings:
+//                        Toast.makeText(DashBoard_Screen.this, "Settings area", Toast.LENGTH_SHORT).show();
+//                        drawerLayout.closeDrawer(GravityCompat.START);
+//                        break;
+//                    case R.id.nav_about:
+//                        Toast.makeText(DashBoard_Screen.this, "About area", Toast.LENGTH_SHORT).show();
+//                        drawerLayout.closeDrawer(GravityCompat.START);
+//                        break;
+//                    case R.id.nav_sharing:
+//                        Toast.makeText(DashBoard_Screen.this, "Sharing area", Toast.LENGTH_SHORT).show();
+//                        drawerLayout.closeDrawer(GravityCompat.START);
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
+//
+//        //setting click listener over buttons
+//        donationExpand.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent donationIntent = new Intent(DashBoard_Screen.this,DonationForm.class);
+//                donationAdding [0] = fetch_details[0];
+//                donationAdding [1] = full_number;
+//                donationAdding [2] = fetch_details[5];
+//                donationIntent.putExtra("Donation",donationAdding);
+//                startActivity(donationIntent);
+//            }
+//        });
+//
+//        RecipientExpand.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent RecipientIntent = new Intent(DashBoard_Screen.this,RecipientForm.class);
+//                RecipientIntent.putExtra("Recipient",full_number);
+//                startActivity(RecipientIntent);
+//            }
+//        });
 
     }
 
@@ -187,7 +200,7 @@ public class DashBoard_Screen extends AppCompatActivity {
                     Glide.with(layout_1).load(fetch_details[5]).into(sliderProfile);
                     String[] userName=_fullName.split("\\s");
                     sliderName.setText(_fullName);
-                    sliderEmail.setText(_emailId);
+//                    sliderEmail.setText(_emailId);
 
                 }
                 else{

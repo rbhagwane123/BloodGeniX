@@ -3,31 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="15dp"
-    android:background="@drawable/text_box_style"
+    android:background="@drawable/searchbar_background_style"
     android:backgroundTint="@color/irregular_shape_colour"
     android:layout_marginTop="10dp"
     android:elevation="3dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImageSearch"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/ic_male_avatar" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/bloodGroupSearch"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:background="@drawable/blood_roup_background_style"-->
-<!--        android:fontFamily="@font/poppins_semibold"-->
-<!--        android:padding="3dp"-->
-<!--        android:text="O +ve"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="14sp" />-->
+    <TextView
+        android:id="@+id/bloodGroupVal"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-20dp"
+        android:layout_marginEnd="-15dp"
+        android:background="@drawable/blood_roup_background_style"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="bottom"
+        android:text="AB+"
+        android:paddingStart="10dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/personNameSearch"
@@ -51,6 +55,16 @@
         android:layout_marginTop="3dp"
         android:fontFamily="@font/poppins"
         android:text="Location : Mumbai"
-        android:textColor="@color/Header_1_light"
+        android:textColor="@color/Header_1"
         android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/personNumberSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_toEndOf="@+id/personLocationSearch"
+        android:visibility="invisible"
+        android:text="" />
 </RelativeLayout>

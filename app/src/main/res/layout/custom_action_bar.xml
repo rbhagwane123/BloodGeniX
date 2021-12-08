@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/App_colour"
+    android:paddingBottom="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <ImageButton
+            android:id="@+id/bacBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_arrow_back_24" />
+
+        <TextView
+            android:id="@+id/toolbarName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/bacBtn"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Rupesh Bhagwane"
+            android:textColor="@color/white"
+            android:padding="3dp"
+            android:textSize="15sp" />
+
+        <ImageButton
+            android:id="@+id/dotMenuBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:background="@android:color/transparent"
+            android:foregroundGravity="right"
+            android:src="@drawable/ic_baseline_more_vert_24" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

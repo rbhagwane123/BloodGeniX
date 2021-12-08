@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -22,6 +23,9 @@ public class Signup_Screen_1 extends AppCompatActivity {
     TextInputEditText fullName, userName, emailId, password;
     Uri profile_uri;
     Context context;
+
+    StorageReference storageReference;
+
     public String details [] = new String[15];
 
     @Override
@@ -60,7 +64,8 @@ public class Signup_Screen_1 extends AppCompatActivity {
                     Toast.makeText(Signup_Screen_1.this, "Many fields left empty", Toast.LENGTH_SHORT).show();
                 }else{
 
-                    if (profileImage.getDrawable() ==null){
+                    if (profileImage.getDrawable() == null){
+//                        storageReference = FirebaseStorage
                         profile_uri = Uri.parse("android.resource://com.example.bloodgenix/drawable/ic_male_avatar");
                         profileImage2.setImageURI(profile_uri);
                         Toast.makeText(Signup_Screen_1.this, profile_uri.toString(), Toast.LENGTH_SHORT).show();
