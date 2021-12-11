@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.hbb20.CountryCodePicker;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Welcome extends AppCompatActivity {
@@ -40,11 +42,13 @@ public class Welcome extends AppCompatActivity {
     //Bottom Sheet Dialog
     TextInputLayout passwordLayout;
     LoadingDialog dialog;
+    CheckBox rememberBtn;
     Button loginBtn;
     ImageButton back_btn;
     TextInputEditText mobileNo, Password;
     CountryCodePicker picker;
     TextInputLayout mobLayout;
+    SessionManager sessionManager;
     String countryWithPlus;
     String phoneNumberPattern = "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$";
 
@@ -73,7 +77,15 @@ public class Welcome extends AppCompatActivity {
             picker = sheetDialog.findViewById(R.id.codePicker);
             back_btn = sheetDialog.findViewById(R.id.back_btn);
             passwordLayout = sheetDialog.findViewById(R.id.passwordLayout);
+            rememberBtn = sheetDialog.findViewById(R.id.rememberBtn);
             sheetDialog.show();
+
+            sessionManager = new SessionManager(Welcome.this, SessionManager.SESSION_REMEMBERME);
+            if (sessionManager.checkRememberMe()){
+                HashMap<String, String> rememberMeDetails = sessionManager.getRememberMeDetailsFromSession();
+                mobileNo.setText(rememberMeDetails.get(sessionManager.KEY_SESSION_PHONENUMBER));
+                Password.setText(rememberMeDetails.get(sessionManager.KEY_SESSION_PASSWORD));
+            }
 
             listners(sheetDialog);
             back_btn.setOnClickListener(v12 -> {
@@ -111,6 +123,11 @@ public class Welcome extends AppCompatActivity {
                     Password.setError(null);
 
                     dialog.startDialog();
+                    if (rememberBtn.isChecked()){
+                        sessionManager = new SessionManager(Welcome.this, SessionManager.SESSION_REMEMBERME);
+                        sessionManager.createRememberMeSession(_number, _password);
+                    }
+
                     Query checkUser = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo(full_number);
                     checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -120,12 +137,14 @@ public class Welcome extends AppCompatActivity {
 
                                 if (system_password.equals(_password)) {
 
-//                                    String _fullName = snapshot.child(_number).child("fullName").getValue(String.class);
-//                                    String _emailId = snapshot.child(_number).child("emailId").getValue(String.class);
-//                                    String _gender = snapshot.child(_number).child("gender").getValue(String.class);
-//                                    String _dob = snapshot.child(_number).child("d_o_b").getValue(String.class);
-//                                    String _img = snapshot.child(_number).child("profileImg").getValue(String.class);
-//
+                                    String _fullName = snapshot.child(_number).child("fullName").getValue(String.class);
+                                    String _userName = snapshot.child(_number).child("userName").getValue(String.class);
+                                    String _emailId = snapshot.child(_number).child("emailId").getValue(String.class);
+                                    String _gender = snapshot.child(_number).child("gender").getValue(String.class);
+                                    String _password = snapshot.child(_number).child("password").getValue(String.class);
+                                    String _dob = snapshot.child(_number).child("d_o_b").getValue(String.class);
+                                    String _img = snapshot.child(_number).child("profileImg").getValue(String.class);
+
 //                                    profile_details [0] = _fullName;
 //                                    profile_details [1] = _emailId;
 //                                    profile_details [2] = system_password;
@@ -133,6 +152,10 @@ public class Welcome extends AppCompatActivity {
 //                                    profile_details [4] =_gender;
 //                                    profile_details [5] = _number;
 //                                    profile_details [6] = _img;
+
+                                    SessionManager sessionManager = new SessionManager(Welcome.this,SessionManager.SESSION_USERSESSION);
+                                    sessionManager.createLoginSession(_fullName, _userName, _emailId, _number, _gender, _password);
+
                                     dialog.dismissDialog();
                                     Intent dashBoard = new Intent(sheetDialog.getContext(), DashBoard_Screen.class);
                                     dashBoard.putExtra("profile Values", full_number);

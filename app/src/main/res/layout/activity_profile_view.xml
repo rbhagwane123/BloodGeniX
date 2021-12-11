@@ -65,7 +65,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView15">
 
             <ImageButton
-                android:id="@+id/directMssg"
+                android:id="@+id/directMessage"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="-10dp"

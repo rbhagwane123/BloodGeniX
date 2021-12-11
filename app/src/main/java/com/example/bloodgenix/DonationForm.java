@@ -60,7 +60,7 @@ public class DonationForm extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapterBGroup, arrayAdapterBCount, arrayAdapterDPeriod;
     String phoneNumber;
     String bGroup[], DiabeticCount[], Weight[], DPeriod[];
-    public String formFillData [] = new String[3];
+    public String formFillData [];
     NumberPicker weight;
     FusedLocationProviderClient fusedLocationProviderClientDon;
 
@@ -75,8 +75,8 @@ public class DonationForm extends AppCompatActivity {
         setContentView(R.layout.activity_donation_form);
 
         //getting values from previous activities
-        Intent i3 = getIntent();
-        formFillData = i3.getStringArrayExtra("Donation");
+        Intent i8 = getIntent();
+        formFillData = i8.getStringArrayExtra("Donation");
         phoneNumber = formFillData[1];
 
         //giving id to the respective views
@@ -231,7 +231,7 @@ public class DonationForm extends AppCompatActivity {
                                 database = FirebaseDatabase.getInstance();
                                 auth = FirebaseAuth.getInstance();
                                 reference = database.getReference().child("DonationDetails").child(phoneNumber);
-                                DonationDetails donationDetails = new DonationDetails(auth.getUid(),phoneNumber,bloodGroup.getText().toString(),radioButton.getText().toString(),diabeticCount.getText().toString(),otherSpecify.getText().toString(),radioButton2.getText().toString(),DonationPeriod.getText().toString(),wight,locationDonation.getText().toString(),formFillData[0], formFillData[2]);
+                                DonationDetails donationDetails = new DonationDetails(auth.getUid(),phoneNumber,bloodGroup.getText().toString(),radioButton.getText().toString(),diabeticCount.getText().toString(),otherSpecify.getText().toString(),radioButton2.getText().toString(),DonationPeriod.getText().toString(),wight,locationDonation.getText().toString(),formFillData[0], formFillData[2] );
                                 reference.setValue(donationDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -278,9 +278,9 @@ public class DonationForm extends AppCompatActivity {
         Okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent donationToDash = new Intent(DonationForm.this,DashBoard_Screen.class);
-                donationToDash.putExtra("profile Values",phoneNumber);
-                startActivity(donationToDash);
+                Intent search = new Intent(DonationForm.this,BloodDnonorSearch.class);
+                search.putExtra("Blood Group",bloodGroup.getText().toString());
+                startActivity(search);
                 dialog.dismiss();
             }
         });

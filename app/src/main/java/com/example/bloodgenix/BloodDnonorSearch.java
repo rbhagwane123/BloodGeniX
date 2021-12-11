@@ -42,31 +42,50 @@ public class BloodDnonorSearch extends AppCompatActivity {
         searchBar = findViewById(R.id.searchBar);
         searchRecycler = findViewById(R.id.searchRecycler);
 
-        FirebaseRecyclerOptions<DonationDetails> options = new FirebaseRecyclerOptions.Builder<DonationDetails>()
-                .setQuery(FirebaseDatabase.getInstance().getReference().child("DonationDetails").orderByChild("blGroup").startAt(bloodGroupSearch).endAt(bloodGroupSearch+"\uf8ff"),DonationDetails.class)
-                .build();
-        adapter = new myAdapter(options);
-        adapter.startListening();
-        searchRecycler.setAdapter(adapter);
-        adapter.setOnItemClickListener(new myAdapter.OnItemClickListener() {
-            @Override
-            public String OnItemClick(int position, String number) {
-                Toast.makeText(BloodDnonorSearch.this, number, Toast.LENGTH_SHORT).show();
-                Intent profileView = new Intent(BloodDnonorSearch.this, ProfileView.class);
-                profileView.putExtra("mobile number",number);
-                startActivity(profileView);
-                return number;
-            }
-        });
+        if (checkDonorAvailability() == 1){
+            FirebaseRecyclerOptions<DonationDetails> options = new FirebaseRecyclerOptions.Builder<DonationDetails>()
+                    .setQuery(FirebaseDatabase.getInstance().getReference().child("DonationDetails").orderByChild("blGroup").startAt(bloodGroupSearch).endAt(bloodGroupSearch+"\uf8ff"),DonationDetails.class)
+                    .build();
+            adapter = new myAdapter(options);
+            adapter.startListening();
+            searchRecycler.setAdapter(adapter);
+            adapter.setOnItemClickListener(new myAdapter.OnItemClickListener() {
+                @Override
+                public String OnItemClick(int position, String number) {
+                    Toast.makeText(BloodDnonorSearch.this, number, Toast.LENGTH_SHORT).show();
+                    Intent profileView = new Intent(BloodDnonorSearch.this, ProfileView.class);
+                    profileView.putExtra("mobile number",number);
+                    startActivity(profileView);
+                    return number;
+                }
+            });
+
+        }
 
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                FirebaseRecyclerOptions<DonationDetails> options = new FirebaseRecyclerOptions.Builder<DonationDetails>()
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("DonationDetails").orderByChild("blGroup").startAt(bloodGroupSearch).endAt(bloodGroupSearch+"\uf8ff"),DonationDetails.class)
+                        .build();
+                adapter = new myAdapter(options);
+                adapter.startListening();
+                searchRecycler.setAdapter(adapter);
+                adapter.setOnItemClickListener(new myAdapter.OnItemClickListener() {
+                    @Override
+                    public String OnItemClick(int position, String number) {
+                        Toast.makeText(BloodDnonorSearch.this, number, Toast.LENGTH_SHORT).show();
+                        Intent profileView = new Intent(BloodDnonorSearch.this, ProfileView.class);
+                        profileView.putExtra("mobile number",number);
+                        startActivity(profileView);
+                        return number;
+                    }
+                });
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
             }
 
             @Override
@@ -75,6 +94,10 @@ public class BloodDnonorSearch extends AppCompatActivity {
                 filter(s.toString());
             }
         });
+    }
+
+    private int  checkDonorAvailability() {
+        return 0;
     }
 
     private void filter(String text) {

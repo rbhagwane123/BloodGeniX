@@ -24,7 +24,8 @@ public class ProfileView extends AppCompatActivity {
     CircleImageView profileImageView;
     EditText personName, personBlood, personGender;
     String phoneNumb;
-    ImageButton cancelBtnProfile;
+    ImageButton cancelBtnProfile, directMessage, block, report;
+    String chatData [] = new String[5];
 
 
     @Override
@@ -40,6 +41,9 @@ public class ProfileView extends AppCompatActivity {
         personName = findViewById(R.id.personName);
         profileImageView = findViewById(R.id.profileImageView);
         cancelBtnProfile = findViewById(R.id.cancelBtnProfile);
+        directMessage = findViewById(R.id.directMessage);
+        block = findViewById(R.id.bottom_navigation);
+        report = findViewById(R.id.report);
 
         cancelBtnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +66,9 @@ public class ProfileView extends AppCompatActivity {
                     String _img = snapshot.child(_number).child("profileImg").getValue(String.class);
                     personName.setText(_fullName);
                     personGender.setText(_gender);
+                    chatData [0] = phoneNumb;
+                    chatData [1] = _fullName;
+                    chatData [2] = _img;
                     Glide.with(ProfileView.this).load(_img).into(profileImageView);
                     Query donorDetails = FirebaseDatabase.getInstance().getReference("DonationDetails").orderByChild("phoneNumber").equalTo(phoneNumb);
                     donorDetails.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -109,6 +116,16 @@ public class ProfileView extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(ProfileView.this, "Something issue in extracting", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        directMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chatSection = new Intent(ProfileView.this,ChatActivity.class);
+                chatSection.putExtra("chatData",chatData);
+                startActivity(chatSection);
             }
         });
     }
