@@ -1,4 +1,4 @@
-package com.example.bloodgenix;
+package com.example.bloodgenix.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bloodgenix.Adapters.myAdapter;
+import com.example.bloodgenix.Models.DonationDetails;
+import com.example.bloodgenix.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

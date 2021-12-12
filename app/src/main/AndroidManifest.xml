@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BloodGeniX">
         <activity
-            android:name=".ChatActivity"
+            android:name=".activities.ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".User_Profile_View"
+            android:name=".activities.User_Profile_View"
             android:exported="false">
 
             <!-- <intent-filter> -->
@@ -31,7 +31,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".BloodDnonorSearch"
+            android:name=".activities.BloodDnonorSearch"
             android:exported="false">
 
             <!-- <intent-filter> -->
@@ -43,7 +43,7 @@
 
         </activity>
         <activity
-            android:name=".ProfileView"
+            android:name=".activities.ProfileView"
             android:exported="false">
 
             <!-- <intent-filter> -->
@@ -59,7 +59,7 @@
             android:value="AIzaSyCq0_Pu01ArQVXzE958EtU9t83i2FNazys" />
 
         <activity
-            android:name=".RecipientForm"
+            android:name=".activities.RecipientForm"
             android:exported="false">
 
             <!-- <intent-filter> -->
@@ -70,7 +70,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".DonationForm"
+            android:name=".activities.DonationForm"
             android:exported="false">
 
             <!-- <intent-filter> -->
@@ -81,10 +81,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".BottomNavigation"
-            android:exported="false" />
-        <activity
-            android:name=".DashBoard_Screen"
+            android:name=".activities.DashBoard_Screen"
             android:exported="false">
 
             <!-- <intent-filter> -->
@@ -94,19 +91,19 @@
 
         </activity>
         <activity
-            android:name=".Otp_Screen2"
+            android:name=".activities.Otp_Screen2"
             android:exported="false" />
         <activity
-            android:name=".Otp_Screen_1"
+            android:name=".activities.Otp_Screen_1"
             android:exported="false" />
         <activity
-            android:name=".Signup_Screen_2"
+            android:name=".activities.Signup_Screen_2"
             android:exported="false" />
         <activity
-            android:name=".Signup_Screen_1"
+            android:name=".activities.Signup_Screen_1"
             android:exported="false" />
         <activity
-            android:name=".Welcome"
+            android:name=".activities.Welcome"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -115,10 +112,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OnBoardingScreen"
+            android:name=".activities.OnBoardingScreen"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="false" />
 
         <meta-data

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/receiverProfileImg"
+        android:id="@+id/ProfileImg"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
@@ -14,12 +14,12 @@
         android:src="@drawable/eliipse1" />
 
     <TextView
-        android:id="@+id/receiverMessageTxt"
+        android:id="@+id/MessageTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_margin="5dp"
-        android:layout_toRightOf="@id/receiverProfileImg"
+        android:layout_toRightOf="@id/ProfileImg"
         android:background="@drawable/receiver_shape_style"
         android:fontFamily="@font/poppins_semibold"
         android:padding="7dp"

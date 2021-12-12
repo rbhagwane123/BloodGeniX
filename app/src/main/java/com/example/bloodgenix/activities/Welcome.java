@@ -1,4 +1,4 @@
-package com.example.bloodgenix;
+package com.example.bloodgenix.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bloodgenix.LoadingDialog;
+import com.example.bloodgenix.R;
+import com.example.bloodgenix.SessionManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;

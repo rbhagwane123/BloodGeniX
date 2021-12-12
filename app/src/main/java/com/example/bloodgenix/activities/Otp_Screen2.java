@@ -1,4 +1,4 @@
-package com.example.bloodgenix;
+package com.example.bloodgenix.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.chaos.view.PinView;
+import com.example.bloodgenix.LoadingDialog;
+import com.example.bloodgenix.Models.Users;
+import com.example.bloodgenix.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

@@ -1,4 +1,4 @@
-package com.example.bloodgenix;
+package com.example.bloodgenix.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.bloodgenix.Adapters.MessagesAdapter;
+import com.example.bloodgenix.Models.Messages;
+import com.example.bloodgenix.R;
+import com.example.bloodgenix.SessionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -64,7 +68,11 @@ public class ChatActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
         messageAdapter = findViewById(R.id.messageAdapter);
 
-        messagesArrayList = new ArrayList<Messages>();
+        receiverUID = passedData[0];
+        receiverImg = passedData[2];
+        Glide.with(ChatActivity.this).load(passedData[2]).into(profileImg);
+        receiverName.setText(passedData[1]);
+        messagesArrayList = new ArrayList<>();
 
         SessionManager sessionManager = new SessionManager(ChatActivity.this, SessionManager.SESSION_USERSESSION);
         HashMap<String, String> senderData =sessionManager.getUserDetailsFromSession();
@@ -77,14 +85,8 @@ public class ChatActivity extends AppCompatActivity {
         onlyAdapter = new MessagesAdapter(ChatActivity.this, messagesArrayList, senderUID);
         messageAdapter.setAdapter(onlyAdapter);
 
-        receiverUID = passedData[0];
-        receiverImg = passedData[2];
-        Glide.with(ChatActivity.this).load(passedData[2]).into(profileImg);
-        receiverName.setText(passedData[1]);
-
         senderRoom = senderUID+receiverUID;
         receiverRoom = receiverUID+senderUID;
-
 
         database = FirebaseDatabase.getInstance();
         DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
@@ -97,6 +99,7 @@ public class ChatActivity extends AppCompatActivity {
                     Messages messages = dataSnapshot.getValue(Messages.class);
                     messagesArrayList.add(messages);
                 }
+                Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
                 onlyAdapter.notifyDataSetChanged();
             }
 
@@ -118,7 +121,10 @@ public class ChatActivity extends AppCompatActivity {
 
                 Messages messages = new Messages(textmessage, senderUID, date.getTime());
 //                database= FirebaseDatabase.getInstance();
-                database.getReference().child("Chats").child(senderRoom).child("messages").push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
+                database.getReference().child("Chats")
+                        .child(senderRoom)
+                        .child("messages")
+                        .push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
@@ -128,7 +134,25 @@ public class ChatActivity extends AppCompatActivity {
                                     .push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
+                                    chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            messagesArrayList.clear();
+                                            for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                                            {
+                                                Messages messages = dataSnapshot.getValue(Messages.class);
+                                                messagesArrayList.add(messages);
+                                            }
+                                            Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
+                                            onlyAdapter.notifyDataSetChanged();
+                                        }
 
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(ChatActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             });
                         }

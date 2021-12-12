@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Signup_Screen_2"
+    tools:context=".activities.Signup_Screen_2"
     android:background="@drawable/ic_profile_details_2">
 
     <TextView

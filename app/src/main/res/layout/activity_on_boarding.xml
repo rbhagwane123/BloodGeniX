@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:background="@drawable/ic_welcomepage"
-    tools:context=".OnBoardingScreen">
+    tools:context=".activities.OnBoardingScreen">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/sliderView"

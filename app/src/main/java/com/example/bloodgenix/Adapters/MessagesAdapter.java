@@ -1,7 +1,6 @@
-package com.example.bloodgenix;
+package com.example.bloodgenix.Adapters;
 
-import static com.example.bloodgenix.ChatActivity.receiverImg;
-import static com.example.bloodgenix.ChatActivity.senderImg;
+import static com.example.bloodgenix.activities.ChatActivity.receiverImg;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.bloodgenix.Models.Messages;
+import com.example.bloodgenix.R;
 
 import java.util.ArrayList;
 
@@ -37,12 +38,12 @@ public class MessagesAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == ITEM_SEND){
             Toast.makeText(context, "inside onCreateView send", Toast.LENGTH_SHORT).show();
-            View view = LayoutInflater.from(context).inflate(R.layout.sender_layout_item, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.receiver_layout_item, parent, false);
             return new SenderViewsHolder(view);
 
         }else{
             Toast.makeText(context, "inside onCreateView receive", Toast.LENGTH_SHORT).show();
-            View view = LayoutInflater.from(context).inflate(R.layout.receiver_layout_item, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.sender_layout_item, parent, false);
             return new ReceiverViewsHolder(view);
         }
 //        return null;
@@ -55,17 +56,17 @@ public class MessagesAdapter extends RecyclerView.Adapter {
         if (holder.getClass() == SenderViewsHolder.class){
             SenderViewsHolder viewsHolder = (SenderViewsHolder) holder;
             viewsHolder.senderMessageTxt.setText(messages.getMessage());
-            Toast.makeText(context, messages.getMessage(), Toast.LENGTH_SHORT).show();
+
 
             Toast.makeText(context, "inside onBindView send", Toast.LENGTH_SHORT).show();
-            Glide.with(context).load(senderImg).into(viewsHolder.senderProfileImg);
+            Glide.with(context).load(receiverImg).into(viewsHolder.senderProfileImg);
         }else{
             ReceiverViewsHolder viewsHolder = (ReceiverViewsHolder) holder;
-            viewsHolder.receiverMessageTxt.setText(messages.getMessage());
-            Toast.makeText(context, messages.getMessage(), Toast.LENGTH_SHORT).show();
+            viewsHolder.senderMessageTxt.setText(messages.getMessage());
+
 
             Toast.makeText(context, "inside onBindView receive", Toast.LENGTH_SHORT).show();
-            Glide.with(context).load(receiverImg).into(viewsHolder.receiverProfileImg);
+            Glide.with(context).load(senderID).into(viewsHolder.senderProfileImg);
         }
     }
 
@@ -93,18 +94,18 @@ public class MessagesAdapter extends RecyclerView.Adapter {
         public SenderViewsHolder(@NonNull View itemView) {
             super(itemView);
 
-            senderProfileImg = itemView.findViewById(R.id.senderProfileImg);
-            senderMessageTxt = itemView.findViewById(R.id.senderMessageTxt);
+            senderProfileImg = itemView.findViewById(R.id.ProfileImg);
+            senderMessageTxt = itemView.findViewById(R.id.MessageTxt);
         }
     }
 
     class ReceiverViewsHolder extends RecyclerView.ViewHolder{
-        CircleImageView receiverProfileImg;
-        TextView receiverMessageTxt;
+        CircleImageView senderProfileImg;
+        TextView senderMessageTxt;
         public ReceiverViewsHolder(@NonNull View itemView) {
             super(itemView);
-            receiverProfileImg = itemView.findViewById(R.id.senderProfileImg);
-            receiverMessageTxt = itemView.findViewById(R.id.senderMessageTxt);
+            senderProfileImg = itemView.findViewById(R.id.ProfileImg);
+            senderMessageTxt = itemView.findViewById(R.id.MessageTxt);
         }
     }
 }

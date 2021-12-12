@@ -13,11 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.bloodgenix.DonationForm;
+import com.example.bloodgenix.activities.DonationForm;
 import com.example.bloodgenix.R;
-import com.example.bloodgenix.RecipientForm;
+import com.example.bloodgenix.activities.RecipientForm;
 import com.example.bloodgenix.SessionManager;
-import com.example.bloodgenix.User_Profile_View;
+import com.example.bloodgenix.activities.User_Profile_View;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;

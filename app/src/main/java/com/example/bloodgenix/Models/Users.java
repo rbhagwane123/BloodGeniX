@@ -1,4 +1,4 @@
-package com.example.bloodgenix;
+package com.example.bloodgenix.Models;
 
 public class Users
 {
