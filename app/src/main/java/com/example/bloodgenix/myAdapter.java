@@ -1,4 +1,4 @@
-package com.example.bloodgenix.Adapters;
+package com.example.bloodgenix;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bloodgenix.Models.DonationDetails;
-import com.example.bloodgenix.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 

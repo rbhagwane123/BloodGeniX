@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bloodgenix.Adapters.myAdapter;
+import com.example.bloodgenix.myAdapter;
 import com.example.bloodgenix.Models.DonationDetails;
 import com.example.bloodgenix.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -45,25 +45,22 @@ public class BloodDnonorSearch extends AppCompatActivity {
         searchBar = findViewById(R.id.searchBar);
         searchRecycler = findViewById(R.id.searchRecycler);
 
-        if (checkDonorAvailability() == 1){
-            FirebaseRecyclerOptions<DonationDetails> options = new FirebaseRecyclerOptions.Builder<DonationDetails>()
-                    .setQuery(FirebaseDatabase.getInstance().getReference().child("DonationDetails").orderByChild("blGroup").startAt(bloodGroupSearch).endAt(bloodGroupSearch+"\uf8ff"),DonationDetails.class)
-                    .build();
-            adapter = new myAdapter(options);
-            adapter.startListening();
-            searchRecycler.setAdapter(adapter);
-            adapter.setOnItemClickListener(new myAdapter.OnItemClickListener() {
-                @Override
-                public String OnItemClick(int position, String number) {
-                    Toast.makeText(BloodDnonorSearch.this, number, Toast.LENGTH_SHORT).show();
-                    Intent profileView = new Intent(BloodDnonorSearch.this, ProfileView.class);
-                    profileView.putExtra("mobile number",number);
-                    startActivity(profileView);
-                    return number;
-                }
-            });
-
-        }
+        FirebaseRecyclerOptions<DonationDetails> options = new FirebaseRecyclerOptions.Builder<DonationDetails>()
+                .setQuery(FirebaseDatabase.getInstance().getReference().child("DonationDetails").orderByChild("blGroup").startAt(bloodGroupSearch).endAt(bloodGroupSearch+"\uf8ff"),DonationDetails.class)
+                .build();
+        adapter = new myAdapter(options);
+        adapter.startListening();
+        searchRecycler.setAdapter(adapter);
+        adapter.setOnItemClickListener(new myAdapter.OnItemClickListener() {
+            @Override
+            public String OnItemClick(int position, String number) {
+                Toast.makeText(BloodDnonorSearch.this, number, Toast.LENGTH_SHORT).show();
+                Intent profileView = new Intent(BloodDnonorSearch.this, ProfileView.class);
+                profileView.putExtra("mobile number",number);
+                startActivity(profileView);
+                return number;
+            }
+        });
 
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override

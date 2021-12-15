@@ -2,11 +2,14 @@ package com.example.bloodgenix.Models;
 
 public class DonationDetails {
 
-    String uid,phoneNumber,blGroup;
+    String uid;
+    public String phoneNumber;
+    public String blGroup;
     String ruDiabetic, diabeticCount, otherDisease;
     String ruDonated, donateMonth, weight;
-    String donorLocation;
-    String personFullName, personProfileImg;
+    public String donorLocation;
+    public String personFullName;
+    public String personProfileImg;
 
     public DonationDetails(){
 

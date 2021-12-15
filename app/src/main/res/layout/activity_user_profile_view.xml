@@ -34,9 +34,8 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginTop="10dp"
-                    android:elevation="4dp"
+                    android:elevation="1dp"
                     android:scaleType="centerCrop"
-                    android:background="@android:color/transparent"
                     app:cornerRadius="12dp"
                     app:shapeAppearanceOverlay="@style/rectangle" />
 

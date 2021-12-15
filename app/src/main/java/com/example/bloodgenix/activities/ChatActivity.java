@@ -46,11 +46,12 @@ public class ChatActivity extends AppCompatActivity {
     String senderUID;
     String receiverUID;
 
-    String senderRoom, receiverRoom;
-    ArrayList <Messages> messagesArrayList;
+    String senderRoom;
+    String receiverRoom;
+    static ArrayList <Messages> messagesArrayList;
     MessagesAdapter onlyAdapter;
 
-    FirebaseDatabase database;
+    static FirebaseDatabase database;
     DatabaseReference reference;
 
 
@@ -88,26 +89,27 @@ public class ChatActivity extends AppCompatActivity {
         senderRoom = senderUID+receiverUID;
         receiverRoom = receiverUID+senderUID;
 
-        database = FirebaseDatabase.getInstance();
-        DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
-        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                messagesArrayList.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
-                    Messages messages = dataSnapshot.getValue(Messages.class);
-                    messagesArrayList.add(messages);
-                }
-                Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
-                onlyAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ChatActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        chatReferenceCall();
+//        database = FirebaseDatabase.getInstance();
+//        DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
+//        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+////                messagesArrayList.clear();
+//                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+//                {
+//                    Messages messages = dataSnapshot.getValue(Messages.class);
+//                    messagesArrayList.add(messages);
+//                }
+//                Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
+//                onlyAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(ChatActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +122,6 @@ public class ChatActivity extends AppCompatActivity {
                 Date date = new Date();
 
                 Messages messages = new Messages(textmessage, senderUID, date.getTime());
-//                database= FirebaseDatabase.getInstance();
                 database.getReference().child("Chats")
                         .child(senderRoom)
                         .child("messages")
@@ -128,36 +129,42 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
+                            chatReferenceCall();
                             database.getReference().child("Chats")
                                     .child(receiverRoom)
                                     .child("messages")
                                     .push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
-                                    chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            messagesArrayList.clear();
-                                            for(DataSnapshot dataSnapshot : snapshot.getChildren())
-                                            {
-                                                Messages messages = dataSnapshot.getValue(Messages.class);
-                                                messagesArrayList.add(messages);
-                                            }
-                                            Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
-                                            onlyAdapter.notifyDataSetChanged();
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Toast.makeText(ChatActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                    chatReferenceCall();
                                 }
                             });
                         }
                     }
                 });
+            }
+        });
+    }
+
+    public  void chatReferenceCall() {
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
+        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                messagesArrayList.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Messages messages = dataSnapshot.getValue(Messages.class);
+                    messagesArrayList.add(messages);
+                }
+                Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
+                onlyAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ChatActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

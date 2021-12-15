@@ -420,9 +420,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
             case R.id.forgotPassword:
                 Toast.makeText(User_Profile_View.this, "forgot Password", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.deleteAccount:
-                Toast.makeText(User_Profile_View.this, "delete Account", Toast.LENGTH_SHORT).show();
-                return true;
+
             default:
                 return false;
         }
