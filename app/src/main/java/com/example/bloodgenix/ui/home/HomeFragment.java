@@ -1,11 +1,13 @@
 package com.example.bloodgenix.ui.home;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +37,10 @@ public class HomeFragment extends Fragment {
     TextView salutationText;
     CircleImageView active_person;
     Button donationExpand, RecipientExpand, Logout, searchExpand;
+    ImageButton moreInfo, infoCancel;
     String phoneNo;
+    Dialog dialog;
+
     private SessionManager sessionManager;
     String sendingData[] = new String[3];
     private int chckFlag = 0;
@@ -82,6 +87,23 @@ public class HomeFragment extends Fragment {
         donationExpand = view.findViewById(R.id.donationExpand);
         RecipientExpand = view.findViewById(R.id.RecipientExpand);
         searchExpand = view.findViewById(R.id.searchExpand);
+        moreInfo = view.findViewById(R.id.moreInfo);
+
+        dialogCreation();
+        moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+                infoCancel = dialog.findViewById(R.id.infoCancel);
+                infoCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
 
 
         //FETCHING DETAILS FROM SESSION
@@ -166,6 +188,17 @@ public class HomeFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void dialogCreation() {
+
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.info_layout);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.info_layout_background_style));
+        dialog.setCancelable(false);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+
     }
 
     private int checkBeforeApplySearch(String s) {

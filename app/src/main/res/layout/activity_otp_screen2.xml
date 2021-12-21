@@ -75,8 +75,7 @@
                 android:inputType="number"
                 app:itemHeight="48dp"
                 app:itemCount="6"
-                app:lineColor="@color/App_colour"
-                />
+                app:lineColor="@color/App_colour" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,16 +95,16 @@
 
                 <Button
                     android:id="@+id/resendBtn"
-                    android:background="@android:color/transparent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/poppins_medium"
                     android:paddingStart="0dp"
                     android:paddingEnd="0dp"
                     android:text=" Resend OTP"
                     android:textAllCaps="false"
-                    android:textSize="16sp"
                     android:textColor="@color/App_colour"
-                    android:fontFamily="@font/poppins_medium"/>
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <Button

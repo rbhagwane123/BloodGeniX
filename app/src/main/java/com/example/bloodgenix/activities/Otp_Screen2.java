@@ -37,9 +37,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Otp_Screen2 extends AppCompatActivity {
 
-    public String Otp_details [] = new String[15];
+    public String Otp_details[] = new String[15];
     String code_by_system, Number_entered_by_user;
-    String imageURI, pdfUri;
+    String imageURI, pdfUri, whatToDo, forgetNumber;
     TextView dispNumber;
     PinView otpVal;
     Button resendBtn, verify;
@@ -50,7 +50,7 @@ public class Otp_Screen2 extends AppCompatActivity {
 
 
     //FireBase Initialisation of variables
-    FirebaseAuth  auth;
+    FirebaseAuth auth;
     FirebaseDatabase database;
     FirebaseStorage storage;
 
@@ -60,29 +60,35 @@ public class Otp_Screen2 extends AppCompatActivity {
         setContentView(R.layout.activity_otp_screen2);
 
         //Values intake from previous activity
-        Intent i3= getIntent();
+        Intent i3 = getIntent();
         Otp_details = i3.getStringArrayExtra("Otp_value");
-        Number_entered_by_user = Otp_details[8].substring(4,Otp_details[8].length());
+        whatToDo = i3.getStringExtra("whatToDo");
+        forgetNumber = i3.getStringExtra("phoneNo");
 
+
+        //SETTING THE PHONE NUMBER
+        Number_entered_by_user = forgetNumber.substring(4, forgetNumber.length());
+        //Toast.makeText(Otp_Screen2.this, whatToDo, Toast.LENGTH_SHORT).show();
 
         //firebase values
-        auth= FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance("https://bloodgenix-bb937-default-rtdb.firebaseio.com/");
         storage = FirebaseStorage.getInstance();
 
         //Otp code
         otpVal = findViewById(R.id.otpVal);
         dispNumber = findViewById(R.id.dispNumber);
-        dispNumber.setText(Otp_details[8].toString());
+//        dispNumber.setText(forgetNumber);
+        dispNumber.setText(forgetNumber);
 
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 String code = credential.getSmsCode();
-                if (code != null){
+                if (code != null) {
                     otpVal.setText(code);
-                    verifyPhoneNumberWithCode(mVerificationId,code);
+                    verifyPhoneNumberWithCode(mVerificationId, code);
                 }
 
             }
@@ -123,7 +129,7 @@ public class Otp_Screen2 extends AppCompatActivity {
         resendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               resendVerificationCode(Number_entered_by_user,mResendToken);
+                resendVerificationCode(Number_entered_by_user, mResendToken);
             }
         });
 
@@ -132,16 +138,17 @@ public class Otp_Screen2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String code = otpVal.getText().toString();
-                verifyPhoneNumberWithCode(mVerificationId,code);
+                verifyPhoneNumberWithCode(mVerificationId, code);
             }
         });
 
     }
+
     private void startPhoneNumberVerification(String phoneNumber) {
         // [START start_phone_auth]
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(auth)
-                        .setPhoneNumber("+91"+phoneNumber)       // Phone number to verify
+                        .setPhoneNumber("+91" + phoneNumber)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                         .setActivity(Otp_Screen2.this)                 // Activity (for callback binding)
                         .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
@@ -159,11 +166,10 @@ public class Otp_Screen2 extends AppCompatActivity {
     }
 
     // [START resend_verification]
-    private void resendVerificationCode(String phoneNumber,
-                                        PhoneAuthProvider.ForceResendingToken token) {
+    private void resendVerificationCode(String phoneNumber, PhoneAuthProvider.ForceResendingToken token) {
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(auth)
-                        .setPhoneNumber("+91"+phoneNumber)       // Phone number to verify
+                        .setPhoneNumber("+91" + phoneNumber)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                         .setActivity(Otp_Screen2.this)                 // Activity (for callback binding)
                         .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
@@ -182,58 +188,12 @@ public class Otp_Screen2 extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             LoadingDialog dialog = new LoadingDialog(Otp_Screen2.this);
                             dialog.startDialog();
-                            FirebaseUser user = task.getResult().getUser();
-                            DatabaseReference reference = database.getReference().child("Users").child(Number_entered_by_user);
-                            StorageReference storageReference_image = storage.getReference().child("profilePic").child(Number_entered_by_user);
-                            StorageReference storageReference_pdf = storage.getReference().child("proof").child(Number_entered_by_user);
-                            storageReference_image.putFile(Uri.parse(Otp_details[0])).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                    if (task.isSuccessful()){
-                                        storageReference_pdf.putFile(Uri.parse(Otp_details[7])).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                                if (task.isSuccessful()){
-                                                    storageReference_image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                        @Override
-                                                        public void onSuccess(Uri uri) {
-                                                            imageURI = uri.toString();
-                                                            storageReference_pdf.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                                                @Override
-                                                                public void onSuccess(Uri uri) {
-                                                                    pdfUri = uri.toString();
-                                                                    Users users = new Users(auth.getUid(),imageURI,Otp_details[1],Otp_details[2],Otp_details[3],Otp_details[4],Otp_details[5],Otp_details[6],pdfUri,Otp_details[8]);
 
-                                                                    reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isSuccessful()){
-                                                                                dialog.dismissDialog();
-                                                                                Intent dashBoard = new Intent(Otp_Screen2.this,DashBoard_Screen.class);
-                                                                                dashBoard.putExtra("profile Values", Otp_details[8]);
-                                                                                startActivity(dashBoard);
-                                                                            }
-                                                                            else {
-                                                                                Toast.makeText(Otp_Screen2.this, "Error in creating users", Toast.LENGTH_SHORT).show();
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                }else{
-                                                    Toast.makeText(Otp_Screen2.this, "pdf inserting error", Toast.LENGTH_SHORT).show();
-                                                    dialog.dismissDialog();
-                                                }
-                                            }
-                                        });
-                                    }else{
-                                        Toast.makeText(Otp_Screen2.this, "image inserting error", Toast.LENGTH_SHORT).show();
-                                        dialog.dismissDialog();
-                                    }
-                                }
-                            });
+                            if (whatToDo.equals("updateData")) {
+                                updateUsersData();
+                            } else {
+                                storeDataset(task, dialog);
+                            }
                         } else {
                             // Sign in failed, display a message and update the UI
                             Toast.makeText(Otp_Screen2.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -245,6 +205,68 @@ public class Otp_Screen2 extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void updateUsersData() {
+        Intent setPass = new Intent(Otp_Screen2.this, SetPassword.class);
+        setPass.putExtra("phoneNo", forgetNumber);
+        startActivity(setPass);
+        finish();
+    }
+
+    private void storeDataset(Task<AuthResult> task, LoadingDialog dialog) {
+        FirebaseUser user = task.getResult().getUser();
+        DatabaseReference reference = database.getReference().child("Users").child(Number_entered_by_user);
+        StorageReference storageReference_image = storage.getReference().child("profilePic").child(Number_entered_by_user);
+        StorageReference storageReference_pdf = storage.getReference().child("proof").child(Number_entered_by_user);
+        storageReference_image.putFile(Uri.parse(Otp_details[0])).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+                    storageReference_pdf.putFile(Uri.parse(Otp_details[7])).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                storageReference_image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        imageURI = uri.toString();
+                                        storageReference_pdf.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                pdfUri = uri.toString();
+                                                Users users = new Users(auth.getUid(), imageURI, Otp_details[1], Otp_details[2], Otp_details[3], Otp_details[4], Otp_details[5], Otp_details[6], pdfUri, forgetNumber);
+
+                                                reference.setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            dialog.dismissDialog();
+                                                            Intent dashBoard = new Intent(Otp_Screen2.this, DashBoard_Screen.class);
+                                                            dashBoard.putExtra("profile Values", forgetNumber);
+                                                            startActivity(dashBoard);
+                                                            finish();
+                                                        } else {
+                                                            Toast.makeText(Otp_Screen2.this, "Error in creating users", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(Otp_Screen2.this, "pdf inserting error", Toast.LENGTH_SHORT).show();
+                                dialog.dismissDialog();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(Otp_Screen2.this, "image inserting error", Toast.LENGTH_SHORT).show();
+                    dialog.dismissDialog();
+                }
+            }
+        });
     }
 
 }

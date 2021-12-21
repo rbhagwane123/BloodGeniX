@@ -16,12 +16,22 @@
         <!-- Customize your theme here. -->
     </style>
 
+    //FOR BOTTOM SHEET OPENING LAYOUT
     <style name="BottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Modal</item>
     </style>
 
     <style name="Modal" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/login_sheet_background</item>
+    </style>
+
+    //FOR INFO DETAILS LAYOUT
+    <style name="BottomSheetStyle2" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Modal2</item>
+    </style>
+
+    <style name="Modal2" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/info_layout_background_style</item>
     </style>
 
     <style name="ToolbarColoredBackArrow" parent="Widget.AppCompat.Toolbar">
@@ -36,6 +46,8 @@
         <item name="bottomNavigationStyle">@menu/bottom_menu</item>
     </style>
 
+
+
     <style name="NumberPickerStyle" parent="Theme.AppCompat.Light">
         <item name="android:textColorPrimary">@color/Header_1</item>
         <item name="android:textSize">16sp</item>
@@ -47,6 +59,7 @@
     </style>
 
     <style name="rectangle">
-        <item name="cornerSize">8dp</item>
+        <item name="cornerSize">6dp</item>
+        <item name="backgroundColor">@color/white</item>
     </style>
 </resources>

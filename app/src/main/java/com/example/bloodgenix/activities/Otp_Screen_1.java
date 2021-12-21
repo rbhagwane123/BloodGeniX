@@ -51,8 +51,9 @@ public class Otp_Screen_1 extends AppCompatActivity {
                     if(mobileNumb.getText().length() == 10){
 //                        _full_number.matches(phoneNumberPattern)
                         Intent Otp2 = new Intent(Otp_Screen_1.this,Otp_Screen2.class);
-                        details_2[8] = countryWithPlus+" "+mobileNumb.getText().toString();
+                        String _full_number = countryWithPlus+" "+mobileNumb.getText().toString();
                         Otp2.putExtra("Otp_value",details_2);
+                        Otp2.putExtra("phoneNo", _full_number);
                         startActivity(Otp2);
                     }else{
                         Toast.makeText(Otp_Screen_1.this, "Enter correct number", Toast.LENGTH_SHORT).show();

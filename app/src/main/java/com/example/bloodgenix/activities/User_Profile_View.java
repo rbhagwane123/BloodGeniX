@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.bloodgenix.R;
@@ -58,6 +59,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     FirebaseDatabase database;
     DatabaseReference reference;
 
+    SwipeRefreshLayout refreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,17 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         Intent profile = getIntent();
         mobileNumber = profile.getStringExtra("mobile number");
         reference = FirebaseDatabase.getInstance().getReference();
+
+        refreshLayout = findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Intent i_again = new Intent(getApplicationContext(), User_Profile_View.class);
+                i_again.putExtra("mobile number", mobileNumber);
+                startActivity(i_again);
+
+            }
+        });
 
         dotMenuBtn = findViewById(R.id.dotMenuBtn);
         dotMenuBtn.setOnClickListener(new View.OnClickListener() {
@@ -248,6 +262,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                                 public void onSuccess(Object o) {
                                     Toast.makeText(User_Profile_View.this, "Successfully edited", Toast.LENGTH_SHORT).show();
                                     textInputLayout2.setVisibility(View.INVISIBLE);
+
                                     sheetDialog2.dismiss();
                                 }
                             });
@@ -281,6 +296,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                                 public void onSuccess(Object o) {
                                     Toast.makeText(User_Profile_View.this, "Successfully edited", Toast.LENGTH_SHORT).show();
                                     textInputLayout.setVisibility(View.INVISIBLE);
+
                                     sheetDialog2.dismiss();
                                 }
                             });
@@ -291,6 +307,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                                 public void onSuccess(Object o) {
                                     Toast.makeText(User_Profile_View.this, "Successfully edited", Toast.LENGTH_SHORT).show();
                                     textInputLayout2.setVisibility(View.INVISIBLE);
+
                                     sheetDialog2.dismiss();
                                 }
                             });
@@ -313,6 +330,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                             public void onSuccess(Object o) {
                                 Toast.makeText(User_Profile_View.this, "Successfully edited", Toast.LENGTH_SHORT).show();
                                 textInputLayout.setVisibility(View.INVISIBLE);
+
                                 sheetDialog2.dismiss();
                             }
                         });
@@ -418,7 +436,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.forgotPassword:
-                Toast.makeText(User_Profile_View.this, "forgot Password", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), ForgetPassword.class));
+                finish();
                 return true;
 
             default:

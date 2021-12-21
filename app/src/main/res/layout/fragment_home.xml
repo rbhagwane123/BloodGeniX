@@ -32,11 +32,12 @@
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
                 <ImageButton
+                    android:id="@+id/moreInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="40dp"
+                    android:layout_marginEnd="32dp"
                     android:background="@android:color/transparent"
                     android:backgroundTint="@color/white"
                     android:src="@drawable/ic_outline_info_24" />

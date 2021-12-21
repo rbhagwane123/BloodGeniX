@@ -37,7 +37,7 @@ public class Welcome extends AppCompatActivity {
 
     Button loginView;
     BottomSheetDialog sheetDialog;
-    Button signUpBtn;
+    Button signUpBtn, Forgot;
     String profile_details[] = new String[15];
     Bitmap bitmap;
 
@@ -81,6 +81,7 @@ public class Welcome extends AppCompatActivity {
             back_btn = sheetDialog.findViewById(R.id.back_btn);
             passwordLayout = sheetDialog.findViewById(R.id.passwordLayout);
             rememberBtn = sheetDialog.findViewById(R.id.rememberBtn);
+            Forgot = sheetDialog.findViewById(R.id.Forgot);
             sheetDialog.show();
 
             sessionManager = new SessionManager(Welcome.this, SessionManager.SESSION_REMEMBERME);
@@ -93,6 +94,14 @@ public class Welcome extends AppCompatActivity {
             listners(sheetDialog);
             back_btn.setOnClickListener(v12 -> {
                 sheetDialog.dismiss();
+            });
+
+            Forgot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent forget = new Intent(sheetDialog.getContext(), ForgetPassword.class);
+                    startActivity(forget);
+                }
             });
 
             loginBtn = sheetDialog.findViewById(R.id.loginBtn);

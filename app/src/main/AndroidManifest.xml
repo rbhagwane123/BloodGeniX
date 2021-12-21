@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BloodGeniX">
         <activity
+            android:name=".activities.SetPassword"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ForgetPassword"
+            android:exported="false" />
+        <activity
             android:name=".activities.ChatActivity"
             android:exported="false" />
         <activity
