@@ -27,10 +27,10 @@ public class MessagesAdapter extends RecyclerView.Adapter {
     int ITEM_RECEIVE=2;
     String senderID;
 
-    public MessagesAdapter(Context context, ArrayList<Messages> messagesArrayList, String senderUID) {
+    public MessagesAdapter(Context context, ArrayList<Messages> messagesArrayList, String senderID) {
         this.context = context;
         this.messagesArrayList = messagesArrayList;
-        this.senderID = senderUID;
+        this.senderID = senderID;
     }
 
     @NonNull

@@ -36,11 +36,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginEnd="32dp"
                     android:background="@android:color/transparent"
                     android:backgroundTint="@color/white"
-                    android:src="@drawable/ic_outline_info_24" />
+                    android:src="@drawable/ic_outline_info_24_white" />
 
                 <TextView
                     android:id="@+id/salutationText"
@@ -66,8 +66,8 @@
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:layout_gravity="end"
-                    android:layout_marginTop="120dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="115dp"
+                    android:layout_marginEnd="25dp"
                     android:src="@drawable/ic_active" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -134,7 +134,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/applyDetail"
-                                android:layout_marginTop="14dp"
+                                android:layout_marginTop="16dp"
                                 android:background="@android:color/transparent"
                                 android:fontFamily="@font/poppins_bold"
                                 android:text="EXPAND"
@@ -144,11 +144,11 @@
                         </RelativeLayout>
 
                         <ImageView
-                            android:layout_width="150dp"
+                            android:layout_width="130dp"
                             android:layout_height="150dp"
                             android:layout_alignParentRight="true"
                             android:paddingStart="10dp"
-                            android:paddingRight="-50dp"
+                            android:paddingRight="-27dp"
                             android:src="@drawable/ic_donationsymbol" />
                     </RelativeLayout>
 
@@ -208,12 +208,11 @@
                         </RelativeLayout>
 
                         <ImageView
-                            android:layout_width="137dp"
-                            android:layout_height="118dp"
+                            android:layout_width="130dp"
+                            android:layout_height="150dp"
                             android:layout_alignParentRight="true"
-                            android:layout_marginTop="-5dp"
-                            android:paddingEnd="-30dp"
-                            android:src="@drawable/ic_receiversymbol" />
+                            android:layout_marginTop="-21dp"
+                            android:src="@drawable/ic_recipientapply" />
                     </RelativeLayout>
 
                     //Search Donor card View
@@ -270,11 +269,11 @@
                         </RelativeLayout>
 
                         <ImageView
-                            android:layout_width="128dp"
-                            android:layout_height="132dp"
+                            android:layout_width="130dp"
+                            android:layout_height="150dp"
                             android:layout_alignParentRight="true"
-                            android:layout_marginTop="-6dp"
-                            android:src="@drawable/ic_receiversymbol" />
+                            android:layout_marginTop="-4dp"
+                            android:src="@drawable/ic_searchdonors" />
                     </RelativeLayout>
 
                 </LinearLayout>

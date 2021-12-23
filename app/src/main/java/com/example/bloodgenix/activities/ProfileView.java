@@ -65,11 +65,13 @@ public class ProfileView extends AppCompatActivity {
                     String _gender = snapshot.child(_number).child("gender").getValue(String.class);
                     String _dob = snapshot.child(_number).child("d_o_b").getValue(String.class);
                     String _img = snapshot.child(_number).child("profileImg").getValue(String.class);
+                    String _auth = snapshot.child(_number).child("uid").getValue(String.class);
                     personName.setText(_fullName);
                     personGender.setText(_gender);
                     chatData [0] = phoneNumb;
                     chatData [1] = _fullName;
                     chatData [2] = _img;
+                    chatData [3] = _auth;
                     Glide.with(ProfileView.this).load(_img).into(profileImageView);
                     Query donorDetails = FirebaseDatabase.getInstance().getReference("DonationDetails").orderByChild("phoneNumber").equalTo(phoneNumb);
                     donorDetails.addListenerForSingleValueEvent(new ValueEventListener() {

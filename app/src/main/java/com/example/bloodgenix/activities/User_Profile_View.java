@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -34,9 +33,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class User_Profile_View extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener, View.OnClickListener {
 
-    ImageView userProfileImage;
+    CircleImageView userProfileImage;
     ImageButton backBtn, dotMenuBtn;
     TextView userProfileName, ProfileUserName, toolbarName;
     TextView userProfileBlood, userPersonBleed, userProfileLocation;

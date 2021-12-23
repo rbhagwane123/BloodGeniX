@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.example.bloodgenix.R;
 import com.example.bloodgenix.SessionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     CircleImageView profileImg;
     TextView receiverName;
     RecyclerView messageAdapter;
+    ImageButton chatBackBtn;
     CardView sendBtn;
     EditText textMessage;
     public static String senderImg;
@@ -51,8 +54,9 @@ public class ChatActivity extends AppCompatActivity {
     static ArrayList <Messages> messagesArrayList;
     MessagesAdapter onlyAdapter;
 
-    static FirebaseDatabase database;
+    FirebaseDatabase database;
     DatabaseReference reference;
+    FirebaseAuth auth;
 
 
     @Override
@@ -68,17 +72,51 @@ public class ChatActivity extends AppCompatActivity {
         textMessage = findViewById(R.id.textMessage);
         sendBtn = findViewById(R.id.sendBtn);
         messageAdapter = findViewById(R.id.messageAdapter);
+        chatBackBtn = findViewById(R.id.chatBackBtn);
 
-        receiverUID = passedData[0];
+        auth = FirebaseAuth.getInstance();
         receiverImg = passedData[2];
         Glide.with(ChatActivity.this).load(passedData[2]).into(profileImg);
         receiverName.setText(passedData[1]);
         messagesArrayList = new ArrayList<>();
 
+        chatBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent previousProfile = new Intent(ChatActivity.this, ProfileView.class);
+                previousProfile.putExtra("mobile number", passedData[0]);
+                startActivity(previousProfile);
+            }
+        });
+
+
+
         SessionManager sessionManager = new SessionManager(ChatActivity.this, SessionManager.SESSION_USERSESSION);
         HashMap<String, String> senderData =sessionManager.getUserDetailsFromSession();
-        detailsFetch("+91 "+senderData.get(SessionManager.KEY_PHONENUMBER));
-        senderUID = "+91 "+senderData.get(SessionManager.KEY_PHONENUMBER);
+
+        String senderNumber = "+91 "+senderData.get(SessionManager.KEY_PHONENUMBER);
+        String _number = senderNumber.substring(4, senderNumber.length());
+        senderUID = senderNumber;
+        receiverUID = passedData[0];
+        Query checkUserSender = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo(senderNumber);
+        checkUserSender.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String _fullName = snapshot.child(_number).child("fullName").getValue(String.class);
+                String _emailId = snapshot.child(_number).child("emailId").getValue(String.class);
+                String _gender = snapshot.child(_number).child("gender").getValue(String.class);
+                String _dob = snapshot.child(_number).child("d_o_b").getValue(String.class);
+                String _img = snapshot.child(_number).child("profileImg").getValue(String.class);
+                String _uid = snapshot.child(_number).child("uid").getValue(String.class);
+
+                senderImg = _img;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
@@ -117,11 +155,13 @@ public class ChatActivity extends AppCompatActivity {
                 String textmessage = textMessage.getText().toString();
                 if(textmessage.isEmpty()){
                     Toast.makeText(ChatActivity.this, "Enter text", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 textMessage.setText("");
                 Date date = new Date();
 
                 Messages messages = new Messages(textmessage, senderUID, date.getTime());
+                database = FirebaseDatabase.getInstance();
                 database.getReference().child("Chats")
                         .child(senderRoom)
                         .child("messages")
@@ -149,7 +189,7 @@ public class ChatActivity extends AppCompatActivity {
     public  void chatReferenceCall() {
         database = FirebaseDatabase.getInstance();
         DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
-        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        chatReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 messagesArrayList.clear();
@@ -158,37 +198,19 @@ public class ChatActivity extends AppCompatActivity {
                     Messages messages = dataSnapshot.getValue(Messages.class);
                     messagesArrayList.add(messages);
                 }
-                Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
                 onlyAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ChatActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
 
     private void detailsFetch(String phoneNumb) {
 
-        String _number = phoneNumb.substring(4, phoneNumb.length());
-        Query checkUser = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo(phoneNumb);
-        checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String _fullName = snapshot.child(_number).child("fullName").getValue(String.class);
-                String _emailId = snapshot.child(_number).child("emailId").getValue(String.class);
-                String _gender = snapshot.child(_number).child("gender").getValue(String.class);
-                String _dob = snapshot.child(_number).child("d_o_b").getValue(String.class);
-                String _img = snapshot.child(_number).child("profileImg").getValue(String.class);
 
-                senderImg = _img;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 }

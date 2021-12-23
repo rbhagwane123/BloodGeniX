@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
     TextView salutationText;
     CircleImageView active_person;
     Button donationExpand, RecipientExpand, Logout, searchExpand;
-    ImageButton moreInfo, infoCancel;
+    ImageButton moreInfo;
     String phoneNo;
     Dialog dialog;
 
@@ -94,13 +94,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.show();
-                infoCancel = dialog.findViewById(R.id.infoCancel);
-                infoCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+
             }
         });
 
@@ -194,7 +188,7 @@ public class HomeFragment extends Fragment {
 
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.info_layout);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.info_layout_background_style));
         dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.animation;

@@ -60,8 +60,10 @@ public class DonationForm extends AppCompatActivity {
 
     AutoCompleteTextView bloodGroup, diabeticCount, DonationPeriod;
     ArrayAdapter<String> arrayAdapterBGroup, arrayAdapterBCount, arrayAdapterDPeriod;
-    String phoneNumber;
-    String bGroup[], DiabeticCount[], Weight[], DPeriod[];
+    String phoneNumber, authUserID;
+    String bGroup[];
+    String DiabeticCount[], Weight[], DPeriod[];
+
     public String formFillData [];
     NumberPicker weight;
     FusedLocationProviderClient fusedLocationProviderClientDon;
@@ -96,6 +98,8 @@ public class DonationForm extends AppCompatActivity {
         authorise = findViewById(R.id.authorise);
         weight = findViewById(R.id.weight);
 
+        database = FirebaseDatabase.getInstance("https://bloodgenix-bb937-default-rtdb.firebaseio.com/");
+        auth = FirebaseAuth.getInstance();
 
         // Setting weight max and min values
         weight.setMinValue(50);
@@ -221,6 +225,8 @@ public class DonationForm extends AppCompatActivity {
                     otherSpecify.setError(null);
                     DonationPeriod.setError(null);
 
+                    getUserAuthValue();
+                    //Toast.makeText(DonationForm.this, idValue, Toast.LENGTH_SHORT).show();
                     //CHECKING FOR THE USER IS APPLIED FOR DONATION OR NOT
                     Query recipientDetails = FirebaseDatabase.getInstance().getReference("RecipientDetails").orderByChild("phoneNumber").equalTo(phoneNumber);
                     recipientDetails.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -230,10 +236,9 @@ public class DonationForm extends AppCompatActivity {
                                 Toast.makeText(DonationForm.this, "You have applied for recipient before", Toast.LENGTH_SHORT).show();
                             }else{
                                 String wight = String.valueOf(weight.getValue());
-                                database = FirebaseDatabase.getInstance();
-                                auth = FirebaseAuth.getInstance();
+
                                 reference = database.getReference().child("DonationDetails").child(phoneNumber);
-                                DonationDetails donationDetails = new DonationDetails(auth.getUid(),phoneNumber,bloodGroup.getText().toString(),radioButton.getText().toString(),diabeticCount.getText().toString(),otherSpecify.getText().toString(),radioButton2.getText().toString(),DonationPeriod.getText().toString(),wight,locationDonation.getText().toString(),formFillData[0], formFillData[2] );
+                                DonationDetails donationDetails = new DonationDetails(authUserID,phoneNumber,bloodGroup.getText().toString(),radioButton.getText().toString(),diabeticCount.getText().toString(),otherSpecify.getText().toString(),radioButton2.getText().toString(),DonationPeriod.getText().toString(),wight,locationDonation.getText().toString(),formFillData[0], formFillData[2] );
                                 reference.setValue(donationDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -256,6 +261,24 @@ public class DonationForm extends AppCompatActivity {
                 else{
                     Toast.makeText(DonationForm.this, "Any field left empty", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+
+    private void getUserAuthValue() {
+
+        String _number = phoneNumber.substring(4, phoneNumber.length());
+        Query chckUser = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo(phoneNumber);
+        chckUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                authUserID = snapshot.child(_number).child("uid").getValue(String.class);
+                Toast.makeText(DonationForm.this, "Inside authUserID", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

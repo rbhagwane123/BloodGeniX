@@ -9,7 +9,8 @@ public class Messages {
     public Messages()
     {
 
-    }    public Messages(String message, String senderID, long timeStamp) {
+    }
+    public Messages(String message, String senderID, long timeStamp) {
         this.message = message;
         this.senderID = senderID;
         this.timeStamp = timeStamp;
