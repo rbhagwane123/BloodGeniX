@@ -47,8 +47,7 @@ public class ChatActivity extends AppCompatActivity {
     public static String senderImg;
     public static String receiverImg;
     String senderUID;
-    String receiverUID;
-
+    String receiverUID, whatToDo;
     String senderRoom;
     String receiverRoom;
     static ArrayList <Messages> messagesArrayList;
@@ -57,6 +56,7 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference reference;
     FirebaseAuth auth;
+    public String senderName;
 
 
     @Override
@@ -66,6 +66,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Intent chat = getIntent();
         passedData = chat.getStringArrayExtra("chatData");
+        whatToDo = chat.getStringExtra("whatToDo");
 
         profileImg = findViewById(R.id.profileImg);
         receiverName = findViewById(R.id.receiverName);
@@ -83,12 +84,17 @@ public class ChatActivity extends AppCompatActivity {
         chatBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent previousProfile = new Intent(ChatActivity.this, ProfileView.class);
-                previousProfile.putExtra("mobile number", passedData[0]);
-                startActivity(previousProfile);
+                if (whatToDo.equals("notificationChat")){
+                    Intent previous = new Intent(ChatActivity.this, DashBoard_Screen.class);
+                    previous.putExtra("profile Values", senderUID);
+                    startActivity(previous);
+                }else {
+                    Intent previousProfile = new Intent(ChatActivity.this, ProfileView.class);
+                    previousProfile.putExtra("mobile number", passedData[0]);
+                    startActivity(previousProfile);
+                }
             }
         });
-
 
 
         SessionManager sessionManager = new SessionManager(ChatActivity.this, SessionManager.SESSION_USERSESSION);
@@ -97,6 +103,7 @@ public class ChatActivity extends AppCompatActivity {
         String senderNumber = "+91 "+senderData.get(SessionManager.KEY_PHONENUMBER);
         String _number = senderNumber.substring(4, senderNumber.length());
         senderUID = senderNumber;
+        senderName = senderData.get(SessionManager.KEY_FULLNAME);
         receiverUID = passedData[0];
         Query checkUserSender = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo(senderNumber);
         checkUserSender.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -111,10 +118,8 @@ public class ChatActivity extends AppCompatActivity {
 
                 senderImg = _img;
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -128,26 +133,7 @@ public class ChatActivity extends AppCompatActivity {
         receiverRoom = receiverUID+senderUID;
 
         chatReferenceCall();
-//        database = FirebaseDatabase.getInstance();
-//        DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
-//        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-////                messagesArrayList.clear();
-//                for(DataSnapshot dataSnapshot : snapshot.getChildren())
-//                {
-//                    Messages messages = dataSnapshot.getValue(Messages.class);
-//                    messagesArrayList.add(messages);
-//                }
-//                Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
-//                onlyAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(ChatActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +146,7 @@ public class ChatActivity extends AppCompatActivity {
                 textMessage.setText("");
                 Date date = new Date();
 
-                Messages messages = new Messages(textmessage, senderUID, date.getTime());
+                Messages messages = new Messages(textmessage, senderUID, date.getTime(), receiverUID,senderName, senderImg, passedData[1], passedData[2]);
                 database = FirebaseDatabase.getInstance();
                 database.getReference().child("Chats")
                         .child(senderRoom)
@@ -169,14 +155,13 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
-                            chatReferenceCall();
                             database.getReference().child("Chats")
                                     .child(receiverRoom)
                                     .child("messages")
                                     .push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    chatReferenceCall();
+
                                 }
                             });
                         }
@@ -198,7 +183,6 @@ public class ChatActivity extends AppCompatActivity {
                     Messages messages = dataSnapshot.getValue(Messages.class);
                     messagesArrayList.add(messages);
                 }
-                //Toast.makeText(ChatActivity.this, "inside chatReference", Toast.LENGTH_SHORT).show();
                 onlyAdapter.notifyDataSetChanged();
             }
 
@@ -207,10 +191,5 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void detailsFetch(String phoneNumb) {
-
-
     }
 }

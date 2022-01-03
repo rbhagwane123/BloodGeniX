@@ -37,17 +37,17 @@ public class MessagesAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == ITEM_SEND){
-//            Toast.makeText(context, "inside onCreateView send", Toast.LENGTH_SHORT).show();
+
             View view = LayoutInflater.from(context).inflate(R.layout.sender_layout_item, parent, false);
             return new SenderViewsHolder(view);
 
         }
         else{
-//            Toast.makeText(context, "inside onCreateView receive", Toast.LENGTH_SHORT).show();
+
             View view = LayoutInflater.from(context).inflate(R.layout.receiver_layout_item, parent, false);
             return new ReceiverViewsHolder(view);
         }
-//        return null;
+
     }
 
     @Override
@@ -60,14 +60,14 @@ public class MessagesAdapter extends RecyclerView.Adapter {
             SenderViewsHolder viewsHolder = (SenderViewsHolder) holder;
             viewsHolder.senderMessageTxt.setText(messages.getMessage());
 
-//            Toast.makeText(context, "inside onBindView send", Toast.LENGTH_SHORT).show();
+
             Glide.with(context).load(senderImg).into(viewsHolder.senderProfileImg);
         }else{
             ReceiverViewsHolder viewsHolder = (ReceiverViewsHolder) holder;
             viewsHolder.senderMessageTxt.setText(messages.getMessage());
 
 
-//            Toast.makeText(context, "inside onBindView receive", Toast.LENGTH_SHORT).show();
+
             Glide.with(context).load(receiverImg).into(viewsHolder.senderProfileImg);
         }
     }
@@ -82,10 +82,10 @@ public class MessagesAdapter extends RecyclerView.Adapter {
         Messages messages = messagesArrayList.get(position);
         if (senderID.equals(messages.getSenderID()))
         {
-//            Toast.makeText(context, "inside getItemView send", Toast.LENGTH_SHORT).show();
+
             return ITEM_SEND;
         }else{
-//            Toast.makeText(context, "inside getItemView receive", Toast.LENGTH_SHORT).show();
+
             return ITEM_RECEIVE;
         }
     }

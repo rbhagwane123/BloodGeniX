@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="35dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ProfileImg"
@@ -21,9 +22,10 @@
         android:layout_margin="5dp"
         android:layout_toRightOf="@id/ProfileImg"
         android:background="@drawable/receiver_shape_style"
-        android:fontFamily="@font/poppins_semibold"
+        android:fontFamily="@font/poppins_medium"
         android:padding="7dp"
         android:text="Hello"
+        android:inputType="textMultiLine"
         android:textColor="@color/black" />
 
 </RelativeLayout>

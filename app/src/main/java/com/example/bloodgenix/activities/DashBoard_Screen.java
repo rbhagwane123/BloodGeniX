@@ -74,22 +74,21 @@ public class DashBoard_Screen extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 
 
+
         //DRAWER LAYOUT IMPLEMENTATION
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        navigationView.bringToFront();
+
+
         toggle = new ActionBarDrawerToggle(DashBoard_Screen.this, drawerLayout, toolbar, R.string.navigation_open, R.string.navigation_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         layout_1 = findViewById(R.id.layout_1);
         Logout = findViewById(R.id.Logout);
-//        salutationText = findViewById(R.id.salutationText);
-//        active_person = findViewById(R.id.active_person);
-//        donationExpand = findViewById(R.id.donationExpand);
-//        RecipientExpand = findViewById(R.id.RecipientExpand);
+
 
         View hView = navigationView.getHeaderView(0);
         sliderProfile = (CircleImageView) hView.findViewById(R.id.sliderProfile);
@@ -146,37 +145,7 @@ public class DashBoard_Screen extends AppCompatActivity {
             }
         });
 
-//        active_person.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent profile = new Intent(DashBoard_Screen.this, User_Profile_View.class);
-//                profile.putExtra("mobile number", full_number);
-//                startActivity(profile);
-//            }
-//        });
-//
-////
-//        //setting click listener over buttons
-//        donationExpand.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent donationIntent = new Intent(DashBoard_Screen.this, DonationForm.class);
-//                donationAdding[0] = fetch_details[0];
-//                donationAdding[1] = full_number;
-//                donationAdding[2] = fetch_details[5];
-//                donationIntent.putExtra("Donation", donationAdding);
-//                startActivity(donationIntent);
-//            }
-//        });
-//
-//        RecipientExpand.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent RecipientIntent = new Intent(DashBoard_Screen.this, RecipientForm.class);
-//                RecipientIntent.putExtra("Recipient", full_number);
-//                startActivity(RecipientIntent);
-//            }
-//        });
+
 
     }
 

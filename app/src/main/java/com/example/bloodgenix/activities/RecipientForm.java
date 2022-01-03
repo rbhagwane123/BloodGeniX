@@ -49,8 +49,9 @@ public class RecipientForm extends AppCompatActivity {
     CheckBox authoriseRecipient;
     Button applyRecipient;
     ImageButton cancelBtnRecipient;
-    String phoneNumb;
+    String phoneNumb, personName, personImg;
     Dialog dialog;
+    public String formFillData [];
 
     FusedLocationProviderClient fusedLocationProviderClient;
 
@@ -66,8 +67,9 @@ public class RecipientForm extends AppCompatActivity {
         setContentView(R.layout.activity_recipient_form);
 
         Intent i5 =  getIntent();
-        phoneNumb = i5.getStringExtra("Recipient");
+        formFillData = i5.getStringArrayExtra("Recipient");
 
+        phoneNumb = formFillData[1];
 
         bloodGroupRecipient = findViewById(R.id.bloodGroupRecipient);
         locationRecipient = findViewById(R.id.locationRecipient);
@@ -139,13 +141,14 @@ public class RecipientForm extends AppCompatActivity {
         Okay = dialog.findViewById(R.id.Okay);
         Cancel = dialog.findViewById(R.id.Cancel);
 
+
         Okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 database = FirebaseDatabase.getInstance();
                 auth = FirebaseAuth.getInstance();
                 reference = database.getReference().child("RecipientDetails").child(phoneNumb);
-                recipientDetails = new RecipientDetails(auth.getUid(), bloodGroupRecipient.getText().toString(), locationRecipient.getText().toString(), requirementRecipient.getText().toString(),reasonBlood.getText().toString(),phoneNumb);
+                recipientDetails = new RecipientDetails(auth.getUid(), bloodGroupRecipient.getText().toString(), locationRecipient.getText().toString(), requirementRecipient.getText().toString(),reasonBlood.getText().toString(),phoneNumb, formFillData[0], formFillData[2]);
                 reference.setValue(recipientDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

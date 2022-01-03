@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    android:elevation="5dp"
+    android:layout_marginTop="15dp">
+
+<!--    <include-->
+<!--        layout="@layout/activity_dash_board_screen"-->
+<!--        android:visibility="invisible"-->
+<!--        android:id="@+id/toolbarLayout"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cross"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/chatProfile"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/eliipse1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/chatSenderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="PersonName"
+                android:textColor="@color/Header_1"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/chatSenderMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/poppins"
+                android:text="Message"
+                android:textSize="12sp"
+                android:textColor="@color/Header_1_light" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/timeStamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:textSize="12sp"
+            android:text="20:23:44"
+            android:gravity="right"
+            android:textColor="@color/content_2"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

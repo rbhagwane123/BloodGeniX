@@ -25,7 +25,17 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/App_colour"
             local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            local:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            local:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:id="@+id/toolBarHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="10dp"/>
+        </androidx.appcompat.widget.Toolbar>
 
         <fragment
             android:id="@+id/main_fragment"

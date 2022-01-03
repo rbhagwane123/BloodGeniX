@@ -1,13 +1,14 @@
 package com.example.bloodgenix.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -20,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.bloodgenix.R;
+import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
@@ -46,15 +48,19 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     //EDIT VIEWS DECLARATION
     ImageButton BloodBtn, BleedBtn, ContactBtn;
     ImageButton EmailBtn, DOBBtn, cancel_button, locationBtn;
-    Button editBtn;
+    ImageButton editBtn, picUpdate;
     String mobileNumber;
+    DatePicker Dob;
     int donorFlag = 0, recipientFlag = 0;
+    boolean updatePic = false;
+    Uri profile_uri;
 
     //BOTTOM SHEET DECLARATION
     BottomSheetDialog sheetDialog2;
     TextInputEditText editView;
     TextInputLayout textInputLayout, textInputLayout2;
     AutoCompleteTextView autoView;
+
 
     //FireBase declaration
     FirebaseDatabase database;
@@ -79,6 +85,19 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
             public void onRefresh() {
                 Intent i_again = new Intent(getApplicationContext(), User_Profile_View.class);
                 i_again.putExtra("mobile number", mobileNumber);
+
+                HashMap hashMapImg = new HashMap();
+                if(updatePic == true){
+                    hashMapImg.put("profileImg", profile_uri.toString());
+                    FirebaseDatabase.getInstance().getReference().child("Users").child(mobileNumber.substring(4,mobileNumber.length())).updateChildren(hashMapImg).addOnSuccessListener(new OnSuccessListener() {
+                        @Override
+                        public void onSuccess(Object o) {
+                            Toast.makeText(User_Profile_View.this, "Image added", Toast.LENGTH_SHORT).show();
+                            updatePic = false;
+                        }
+                    });
+                }
+
                 startActivity(i_again);
 
             }
@@ -103,6 +122,19 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                 startActivity(back);
             }
         });
+
+//        picUpdate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ImagePicker.Companion.with(User_Profile_View.this)
+//                        .crop()	    			//Crop image(Optional), Check Customization for more option
+//                        .cropOval()	    		//Allow dimmed layer to have a circle inside
+//                        .maxResultSize(1080,1080)
+//                        .start();
+//
+//                updatePic = true;
+//            }
+//        });
 
         String _number = mobileNumber.substring(4, mobileNumber.length());
         Query checkUser = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo(mobileNumber);
@@ -142,6 +174,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
 
         buttonListener();
 
+
     }
 
     private void buttonListener() {
@@ -152,6 +185,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         EmailBtn.setOnClickListener(this);
         locationBtn.setOnClickListener(this);
         DOBBtn.setOnClickListener(this);
+        picUpdate.setOnClickListener(this);
+
     }
 
     private BottomSheetDialog BottomSheet() {
@@ -165,6 +200,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         cancel_button = sheet.findViewById(R.id.cancel_button);
         textInputLayout = sheet.findViewById(R.id.textInputLayout);
         textInputLayout2 = sheet.findViewById(R.id.textInputLayout2);
+        Dob = sheet.findViewById(R.id.Dob);
         textInputLayout.setVisibility(View.VISIBLE);
 
         sheet.show();
@@ -199,6 +235,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         EmailBtn = findViewById(R.id.EmailBtn);
         locationBtn = findViewById(R.id.locationBtn);
         DOBBtn = findViewById(R.id.DOBBtn);
+        picUpdate = findViewById(R.id.picUpdate);
     }
 
     @Override
@@ -206,6 +243,14 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         ArrayAdapter<String> arrayAdapter;
         String auto[];
         switch (v.getId()) {
+
+            case R.id.picUpdate:
+                ImagePicker.Companion.with(User_Profile_View.this)
+                        .crop()	    			//Crop image(Optional), Check Customization for more option
+                        .cropOval()	    		//Allow dimmed layer to have a circle inside
+                        .maxResultSize(1080,1080)
+                        .start();
+                break;
 
             case R.id.BloodBtn:
                 sheetDialog2 = BottomSheetDrop();
@@ -340,18 +385,23 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                 break;
             case R.id.DOBBtn:
                 sheetDialog2 = BottomSheet();
-                textInputLayout.setHint("Birth Date");
+                textInputLayout.setVisibility(View.INVISIBLE);
+                Dob.setVisibility(View.VISIBLE);
 
                 editBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         HashMap hashMap = new HashMap();
-                        hashMap.put("d_o_b", editView.getText().toString());
+                        int day = Dob.getDayOfMonth();
+                        int month = Dob.getMonth()+1;
+                        int year = Dob.getYear();
+                        String dateOfBirth = day+"/"+month+"/"+year;
+                        hashMap.put("d_o_b", dateOfBirth);
                         FirebaseDatabase.getInstance().getReference().child("Users").child(mobileNumber.substring(4, mobileNumber.length())).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
                                 Toast.makeText(User_Profile_View.this, "Successfully edited", Toast.LENGTH_SHORT).show();
-                                textInputLayout.setVisibility(View.INVISIBLE);
+                                Dob.setVisibility(View.INVISIBLE);
                                 sheetDialog2.dismiss();
                             }
                         });
@@ -364,6 +414,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     }
 
 
+    //FUNCTION TO CHECK LOGON PERSON IS RECIPIENT
     private int chckRecipient() {
         Query recipientDetails = FirebaseDatabase.getInstance().getReference("RecipientDetails").orderByChild("phoneNumber").equalTo(mobileNumber);
         recipientDetails.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -388,6 +439,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         return recipientFlag;
     }
 
+    //FUNCTION TO CHECK LOGON PERSON IS DONOR
     private int chckDonor() {
 
         Query donorDetails = FirebaseDatabase.getInstance().getReference("DonationDetails").orderByChild("phoneNumber").equalTo(mobileNumber);
@@ -446,5 +498,13 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        profile_uri = data.getData();
+        userProfileImage.setImageURI(profile_uri);
+        updatePic = true;
 
+
+    }
 }

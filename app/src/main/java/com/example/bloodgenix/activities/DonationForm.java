@@ -303,9 +303,9 @@ public class DonationForm extends AppCompatActivity {
         Okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent search = new Intent(DonationForm.this,BloodDnonorSearch.class);
-                search.putExtra("Blood Group",bloodGroup.getText().toString());
-                startActivity(search);
+//                Intent search = new Intent(DonationForm.this,BloodDnonorSearch.class);
+//                search.putExtra("Blood Group",bloodGroup.getText().toString());
+//                startActivity(search);
                 dialog.dismiss();
             }
         });

@@ -5,7 +5,24 @@ public class RecipientDetails {
     String bGroupRecipient;
     String locationRecipient, otherRequirement;
     String reasonBloodRequest,phoneNumber;
+    public String personFullName;
+    public String personProfile;
 
+    public String getPersonFullName() {
+        return personFullName;
+    }
+
+    public void setPersonFullName(String personFullName) {
+        this.personFullName = personFullName;
+    }
+
+    public String getPersonProfile() {
+        return personProfile;
+    }
+
+    public void setPersonProfile(String personProfile) {
+        this.personProfile = personProfile;
+    }
 
     public RecipientDetails(){
 
@@ -27,13 +44,15 @@ public class RecipientDetails {
         this.phoneNumber = phoneNumber;
     }
 
-    public RecipientDetails(String uid, String bGroupRecipient, String locationRecipient, String otherRequirement, String reasonBloodRequest, String phoneNumber) {
+    public RecipientDetails(String uid, String bGroupRecipient, String locationRecipient, String otherRequirement, String reasonBloodRequest, String phoneNumber, String personFullName, String personProfile) {
         this.uid = uid;
         this.bGroupRecipient = bGroupRecipient;
         this.locationRecipient = locationRecipient;
         this.otherRequirement = otherRequirement;
         this.reasonBloodRequest = reasonBloodRequest;
         this.phoneNumber = phoneNumber;
+        this.personFullName = personFullName;
+        this.personProfile = personProfile;
     }
 
     public String getUid() {

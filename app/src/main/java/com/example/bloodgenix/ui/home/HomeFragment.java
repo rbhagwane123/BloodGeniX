@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent RecipientIntent = new Intent(getContext(), RecipientForm.class);
-                RecipientIntent.putExtra("Recipient", "+91 " + _number);
+                RecipientIntent.putExtra("Recipient", sendingData);
                 startActivity(RecipientIntent);
             }
         });
@@ -185,13 +185,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void dialogCreation() {
-
+//        ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.info_layout);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(1000,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.info_layout_background_style));
         dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+        dialog.setCanceledOnTouchOutside(true);
 
     }
 
