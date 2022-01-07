@@ -158,7 +158,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins"
-
                                 android:textColor="@color/Header_1"
                                 android:textSize="14sp" />
 
@@ -370,7 +369,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="270dp"
+                        android:layout_width="262dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Delete Choice"
@@ -378,11 +377,12 @@
                         android:textSize="16sp" />
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         app:cardBackgroundColor="@color/irregular_shape_colour"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="3dp"
+                        android:padding="5dp"
                         android:layout_marginBottom="4dp">
                         <TextView
                             android:layout_width="match_parent"

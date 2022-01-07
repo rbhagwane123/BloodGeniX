@@ -53,7 +53,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     LinearLayout bleedLayout;
     String mobileNumber;
     DatePicker Dob;
-    int donorFlag , recipientFlag = 0;
+    int donorFlag =0, recipientFlag = 0;
     boolean updatePic = false;
     Uri profile_uri;
 
@@ -158,8 +158,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                     Glide.with(User_Profile_View.this).load(_img).into(userProfileImage);
                     if (chckDonor() == 0) {
                         if (chckRecipient() == 0) {
-                            userProfileBlood.setText("Not applied");
-                            userPersonBleed.setText("Not applied");
+//                            userProfileBlood.setText("Not applied");
+//                            userPersonBleed.setText("Not applied");
                         }
                     }
                 }
@@ -440,7 +440,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                recipientFlag = 0;
             }
         });
         return recipientFlag;
@@ -459,7 +459,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                     String _bleed = snapshot2.child(mobileNumber).child("donateMonth").getValue(String.class);
                     String _location = snapshot2.child(mobileNumber).child("donorLocation").getValue(String.class);
                     userProfileBlood.setText(_bloodGroup);
-//                    userProfileLocation.setText(_location);
+                    userProfileLocation.setText(_location);
                     userPersonBleed.setText(_bleed);
 
                     if (_bleed.length() <= 0) {
@@ -477,7 +477,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                donorFlag = 0;
             }
         });
         return donorFlag;
