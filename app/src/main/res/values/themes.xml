@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
+
 <!--        <item name="android:textColorPrimary">@color/white</item>-->
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -13,11 +14,19 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:windowAnimationStyle">@drawable/background_success_animation</item>
-        <item name="rippleColor">@color/cross</item>
+        <item name="android:colorAccent">@color/cross</item>
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="SelectableItemTheme">
+        <item name="colorControlHighlight">@color/irregular_shape_colour</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
 
+    <style name="SelectableItemBackground">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
     
     //FOR BOTTOM SHEET OPENING LAYOUT
     <style name="BottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">

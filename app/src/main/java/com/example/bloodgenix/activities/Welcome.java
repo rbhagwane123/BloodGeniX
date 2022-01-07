@@ -100,6 +100,8 @@ public class Welcome extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent forget = new Intent(sheetDialog.getContext(), ForgetPassword.class);
+                    forget.putExtra("mobile Number" , mobileNo.getText().toString());
+                    forget.putExtra("whatToDo","WelcomePage");
                     startActivity(forget);
                 }
             });

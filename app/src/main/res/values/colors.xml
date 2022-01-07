@@ -20,5 +20,7 @@
     <color name="content_2">#999999</color>
     <color name="shadowColor">#2E2E2E</color>
     <color name="verified">#00A1F1</color>
+    <color name="lightBack">#0DC4C4C4</color>
+    <color name="rippleColor">#FFDDDD</color>
 
 </resources>

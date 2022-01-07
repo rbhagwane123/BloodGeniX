@@ -2,9 +2,11 @@ package com.example.bloodgenix.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,13 +37,13 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     String passedData [] = new String[5];
     CircleImageView profileImg;
     TextView receiverName;
     RecyclerView messageAdapter;
-    ImageButton chatBackBtn;
+    ImageButton chatBackBtn, dotMenu;
     CardView sendBtn;
     EditText textMessage;
     public static String senderImg;
@@ -74,6 +76,7 @@ public class ChatActivity extends AppCompatActivity {
         sendBtn = findViewById(R.id.sendBtn);
         messageAdapter = findViewById(R.id.messageAdapter);
         chatBackBtn = findViewById(R.id.chatBackBtn);
+        dotMenu = findViewById(R.id.dotMenuBtn);
 
         auth = FirebaseAuth.getInstance();
         receiverImg = passedData[2];
@@ -96,6 +99,15 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        dotMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(ChatActivity.this, v);
+                popupMenu.setOnMenuItemClickListener(ChatActivity.this);
+                popupMenu.inflate(R.menu.chat_menu);
+                popupMenu.show();
+            }
+        });
 
         SessionManager sessionManager = new SessionManager(ChatActivity.this, SessionManager.SESSION_USERSESSION);
         HashMap<String, String> senderData =sessionManager.getUserDetailsFromSession();
@@ -192,4 +204,18 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.BlockUser:
+                Toast.makeText(ChatActivity.this, "Block User", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.ReportUser:
+                Toast.makeText(ChatActivity.this, "Report User", Toast.LENGTH_SHORT).show();
+            default:
+                return false;
+        }
+    }
+
 }

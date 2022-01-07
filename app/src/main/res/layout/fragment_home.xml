@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginEnd="32dp"
-                    android:background="@android:color/transparent"
+                    style="@style/SelectableItemBackground"
                     android:backgroundTint="@color/white"
                     android:src="@drawable/ic_outline_info_24_white" />
 
@@ -134,9 +134,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/applyDetail"
                                 android:layout_marginTop="16dp"
+                                style="@style/SelectableItemBackground"
                                 android:fontFamily="@font/poppins_bold"
                                 android:text="EXPAND"
-                                android:background="@drawable/ripple_effect_raised"
                                 android:textColor="@color/Header_1"
                                 android:textSize="12sp" />
 
@@ -197,10 +197,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/receiveDetail"
                                 android:layout_marginTop="14dp"
-                                android:background="@drawable/ripple_effect_raised"
+                                style="@style/SelectableItemBackground"
                                 android:fontFamily="@font/poppins_bold"
                                 android:text="EXPAND"
-                                android:textAlignment="textStart"
                                 android:textColor="@color/Header_1"
                                 android:textSize="12sp" />
 
@@ -258,10 +257,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/searchDetail"
                                 android:layout_marginTop="14dp"
-                                android:background="@drawable/ripple_effect_raised"
+                                style="@style/SelectableItemBackground"
                                 android:fontFamily="@font/poppins_bold"
                                 android:text="EXPAND"
-                                android:textAlignment="textStart"
                                 android:textColor="@color/Header_1"
                                 android:textSize="12sp" />
 

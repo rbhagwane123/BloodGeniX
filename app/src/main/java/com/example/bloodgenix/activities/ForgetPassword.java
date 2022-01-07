@@ -29,10 +29,17 @@ public class ForgetPassword extends AppCompatActivity {
     String countryWithPlus;
     Button forgetNextBtn;
     ImageButton forgotBackBtn;
+
+    String whatToDo, phoneNumberVal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
+
+        Intent previousPage = getIntent();
+        whatToDo = previousPage.getStringExtra("whatToDo");
+        phoneNumberVal = previousPage.getStringExtra("mobile Number");
 
         forgetCountryPicker = findViewById(R.id.forgetCountryPicker);
         forgetMobileNo = findViewById(R.id.forgetMobileNo);
@@ -40,11 +47,21 @@ public class ForgetPassword extends AppCompatActivity {
         forgotBackBtn = findViewById(R.id.forgotBackBtn);
         listners(ForgetPassword.this);
 
+        setValuestoViews(whatToDo, phoneNumberVal);
+
         forgotBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Welcome.class));
-                finish();
+                if (whatToDo.equals("UserProfile")){
+                    Intent userPage = new Intent(ForgetPassword.this, User_Profile_View.class);
+                    userPage.putExtra("mobile number",phoneNumberVal);
+                    startActivity(userPage);
+                    finish();
+                }else if(whatToDo.equals("WelcomePage")){
+                    startActivity(new Intent(ForgetPassword.this, Welcome.class));
+                    finish();
+                }
+
             }
         });
 
@@ -78,6 +95,15 @@ public class ForgetPassword extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setValuestoViews(String whatToDo, String phoneNumberVal) {
+
+        if (whatToDo.equals("UserProfile")){
+            forgetMobileNo.setText(phoneNumberVal.substring(4,phoneNumberVal.length()));
+        }else if (whatToDo.equals("WelcomePage")){
+            forgetMobileNo.setText(phoneNumberVal);
+        }
     }
 
     private void listners(Activity forget) {

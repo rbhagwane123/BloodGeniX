@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
 
     TextView salutationText;
     CircleImageView active_person;
+
     Button donationExpand, RecipientExpand, Logout, searchExpand;
     ImageButton moreInfo;
     String phoneNo;
@@ -193,6 +194,8 @@ public class HomeFragment extends Fragment {
         dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
         dialog.setCanceledOnTouchOutside(true);
+
+
 
     }
 

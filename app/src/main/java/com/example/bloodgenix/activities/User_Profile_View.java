@@ -49,9 +49,11 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     ImageButton BloodBtn, BleedBtn, ContactBtn;
     ImageButton EmailBtn, DOBBtn, cancel_button, locationBtn;
     ImageButton editBtn, picUpdate;
+
+    LinearLayout bleedLayout;
     String mobileNumber;
     DatePicker Dob;
-    int donorFlag = 0, recipientFlag = 0;
+    int donorFlag , recipientFlag = 0;
     boolean updatePic = false;
     Uri profile_uri;
 
@@ -78,6 +80,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         Intent profile = getIntent();
         mobileNumber = profile.getStringExtra("mobile number");
         reference = FirebaseDatabase.getInstance().getReference();
+        bleedLayout = findViewById(R.id.bleedLayout);
+
 
         refreshLayout = findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -97,9 +101,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                         }
                     });
                 }
-
                 startActivity(i_again);
-
             }
         });
 
@@ -113,6 +115,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                 popupMenu.show();
             }
         });
+
+
         backBtn = findViewById(R.id.bacBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,21 +124,18 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                 Intent back = new Intent(User_Profile_View.this, DashBoard_Screen.class);
                 back.putExtra("profile Values", mobileNumber);
                 startActivity(back);
+                finish();
             }
         });
 
-//        picUpdate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ImagePicker.Companion.with(User_Profile_View.this)
-//                        .crop()	    			//Crop image(Optional), Check Customization for more option
-//                        .cropOval()	    		//Allow dimmed layer to have a circle inside
-//                        .maxResultSize(1080,1080)
-//                        .start();
-//
-//                updatePic = true;
-//            }
-//        });
+        userProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent fullView = new Intent(User_Profile_View.this,fullProfileView.class);
+                fullView.putExtra("phone Number", mobileNumber);
+                startActivity(fullView);
+            }
+        });
 
         String _number = mobileNumber.substring(4, mobileNumber.length());
         Query checkUser = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo(mobileNumber);
@@ -148,7 +149,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                     String _gender = snapshot.child(_number).child("gender").getValue(String.class);
                     String _dob = snapshot.child(_number).child("d_o_b").getValue(String.class);
                     String _img = snapshot.child(_number).child("profileImg").getValue(String.class);
-                    toolbarName.setText(_fullName);
+
                     userProfileName.setText(_fullName);
                     ProfileUserName.setText(_userName);
                     userProfileContact.setText(mobileNumber);
@@ -161,7 +162,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                             userPersonBleed.setText("Not applied");
                         }
                     }
-                } else {
+                }
+                else {
                     Toast.makeText(User_Profile_View.this, "no person found", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -173,10 +175,9 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         });
 
         buttonListener();
-
-
     }
 
+    //BUTTON LISTENERS CREATED
     private void buttonListener() {
         BloodBtn.setOnClickListener(this);
         BloodBtn.setOnClickListener(this);
@@ -189,6 +190,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
 
     }
 
+    //BOTTOM SHEET DIALOG CREATION FOR EDITTEXT VALUES
     private BottomSheetDialog BottomSheet() {
         BottomSheetDialog sheet = new BottomSheetDialog(User_Profile_View.this, R.style.BottomSheetStyle);
         View view = LayoutInflater.from(User_Profile_View.this).inflate(R.layout.edit_bottom_layout, (LinearLayout) findViewById(R.id.sheet2));
@@ -208,6 +210,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         return sheet;
     }
 
+    //BOTTOM SHEET DIALOG CREATION FOR DROPDOWN
     private BottomSheetDialog BottomSheetDrop() {
 
         BottomSheetDialog sheet = new BottomSheetDialog(User_Profile_View.this, R.style.BottomSheetStyle);
@@ -228,6 +231,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         return sheet;
     }
 
+    //INITIALISING BUTTONS VIEWS
     private void btnviewInitialisation() {
         BloodBtn = findViewById(R.id.BloodBtn);
         BleedBtn = findViewById(R.id.BleedBtn);
@@ -238,6 +242,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         picUpdate = findViewById(R.id.picUpdate);
     }
 
+    //ON CLICK DEFINITION
     @Override
     public void onClick(View v) {
         ArrayAdapter<String> arrayAdapter;
@@ -322,9 +327,9 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                 });
                 break;
             case R.id.ContactBtn:
-                sheetDialog2 = BottomSheet();
-                textInputLayout.setHint("Contact");
-
+                Toast.makeText(User_Profile_View.this, "Cannot update contact", Toast.LENGTH_SHORT).show();
+//                sheetDialog2 = BottomSheet();
+//                textInputLayout.setHint("Contact");
                 break;
             case R.id.locationBtn:
                 sheetDialog2 = BottomSheet();
@@ -421,9 +426,11 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot3) {
                 if (snapshot3.exists()) {
+                    bleedLayout.setVisibility(View.INVISIBLE);
                     String _bloodGroup = snapshot3.child(mobileNumber).child("bGroupRecipient").getValue(String.class);
                     String _location = snapshot3.child(mobileNumber).child("locationRecipient").getValue(String.class);
                     userProfileBlood.setText(_bloodGroup);
+
                     userProfileLocation.setText(_location);
                     recipientFlag = 1;
                 } else {
@@ -447,26 +454,30 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot2) {
                 if (snapshot2.exists()) {
+                    bleedLayout.setVisibility(View.VISIBLE);
                     String _bloodGroup = snapshot2.child(mobileNumber).child("blGroup").getValue(String.class);
                     String _bleed = snapshot2.child(mobileNumber).child("donateMonth").getValue(String.class);
                     String _location = snapshot2.child(mobileNumber).child("donorLocation").getValue(String.class);
                     userProfileBlood.setText(_bloodGroup);
-                    userProfileLocation.setText(_location);
+//                    userProfileLocation.setText(_location);
+                    userPersonBleed.setText(_bleed);
+
                     if (_bleed.length() <= 0) {
                         userPersonBleed.setText("No donation");
-
-                    } else {
+                    }
+                    else {
                         userPersonBleed.setText(_bleed);
                     }
                     donorFlag = 1;
-                } else {
+                }
+                else {
                     donorFlag = 0;
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                donorFlag = 0;
+
             }
         });
         return donorFlag;
@@ -489,7 +500,10 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.forgotPassword:
-                startActivity(new Intent(getApplicationContext(), ForgetPassword.class));
+                Intent forgotPage = new Intent(getApplicationContext(), ForgetPassword.class);
+                forgotPage.putExtra("whatToDo","UserProfile");
+                forgotPage.putExtra("mobile Number", mobileNumber);
+                startActivity(forgotPage);
                 finish();
                 return true;
 

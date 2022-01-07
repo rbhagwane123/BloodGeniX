@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/infoSheet"
     android:paddingStart="20dp"
-    android:paddingBottom="100dp">
+    android:paddingBottom="20dp">
 
 
     <LinearLayout

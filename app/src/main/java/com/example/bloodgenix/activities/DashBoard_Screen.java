@@ -1,10 +1,13 @@
 package com.example.bloodgenix.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +52,9 @@ public class DashBoard_Screen extends AppCompatActivity {
     Toolbar toolbar;
     CircleImageView sliderProfile;
     TextView sliderName;
-
+    Dialog dialog;
+    ImageView fullProfile;
+    String personImage;
 
     BottomNavigationView bottomNavigation;
     NavController navController;
@@ -94,6 +99,13 @@ public class DashBoard_Screen extends AppCompatActivity {
         sliderProfile = (CircleImageView) hView.findViewById(R.id.sliderProfile);
         sliderName = (TextView) hView.findViewById(R.id.sliderName);
 
+        sliderProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogCreation();
+                dialog.show();
+            }
+        });
 
         //Extracting values
         Intent val = getIntent();
@@ -174,6 +186,7 @@ public class DashBoard_Screen extends AppCompatActivity {
                     fetch_details[4] = _number;
                     fetch_details[5] = _img;
 
+                    personImage = fetch_details[5];
                     Glide.with(layout_1).load(fetch_details[5]).into(sliderProfile);
                     sliderName.setText(_fullName);
 
@@ -204,5 +217,18 @@ public class DashBoard_Screen extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void dialogCreation() {
+//        ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT
+        dialog = new Dialog(DashBoard_Screen.this);
+        dialog.setContentView(R.layout.image_click_zoom_layout);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.info_layout_background_style));
+        dialog.setCancelable(false);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+        dialog.setCanceledOnTouchOutside(true);
+        fullProfile = dialog.findViewById(R.id.fullProfile);
+        Glide.with(getApplicationContext()).load(personImage).into(fullProfile);
     }
 }
