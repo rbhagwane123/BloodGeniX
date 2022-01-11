@@ -5,16 +5,16 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:color/transparent"
-        android:backgroundTint="@color/lightBack"
-        android:backgroundTintMode="screen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/relativeLayout2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:backgroundTint="@color/lightBack"-->
+<!--        android:backgroundTintMode="screen"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/fullProfile"
@@ -24,9 +24,10 @@
         android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:src="@drawable/eliipse1"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

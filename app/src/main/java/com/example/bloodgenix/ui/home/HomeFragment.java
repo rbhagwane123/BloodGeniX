@@ -90,14 +90,14 @@ public class HomeFragment extends Fragment {
         searchExpand = view.findViewById(R.id.searchExpand);
         moreInfo = view.findViewById(R.id.moreInfo);
 
-        dialogCreation();
-        moreInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.show();
-
-            }
-        });
+//        dialogCreation();
+//        moreInfo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.show();
+//
+//            }
+//        });
 
 
 
@@ -185,19 +185,6 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void dialogCreation() {
-//        ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT
-        dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.info_layout);
-        dialog.getWindow().setLayout(1000,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.info_layout_background_style));
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
-        dialog.setCanceledOnTouchOutside(true);
-
-
-
-    }
 
     private int checkBeforeApplySearch(String s) {
         Query RecipientDetails = FirebaseDatabase.getInstance().getReference("RecipientDetails").orderByChild("phoneNumber").equalTo(s);

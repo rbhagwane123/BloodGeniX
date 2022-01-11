@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class DashBoard_Screen extends AppCompatActivity {
     CircleImageView sliderProfile;
     TextView sliderName;
     Dialog dialog;
+    ImageButton moreInfo;
     ImageView fullProfile;
     String personImage;
 
@@ -93,7 +95,15 @@ public class DashBoard_Screen extends AppCompatActivity {
 
         layout_1 = findViewById(R.id.layout_1);
         Logout = findViewById(R.id.Logout);
+        moreInfo = findViewById(R.id.moreInfo);
 
+        dialogCreationMore();
+        moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
 
         View hView = navigationView.getHeaderView(0);
         sliderProfile = (CircleImageView) hView.findViewById(R.id.sliderProfile);
@@ -133,11 +143,18 @@ public class DashBoard_Screen extends AppCompatActivity {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_about:
-                        Toast.makeText(DashBoard_Screen.this, "About selected", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(DashBoard_Screen.this, About_activity.class));
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_sharing:
-                        Toast.makeText(DashBoard_Screen.this, "Sharing selected", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DashBoard_Screen.this, "Sharing selected", Toast.LENGTH_SHORT).show();
+                        Intent shareIntent = new Intent(Intent.ACTION_SENDTO);
+                        shareIntent.setType("text/plain");
+                        String shareBody = "Download this Application noe :-https://www.redcrossblood.org/blood-donor-app.html=en";
+                        String shareSub = "BloodGenix App";
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                        startActivity(Intent.createChooser(shareIntent, "Share Using"));
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     default:
@@ -157,7 +174,18 @@ public class DashBoard_Screen extends AppCompatActivity {
             }
         });
 
+    }
 
+
+    public void dialogCreationMore() {
+//        ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT
+        dialog = new Dialog(DashBoard_Screen.this);
+        dialog.setContentView(R.layout.info_layout);
+        dialog.getWindow().setLayout(1000,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.info_layout_background_style));
+        dialog.setCancelable(false);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+        dialog.setCanceledOnTouchOutside(true);
 
     }
 

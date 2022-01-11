@@ -47,6 +47,8 @@
                             android:scaleType="centerCrop" />
 
                         <ImageButton
+                            android:foreground="?attr/selectableItemBackground"
+                            android:clickable="true"
                             android:id="@+id/picUpdate"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
@@ -377,12 +379,14 @@
                         android:textSize="16sp" />
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/deleteChoice"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:cardBackgroundColor="@color/irregular_shape_colour"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="3dp"
-                        android:padding="5dp"
                         android:layout_marginBottom="4dp">
                         <TextView
                             android:layout_width="match_parent"

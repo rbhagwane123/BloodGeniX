@@ -17,12 +17,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.bloodgenix.R;
 import com.github.drjacky.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -56,6 +59,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     int donorFlag =0, recipientFlag = 0;
     boolean updatePic = false;
     Uri profile_uri;
+    CardView deleteChoice;
 
     //BOTTOM SHEET DECLARATION
     BottomSheetDialog sheetDialog2;
@@ -81,7 +85,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         mobileNumber = profile.getStringExtra("mobile number");
         reference = FirebaseDatabase.getInstance().getReference();
         bleedLayout = findViewById(R.id.bleedLayout);
-
+        deleteChoice = findViewById(R.id.deleteChoice);
 
         refreshLayout = findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -116,6 +120,31 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
             }
         });
 
+        deleteChoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (chckDonor() == 1){
+                    FirebaseDatabase.getInstance().getReference("DonationDetails").child(mobileNumber).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Toast.makeText(User_Profile_View.this, "Donation deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+                else if (chckRecipient() == 1){
+                    FirebaseDatabase.getInstance().getReference("RecipientDetails").child(mobileNumber).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Toast.makeText(User_Profile_View.this, "Recipient deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
         backBtn = findViewById(R.id.bacBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -158,8 +187,10 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                     Glide.with(User_Profile_View.this).load(_img).into(userProfileImage);
                     if (chckDonor() == 0) {
                         if (chckRecipient() == 0) {
-//                            userProfileBlood.setText("Not applied");
-//                            userPersonBleed.setText("Not applied");
+                            userProfileBlood.setText("Not applied");
+                            userPersonBleed.setText("Not applied");
+                            userProfileLocation.setText("Not known");
+                            deleteChoice.setVisibility(View.INVISIBLE);
                         }
                     }
                 }

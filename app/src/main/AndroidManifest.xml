@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BloodGeniX">
         <activity
+            android:name=".activities.About_activity"
+            android:exported="false" />
+        <activity
             android:name=".activities.fullProfileView"
             android:exported="false" />
         <activity

@@ -27,9 +27,9 @@
         android:background="@drawable/blood_roup_background_style"
         android:fontFamily="@font/poppins_medium"
         android:gravity="bottom"
-        android:text="AB+"
         android:paddingStart="10dp"
         android:paddingBottom="5dp"
+        android:text="AB+"
         android:textColor="@color/white"
         android:textSize="14sp" />
 

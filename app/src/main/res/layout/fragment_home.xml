@@ -18,7 +18,7 @@
             android:id="@+id/AppBar"
             style="@style/Theme.BloodGeniX"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:fitsSystemWindows="true"
             android:outlineAmbientShadowColor="@color/App_colour"
             android:outlineSpotShadowColor="@color/App_colour">
@@ -31,22 +31,22 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-                <ImageButton
-                    android:id="@+id/moreInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="32dp"
-                    style="@style/SelectableItemBackground"
-                    android:backgroundTint="@color/white"
-                    android:src="@drawable/ic_outline_info_24_white" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/moreInfo"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="end"-->
+<!--                    android:layout_marginEnd="32dp"-->
+<!--                    style="@style/SelectableItemBackground"-->
+<!--                    android:backgroundTint="@color/white"-->
+<!--                    android:src="@drawable/ic_outline_info_24_white" />-->
 
                 <TextView
                     android:id="@+id/salutationText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="70dp"
+                    android:layout_marginTop="40dp"
                     android:fontFamily="@font/poppins"
                     android:text="@string/salutation"
                     android:textColor="@color/white"
@@ -58,14 +58,14 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="end"
-                    android:layout_marginTop="70dp"
+                    android:layout_marginTop="40dp"
                     android:layout_marginEnd="25dp" />
 
                 <ImageView
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:layout_gravity="end"
-                    android:layout_marginTop="115dp"
+                    android:layout_marginTop="85dp"
                     android:layout_marginEnd="25dp"
                     android:src="@drawable/ic_active" />
 
@@ -130,11 +130,11 @@
 
                             <Button
                                 android:id="@+id/donationExpand"
+                                style="@style/SelectableItemBackground"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/applyDetail"
                                 android:layout_marginTop="16dp"
-                                style="@style/SelectableItemBackground"
                                 android:fontFamily="@font/poppins_bold"
                                 android:text="EXPAND"
                                 android:textColor="@color/Header_1"
