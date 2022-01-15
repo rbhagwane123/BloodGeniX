@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     String passedData [] = new String[5];
     CircleImageView profileImg;
+    ImageView activeStatus;
     TextView receiverName;
     RecyclerView messageAdapter;
     ImageButton chatBackBtn, dotMenu;
@@ -77,12 +79,14 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         messageAdapter = findViewById(R.id.messageAdapter);
         chatBackBtn = findViewById(R.id.chatBackBtn);
         dotMenu = findViewById(R.id.dotMenuBtn);
+        activeStatus = findViewById(R.id.activeStatus);
 
         auth = FirebaseAuth.getInstance();
         receiverImg = passedData[2];
         Glide.with(ChatActivity.this).load(passedData[2]).into(profileImg);
         receiverName.setText(passedData[1]);
         messagesArrayList = new ArrayList<>();
+
 
         chatBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +139,7 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         });
 
+        checkStatus(receiverUID);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         messageAdapter.setLayoutManager(linearLayoutManager);
@@ -183,6 +188,26 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         });
     }
 
+    private void checkStatus(String receiverUID) {
+
+//        Toast.makeText(ChatActivity.this, receiverUID, Toast.LENGTH_SHORT).show();
+        Query checkStatus = FirebaseDatabase.getInstance().getReference("PersonStatus").orderByChild("phoneNumber").equalTo(receiverUID);
+        checkStatus.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+//                    Boolean status = snapshot.child("status").getValue(boolean.class);
+//                    Toast.makeText(ChatActivity.this, ""+status, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public  void chatReferenceCall() {
         database = FirebaseDatabase.getInstance();
         DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
@@ -217,5 +242,4 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 return false;
         }
     }
-
 }

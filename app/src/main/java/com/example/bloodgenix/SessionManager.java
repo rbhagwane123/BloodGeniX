@@ -29,6 +29,7 @@ public class SessionManager {
     public static final String KEY_SESSION_PHONENUMBER = "phoneNumber";
     public static final String KEY_SESSION_PASSWORD = "password";
 
+
     public SessionManager(Context _context, String sessionName){
         context = _context;
         usersSession = context.getSharedPreferences(sessionName,Context.MODE_PRIVATE);

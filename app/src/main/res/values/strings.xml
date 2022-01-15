@@ -68,7 +68,7 @@
     <string name="_3rdPoint">\u2022 Upload proper document for self validation.</string>
     <string name="_4thPoint">\u2022 If any person is found performing wrong malpractice then strict action would be taken.</string>
     <string name="_5thPoint">\u2022 for communication, there is a separate chat block.</string>
-    <string name="_6thPoint"></string>
+    <string name="_6thPoint">\u2022 At a time can apply for only one option either Donor or Recipient</string>
 
 
     <string-array name="periodMonth">

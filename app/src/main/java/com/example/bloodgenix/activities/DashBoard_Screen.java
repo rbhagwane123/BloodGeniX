@@ -23,12 +23,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.example.bloodgenix.Models.PersonStatus;
 import com.example.bloodgenix.R;
 import com.example.bloodgenix.SessionManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -58,11 +62,14 @@ public class DashBoard_Screen extends AppCompatActivity {
     ImageView fullProfile;
     String personImage;
 
+
     BottomNavigationView bottomNavigation;
     NavController navController;
 
 
     //FireBase initialisation
+    FirebaseDatabase database;
+    DatabaseReference reference;
     StorageReference storageReference;
 
     public String full_number;
@@ -88,6 +95,7 @@ public class DashBoard_Screen extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        database = FirebaseDatabase.getInstance("https://bloodgenix-bb937-default-rtdb.firebaseio.com/");
 
         toggle = new ActionBarDrawerToggle(DashBoard_Screen.this, drawerLayout, toolbar, R.string.navigation_open, R.string.navigation_close);
         drawerLayout.addDrawerListener(toggle);
@@ -96,6 +104,11 @@ public class DashBoard_Screen extends AppCompatActivity {
         layout_1 = findViewById(R.id.layout_1);
         Logout = findViewById(R.id.Logout);
         moreInfo = findViewById(R.id.moreInfo);
+
+        //Extracting values
+        Intent val = getIntent();
+        full_number = val.getStringExtra("profile Values");
+        profileDetailsFetch(full_number);
 
         dialogCreationMore();
         moreInfo.setOnClickListener(new View.OnClickListener() {
@@ -117,10 +130,9 @@ public class DashBoard_Screen extends AppCompatActivity {
             }
         });
 
-        //Extracting values
-        Intent val = getIntent();
-        full_number = val.getStringExtra("profile Values");
-        profileDetailsFetch(full_number);
+        //Creating Status of person
+        createStatus(full_number);
+
 
         SessionManager sessionManager = new SessionManager(this,"userLoginSession");
         HashMap<String, String> userDetails = sessionManager.getUserDetailsFromSession();
@@ -168,12 +180,38 @@ public class DashBoard_Screen extends AppCompatActivity {
         Logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent logout = new Intent(DashBoard_Screen.this, Welcome.class);
-                startActivity(logout);
-                finish();
+                HashMap hashMap = new HashMap();
+                hashMap.put("status", false);
+                FirebaseDatabase.getInstance().getReference().child("PersonStatus").child(full_number).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()){
+                            Intent logout = new Intent(DashBoard_Screen.this, Welcome.class);
+                            startActivity(logout);
+                            finish();
+                        }
+                    }
+                });
             }
         });
 
+    }
+
+    private void createStatus(String full_number) {
+
+
+        reference = database.getReference().child("PersonStatus").child(full_number);
+        PersonStatus status = new PersonStatus(full_number, true);
+        reference.setValue(status).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+
+                }else{
+                    Toast.makeText(DashBoard_Screen.this, "doesn't Added Status", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 

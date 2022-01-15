@@ -48,7 +48,6 @@ public class Signup_Screen_1 extends AppCompatActivity {
             public void onClick(View v) {
                 ImagePicker.Companion.with(Signup_Screen_1.this)
                         .crop()	    			//Crop image(Optional), Check Customization for more option
-                        .cropOval()	    		//Allow dimmed layer to have a circle inside
                         .maxResultSize(1080,1080)
                         .start();
             }

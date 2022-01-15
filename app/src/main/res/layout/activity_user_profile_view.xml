@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:fontFamily="@font/poppins"
-                            android:text="Rupesh Bhagwane"
+
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
@@ -79,7 +79,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:text="rupesh@123"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -371,31 +370,24 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="262dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Delete Choice"
+                        android:gravity="center_vertical"
                         android:textColor="@color/Header_1"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
-                    <androidx.cardview.widget.CardView
+                    <Button
                         android:id="@+id/deleteChoice"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:cardBackgroundColor="@color/irregular_shape_colour"
-                        app:cardCornerRadius="5dp"
-                        app:cardElevation="3dp"
-                        android:layout_marginBottom="4dp">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="Delete"
-                            android:fontFamily="@font/poppins_medium"
-                            android:textColor="@color/content_1"
-                            android:gravity="center"/>
-                    </androidx.cardview.widget.CardView>
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="Delete"
+                        android:layout_marginLeft="105dp"
+                        app:cornerRadius="8dp"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:textAllCaps="false"/>
 
                 </LinearLayout>
 

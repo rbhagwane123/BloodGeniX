@@ -3,11 +3,13 @@ package com.example.bloodgenix.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -17,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
@@ -35,6 +36,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
@@ -56,10 +60,10 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     LinearLayout bleedLayout;
     String mobileNumber;
     DatePicker Dob;
-    int donorFlag =0, recipientFlag = 0;
+    int donorFlag = 0, recipientFlag = 0;
     boolean updatePic = false;
     Uri profile_uri;
-    CardView deleteChoice;
+    Button deleteChoice;
 
     //BOTTOM SHEET DECLARATION
     BottomSheetDialog sheetDialog2;
@@ -71,6 +75,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
     //FireBase declaration
     FirebaseDatabase database;
     DatabaseReference reference;
+    FirebaseStorage storage;
 
     SwipeRefreshLayout refreshLayout;
 
@@ -87,6 +92,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         bleedLayout = findViewById(R.id.bleedLayout);
         deleteChoice = findViewById(R.id.deleteChoice);
 
+        storage = FirebaseStorage.getInstance();
+
         refreshLayout = findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -94,18 +101,67 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                 Intent i_again = new Intent(getApplicationContext(), User_Profile_View.class);
                 i_again.putExtra("mobile number", mobileNumber);
 
+                String TempNumber = mobileNumber.substring(4, mobileNumber.length());
+                StorageReference forestRef = storage.getReference().child("profilePic");
                 HashMap hashMapImg = new HashMap();
-                if(updatePic == true){
-                    hashMapImg.put("profileImg", profile_uri.toString());
-                    FirebaseDatabase.getInstance().getReference().child("Users").child(mobileNumber.substring(4,mobileNumber.length())).updateChildren(hashMapImg).addOnSuccessListener(new OnSuccessListener() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            Toast.makeText(User_Profile_View.this, "Image added", Toast.LENGTH_SHORT).show();
-                            updatePic = false;
-                        }
-                    });
+                if (updatePic == true) {
+                    try {
+                        forestRef.child(TempNumber).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                forestRef.child(TempNumber).putFile(profile_uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            forestRef.child(TempNumber).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    hashMapImg.put("profileImg", uri.toString());
+                                                    FirebaseDatabase.getInstance().getReference().child("Users").child(TempNumber).updateChildren(hashMapImg).addOnSuccessListener(new OnSuccessListener() {
+                                                        @Override
+                                                        public void onSuccess(Object o) {
+                                                            if (chckDonor() == 1){
+                                                                hashMapImg.clear();
+                                                                hashMapImg.put("personProfileImg", uri.toString());
+                                                                FirebaseDatabase.getInstance().getReference().child("DonationDetails").child(mobileNumber).updateChildren(hashMapImg).addOnSuccessListener(new OnSuccessListener() {
+                                                                    @Override
+                                                                    public void onSuccess(Object o) {
+                                                                        updatePic = false;
+                                                                        startActivity(i_again);
+                                                                    }
+                                                                });
+                                                            }else if (chckRecipient() == 1){
+                                                                hashMapImg.clear();
+                                                                hashMapImg.put("personProfile", uri.toString());
+                                                                FirebaseDatabase.getInstance().getReference().child("RecipientDetails").child(mobileNumber).updateChildren(hashMapImg).addOnSuccessListener(new OnSuccessListener() {
+                                                                    @Override
+                                                                    public void onSuccess(Object o) {
+                                                                        updatePic = false;
+                                                                        startActivity(i_again);
+                                                                    }
+                                                                });
+                                                            }else{
+                                                                updatePic = false;
+                                                                startActivity(i_again);
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            Toast.makeText(User_Profile_View.this, "Not Updated", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
+                    } catch (Exception ex) {
+                        Log.i("ERROR :", ex.getMessage());
+                    }
+                }else{
+                    startActivity(i_again);
                 }
-                startActivity(i_again);
             }
         });
 
@@ -123,21 +179,20 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         deleteChoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (chckDonor() == 1){
+                if (chckDonor() == 1) {
                     FirebaseDatabase.getInstance().getReference("DonationDetails").child(mobileNumber).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Toast.makeText(User_Profile_View.this, "Donation deleted", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-                }
-                else if (chckRecipient() == 1){
+                } else if (chckRecipient() == 1) {
                     FirebaseDatabase.getInstance().getReference("RecipientDetails").child(mobileNumber).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Toast.makeText(User_Profile_View.this, "Recipient deleted", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -160,7 +215,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         userProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent fullView = new Intent(User_Profile_View.this,fullProfileView.class);
+                Intent fullView = new Intent(User_Profile_View.this, fullProfileView.class);
                 fullView.putExtra("phone Number", mobileNumber);
                 startActivity(fullView);
             }
@@ -190,11 +245,9 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                             userProfileBlood.setText("Not applied");
                             userPersonBleed.setText("Not applied");
                             userProfileLocation.setText("Not known");
-                            deleteChoice.setVisibility(View.INVISIBLE);
                         }
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(User_Profile_View.this, "no person found", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -282,9 +335,8 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
 
             case R.id.picUpdate:
                 ImagePicker.Companion.with(User_Profile_View.this)
-                        .crop()	    			//Crop image(Optional), Check Customization for more option
-                        .cropOval()	    		//Allow dimmed layer to have a circle inside
-                        .maxResultSize(1080,1080)
+                        .crop()                    //Crop image(Optional), Check Customization for more option
+                        .maxResultSize(1080, 1080)
                         .start();
                 break;
 
@@ -348,7 +400,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                                     sheetDialog2.dismiss();
                                 }
                             });
-                        }else if (chckRecipient() == 1) {
+                        } else if (chckRecipient() == 1) {
                             Toast.makeText(User_Profile_View.this, "You are applied for blood", Toast.LENGTH_SHORT).show();
                             sheetDialog2.dismiss();
                         }
@@ -382,7 +434,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                                     sheetDialog2.dismiss();
                                 }
                             });
-                        }else if (chckRecipient() == 1) {
+                        } else if (chckRecipient() == 1) {
                             hashMap.put("locationRecipient", editView.getText().toString());
                             FirebaseDatabase.getInstance().getReference().child("RecipientDetails").child(mobileNumber).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                                 @Override
@@ -429,9 +481,9 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                     public void onClick(View v) {
                         HashMap hashMap = new HashMap();
                         int day = Dob.getDayOfMonth();
-                        int month = Dob.getMonth()+1;
+                        int month = Dob.getMonth() + 1;
                         int year = Dob.getYear();
-                        String dateOfBirth = day+"/"+month+"/"+year;
+                        String dateOfBirth = day + "/" + month + "/" + year;
                         hashMap.put("d_o_b", dateOfBirth);
                         FirebaseDatabase.getInstance().getReference().child("Users").child(mobileNumber.substring(4, mobileNumber.length())).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
                             @Override
@@ -494,14 +546,12 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
                     userPersonBleed.setText(_bleed);
 
                     if (_bleed.length() <= 0) {
-                        userPersonBleed.setText("No donation");
-                    }
-                    else {
+                        userPersonBleed.setText("Not Mention");
+                    } else {
                         userPersonBleed.setText(_bleed);
                     }
                     donorFlag = 1;
-                }
-                else {
+                } else {
                     donorFlag = 0;
                 }
             }
@@ -532,7 +582,7 @@ public class User_Profile_View extends AppCompatActivity implements PopupMenu.On
         switch (item.getItemId()) {
             case R.id.forgotPassword:
                 Intent forgotPage = new Intent(getApplicationContext(), ForgetPassword.class);
-                forgotPage.putExtra("whatToDo","UserProfile");
+                forgotPage.putExtra("whatToDo", "UserProfile");
                 forgotPage.putExtra("mobile Number", mobileNumber);
                 startActivity(forgotPage);
                 finish();
