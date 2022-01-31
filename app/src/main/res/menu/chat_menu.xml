@@ -6,8 +6,5 @@
         android:title="Block User">
     </item>
 
-    <item
-        android:id="@+id/ReportUser"
-        android:title="Report User"/>
 
 </menu>

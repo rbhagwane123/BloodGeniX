@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="13dp">
+
+    <TextView
+        android:id="@+id/blockText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:text="Unblock to send a message"
+        android:textColor="@color/content_1"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blockText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/CANCEL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:textSize="15sp"
+            style="@style/SelectableItemBackground"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/App_colour" />
+
+        <Button
+            android:id="@+id/UNBLOCK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UNBLOCK"
+            android:textSize="15sp"
+            style="@style/SelectableItemBackground"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/App_colour" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">BloodGeniX</string>
 
     <string name="blood_donation">Find out what blood type you are!\n Register with one of our approved\ntask  and get started.</string>
     <string name="Search_blood_donor">Need a donor? Register with one of\n our approved donor and get\nstarted!</string>
@@ -70,6 +70,8 @@
     <string name="_5thPoint">\u2022 for communication, there is a separate chat block.</string>
     <string name="_6thPoint">\u2022 At a time can apply for only one option either Donor or Recipient</string>
 
+
+    <string name="google_map_key">AIzaSyCgXfPPsUeJNU_NLTA-pbqZGdlHKCfOYXI</string>
 
     <string-array name="periodMonth">
         <item>Less than 3 month</item>

@@ -8,11 +8,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bloodgenix.R;
 import com.github.drjacky.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -65,10 +68,10 @@ public class Signup_Screen_1 extends AppCompatActivity {
                 }else{
 
                     if (profileImage.getDrawable() == null){
-//                        storageReference = FirebaseStorage
-                        profile_uri = Uri.parse("android.resource://com.example.bloodgenix/drawable/ic_male_avatar");
+
+                        fetchDefault();
                         profileImage2.setImageURI(profile_uri);
-                        Toast.makeText(Signup_Screen_1.this, profile_uri.toString(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Signup_Screen_1.this, profile_uri.toString(), Toast.LENGTH_SHORT).show();
                     }
                     if (fullName.getText().toString().isEmpty()){
                         fullName.setError("Enter name");
@@ -97,6 +100,18 @@ public class Signup_Screen_1 extends AppCompatActivity {
                         System.out.println(e.getMessage());
                     }
                 }
+            }
+        });
+    }
+
+    private void fetchDefault() {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference forestRef = storage.getReference().child("profilePic");
+        forestRef.child("male.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(@NonNull Uri uri) {
+                profile_uri = uri;
+                Toast.makeText(Signup_Screen_1.this, ""+profile_uri.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

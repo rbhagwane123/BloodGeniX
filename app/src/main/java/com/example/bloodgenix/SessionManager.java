@@ -16,7 +16,7 @@ public class SessionManager {
 
 
     //USER SESSION VARIABLES
-    private static final String IS_LOGIN="IsLoggedIn";
+    public static final String IS_LOGIN="IsLoggedIn";
     public static final String KEY_FULLNAME = "fullname";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_EMAIL = "email";
@@ -52,6 +52,7 @@ public class SessionManager {
 
     public HashMap<String, String> getUserDetailsFromSession(){
         HashMap<String, String> userData = new HashMap<String, String>();
+        userData.put(IS_LOGIN, String.valueOf(usersSession.getBoolean(IS_LOGIN, false)));
         userData.put(KEY_FULLNAME, usersSession.getString(KEY_FULLNAME, null));
         userData.put(KEY_USERNAME, usersSession.getString(KEY_USERNAME, null));
         userData.put(KEY_EMAIL, usersSession.getString(KEY_EMAIL, null));

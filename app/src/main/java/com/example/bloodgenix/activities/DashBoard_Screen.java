@@ -1,7 +1,9 @@
 package com.example.bloodgenix.activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.example.bloodgenix.Models.PersonStatus;
 import com.example.bloodgenix.R;
 import com.example.bloodgenix.SessionManager;
+import com.example.bloodgenix.Settings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -93,7 +96,7 @@ public class DashBoard_Screen extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navView);
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         database = FirebaseDatabase.getInstance("https://bloodgenix-bb937-default-rtdb.firebaseio.com/");
 
@@ -151,7 +154,7 @@ public class DashBoard_Screen extends AppCompatActivity {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_settings:
-                        Toast.makeText(DashBoard_Screen.this, "Setting selected", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(DashBoard_Screen.this, Settings.class));
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_about:
@@ -159,7 +162,6 @@ public class DashBoard_Screen extends AppCompatActivity {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_sharing:
-//                        Toast.makeText(DashBoard_Screen.this, "Sharing selected", Toast.LENGTH_SHORT).show();
                         Intent shareIntent = new Intent(Intent.ACTION_SENDTO);
                         shareIntent.setType("text/plain");
                         String shareBody = "Download this Application noe :-https://www.redcrossblood.org/blood-donor-app.html=en";
@@ -181,12 +183,17 @@ public class DashBoard_Screen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 HashMap hashMap = new HashMap();
-                hashMap.put("status", false);
+                hashMap.put("status", "false");
                 FirebaseDatabase.getInstance().getReference().child("PersonStatus").child(full_number).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()){
+//                            logoutUserFromSession
+                            SessionManager sessionManager = new SessionManager(DashBoard_Screen.this,"userLoginSession");
+                            HashMap<String, String> userDetails = sessionManager.getUserDetailsFromSession();
+
                             Intent logout = new Intent(DashBoard_Screen.this, Welcome.class);
+                            sessionManager.logoutUserFromSession();
                             startActivity(logout);
                             finish();
                         }
@@ -194,26 +201,43 @@ public class DashBoard_Screen extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     private void createStatus(String full_number) {
+        if (isNetworkConnected()){
+            reference = database.getReference().child("PersonStatus").child(full_number);
+            PersonStatus status = new PersonStatus(full_number, "true");
+            reference.setValue(status).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
 
-
-        reference = database.getReference().child("PersonStatus").child(full_number);
-        PersonStatus status = new PersonStatus(full_number, true);
-        reference.setValue(status).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-
-                }else{
-                    Toast.makeText(DashBoard_Screen.this, "doesn't Added Status", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(DashBoard_Screen.this, "doesn't Added Status", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            reference = database.getReference().child("PersonStatus").child(full_number);
+            PersonStatus status = new PersonStatus(full_number, "false");
+            reference.setValue(status).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+
+                    }else{
+                        Toast.makeText(DashBoard_Screen.this, "doesn't Added Status", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
 
     public void dialogCreationMore() {
 //        ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT

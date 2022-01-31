@@ -3,9 +3,9 @@ package com.example.bloodgenix.Models;
 public class PersonStatus {
 
     String phoneNumber;
-    boolean status;
+    String status;
 
-    public PersonStatus(String phoneNumber, boolean status) {
+    public PersonStatus(String phoneNumber, String status) {
         this.phoneNumber = phoneNumber;
         this.status = status;
     }
@@ -18,11 +18,11 @@ public class PersonStatus {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

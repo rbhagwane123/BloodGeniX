@@ -1,9 +1,12 @@
 package com.example.bloodgenix.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.bloodgenix.Adapters.MessagesAdapter;
+import com.example.bloodgenix.Models.BlockUser;
 import com.example.bloodgenix.Models.Messages;
 import com.example.bloodgenix.R;
 import com.example.bloodgenix.SessionManager;
@@ -40,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-    String passedData [] = new String[5];
+    String passedData[] = new String[5];
     CircleImageView profileImg;
     ImageView activeStatus;
     TextView receiverName;
@@ -54,13 +58,15 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     String receiverUID, whatToDo;
     String senderRoom;
     String receiverRoom;
-    static ArrayList <Messages> messagesArrayList;
+    static ArrayList<Messages> messagesArrayList;
     MessagesAdapter onlyAdapter;
 
     FirebaseDatabase database;
     DatabaseReference reference;
     FirebaseAuth auth;
     public String senderName;
+    int blockFlag;
+    Dialog dialog;
 
 
     @Override
@@ -91,11 +97,11 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         chatBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (whatToDo.equals("notificationChat")){
+                if (whatToDo.equals("notificationChat")) {
                     Intent previous = new Intent(ChatActivity.this, DashBoard_Screen.class);
                     previous.putExtra("profile Values", senderUID);
                     startActivity(previous);
-                }else {
+                } else {
                     Intent previousProfile = new Intent(ChatActivity.this, ProfileView.class);
                     previousProfile.putExtra("mobile number", passedData[0]);
                     startActivity(previousProfile);
@@ -110,17 +116,19 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 popupMenu.setOnMenuItemClickListener(ChatActivity.this);
                 popupMenu.inflate(R.menu.chat_menu);
                 popupMenu.show();
+
             }
         });
 
         SessionManager sessionManager = new SessionManager(ChatActivity.this, SessionManager.SESSION_USERSESSION);
-        HashMap<String, String> senderData =sessionManager.getUserDetailsFromSession();
+        HashMap<String, String> senderData = sessionManager.getUserDetailsFromSession();
 
-        String senderNumber = "+91 "+senderData.get(SessionManager.KEY_PHONENUMBER);
+        String senderNumber = "+91 " + senderData.get(SessionManager.KEY_PHONENUMBER);
         String _number = senderNumber.substring(4, senderNumber.length());
         senderUID = senderNumber;
         senderName = senderData.get(SessionManager.KEY_FULLNAME);
         receiverUID = passedData[0];
+        checkStatus(receiverUID);
         Query checkUserSender = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo(senderNumber);
         checkUserSender.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -134,20 +142,21 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
                 senderImg = _img;
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
 
-        checkStatus(receiverUID);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         messageAdapter.setLayoutManager(linearLayoutManager);
         onlyAdapter = new MessagesAdapter(ChatActivity.this, messagesArrayList, senderUID);
         messageAdapter.setAdapter(onlyAdapter);
 
-        senderRoom = senderUID+receiverUID;
-        receiverRoom = receiverUID+senderUID;
+        senderRoom = senderUID + receiverUID;
+        receiverRoom = receiverUID + senderUID;
 
         chatReferenceCall();
 
@@ -156,48 +165,123 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             @Override
             public void onClick(View v) {
                 String textmessage = textMessage.getText().toString();
-                if(textmessage.isEmpty()){
-                    Toast.makeText(ChatActivity.this, "Enter text", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                textMessage.setText("");
-                Date date = new Date();
+                dialogCreationMore();
 
-                Messages messages = new Messages(textmessage, senderUID, date.getTime(), receiverUID,senderName, senderImg, passedData[1], passedData[2]);
-                database = FirebaseDatabase.getInstance();
-                database.getReference().child("Chats")
-                        .child(senderRoom)
-                        .child("messages")
-                        .push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
+                Query chckBlock = FirebaseDatabase.getInstance().getReference("BlockUser").orderByChild("receiver").equalTo(receiverUID);
+                chckBlock.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            dialog.show();
+                            Button CANCEL = dialog.findViewById(R.id.CANCEL);
+                            Button UNBLOCK = dialog.findViewById(R.id.UNBLOCK);
+                            CANCEL.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            UNBLOCK.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    FirebaseDatabase.getInstance().getReference("BlockUser").child(receiverUID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                }
+                            });
+                        } else {
+                            if (textmessage.isEmpty()) {
+                                Toast.makeText(ChatActivity.this, "Enter text", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            textMessage.setText("");
+                            Date date = new Date();
+
+                            Messages messages = new Messages(textmessage, senderUID, date.getTime(), receiverUID, senderName, senderImg, passedData[1], passedData[2]);
+                            database = FirebaseDatabase.getInstance();
                             database.getReference().child("Chats")
-                                    .child(receiverRoom)
+                                    .child(senderRoom)
                                     .child("messages")
                                     .push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        database.getReference().child("Chats")
+                                                .child(receiverRoom)
+                                                .child("messages")
+                                                .push().setValue(messages).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
 
+                                            }
+                                        });
+                                    }
                                 }
                             });
                         }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
             }
         });
     }
 
-    private void checkStatus(String receiverUID) {
+    public int checkBlock() {
+        Query chckBlock = FirebaseDatabase.getInstance().getReference("BlockUser").orderByChild("receiver").equalTo(receiverUID);
+        chckBlock.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+//                    Toast.makeText(ChatActivity.this, "inside block", Toast.LENGTH_SHORT).show();
+                    blockFlag = 1;
+                }
+//                }else{
+//                    Toast.makeText(ChatActivity.this, "outside block", Toast.LENGTH_SHORT).show();
+//                    blockFlag = 0;
+//                }
+            }
 
-//        Toast.makeText(ChatActivity.this, receiverUID, Toast.LENGTH_SHORT).show();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return blockFlag;
+    }
+
+    public void dialogCreationMore() {
+        dialog = new Dialog(ChatActivity.this);
+        dialog.setContentView(R.layout.block_layout_design);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        dialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.info_layout_background_style));
+        dialog.setCancelable(false);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+        dialog.setCanceledOnTouchOutside(true);
+
+    }
+
+    public void checkStatus(String receiverUID) {
+
         Query checkStatus = FirebaseDatabase.getInstance().getReference("PersonStatus").orderByChild("phoneNumber").equalTo(receiverUID);
         checkStatus.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-//                    Boolean status = snapshot.child("status").getValue(boolean.class);
-//                    Toast.makeText(ChatActivity.this, ""+status, Toast.LENGTH_SHORT).show();
+                if (snapshot.exists()) {
+                    String status = snapshot.child(receiverUID).child("status").getValue(String.class);
+                    if (status.equals("true")) {
+                        activeStatus.setVisibility(View.VISIBLE);
+                    } else {
+                        activeStatus.setVisibility(View.INVISIBLE);
+                    }
+                } else {
+                    activeStatus.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -208,15 +292,14 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         });
     }
 
-    public  void chatReferenceCall() {
+    public void chatReferenceCall() {
         database = FirebaseDatabase.getInstance();
         DatabaseReference chatReference = database.getReference().child("Chats").child(senderRoom).child("messages");
         chatReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 messagesArrayList.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Messages messages = dataSnapshot.getValue(Messages.class);
                     messagesArrayList.add(messages);
                 }
@@ -234,10 +317,17 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.BlockUser:
-                Toast.makeText(ChatActivity.this, "Block User", Toast.LENGTH_SHORT).show();
+                reference = database.getReference().child("BlockUser").child(receiverUID);
+                BlockUser block = new BlockUser(receiverUID, senderUID);
+                reference.setValue(block).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ChatActivity.this, "Added", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 return true;
-            case R.id.ReportUser:
-                Toast.makeText(ChatActivity.this, "Report User", Toast.LENGTH_SHORT).show();
             default:
                 return false;
         }
