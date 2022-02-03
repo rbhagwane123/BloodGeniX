@@ -236,7 +236,6 @@ public class DonationForm extends AppCompatActivity {
                                 Toast.makeText(DonationForm.this, "You have applied for recipient before", Toast.LENGTH_SHORT).show();
                             }else{
                                 String wight = String.valueOf(weight.getValue());
-
                                 reference = database.getReference().child("DonationDetails").child(phoneNumber);
                                 DonationDetails donationDetails = new DonationDetails(authUserID,phoneNumber,bloodGroup.getText().toString(),radioButton.getText().toString(),diabeticCount.getText().toString(),otherSpecify.getText().toString(),radioButton2.getText().toString(),DonationPeriod.getText().toString(),wight,locationDonation.getText().toString(),formFillData[0], formFillData[2] );
                                 reference.setValue(donationDetails).addOnCompleteListener(new OnCompleteListener<Void>() {

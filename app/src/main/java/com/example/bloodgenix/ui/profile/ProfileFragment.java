@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,10 +116,12 @@ public class ProfileFragment extends Fragment {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
 
         //check permission
-        getCurrentLocation();
-//        else {
-//            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-//        }
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getCurrentLocation();
+        }
+        else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        }
         btn_find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,6 +132,7 @@ public class ProfileFragment extends Fragment {
                         "&sensor=true"+
                         "&key="+ getResources().getString(R.string.google_maps_key);
 
+                Log.i("URL VALUE ", url);
                 Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
                 new PlaceTask().execute(url);
             }
@@ -147,7 +151,7 @@ public class ProfileFragment extends Fragment {
                     if (location != null) {
                         currentLat = location.getLatitude();
                         currentLong = location.getLongitude();
-                        Toast.makeText(getContext(), ""+currentLat, Toast.LENGTH_SHORT).show();
+
                         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                             @Override
                             public void onMapReady(@NonNull GoogleMap googleMap) {

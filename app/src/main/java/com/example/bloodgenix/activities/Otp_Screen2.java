@@ -190,7 +190,7 @@ public class Otp_Screen2 extends AppCompatActivity {
                             dialog.startDialog();
 
                             if (whatToDo.equals("updateData")) {
-                                updateUsersData();
+                                updateUsersData(dialog);
                             } else {
                                 storeDataset(task, dialog);
                             }
@@ -207,9 +207,10 @@ public class Otp_Screen2 extends AppCompatActivity {
                 });
     }
 
-    private void updateUsersData() {
+    private void updateUsersData(LoadingDialog dialog) {
         Intent setPass = new Intent(Otp_Screen2.this, SetPassword.class);
         setPass.putExtra("phoneNo", forgetNumber);
+        dialog.dismissDialog();
         startActivity(setPass);
         finish();
     }

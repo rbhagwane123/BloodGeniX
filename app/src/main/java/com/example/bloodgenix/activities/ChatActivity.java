@@ -167,32 +167,46 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 String textmessage = textMessage.getText().toString();
                 dialogCreationMore();
 
-                Query chckBlock = FirebaseDatabase.getInstance().getReference("BlockUser").orderByChild("receiver").equalTo(receiverUID);
-                chckBlock.addListenerForSingleValueEvent(new ValueEventListener() {
+                DatabaseReference keReference = FirebaseDatabase.getInstance().getReference("BlockUser");
+                keReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            dialog.show();
-                            Button CANCEL = dialog.findViewById(R.id.CANCEL);
-                            Button UNBLOCK = dialog.findViewById(R.id.UNBLOCK);
-                            CANCEL.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            UNBLOCK.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    FirebaseDatabase.getInstance().getReference("BlockUser").child(receiverUID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                String keyValue = dataSnapshot.getKey();
+
+                                if (keyValue.substring(0, 14).toString().equals(senderUID)) {
+                                    dialog.show();
+                                    //BLOCK DIALOG CREATION INITIALISATION
+                                    Button CANCEL = dialog.findViewById(R.id.CANCEL);
+                                    Button UNBLOCK = dialog.findViewById(R.id.UNBLOCK);
+
+                                    CANCEL.setOnClickListener(new View.OnClickListener() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
+                                        public void onClick(View v) {
                                             dialog.dismiss();
                                         }
                                     });
 
+                                    UNBLOCK.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            FirebaseDatabase.getInstance().getReference("BlockUser").child(keyValue).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        dialog.dismiss();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                } else {
+                                    Toast.makeText(ChatActivity.this, "You have been blocked", Toast.LENGTH_SHORT).show();
+                                    break;
                                 }
-                            });
+                            }
                         } else {
                             if (textmessage.isEmpty()) {
                                 Toast.makeText(ChatActivity.this, "Enter text", Toast.LENGTH_SHORT).show();
@@ -224,11 +238,13 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                             });
                         }
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
+
             }
         });
     }
@@ -317,7 +333,7 @@ public class ChatActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.BlockUser:
-                reference = database.getReference().child("BlockUser").child(receiverUID);
+                reference = database.getReference().child("BlockUser").child(senderUID + receiverUID);
                 BlockUser block = new BlockUser(receiverUID, senderUID);
                 reference.setValue(block).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

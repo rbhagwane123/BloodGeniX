@@ -1,6 +1,7 @@
 package com.example.bloodgenix.ui.home;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment {
     ImageButton moreInfo;
     String phoneNo;
     Dialog dialog;
+    ProgressDialog ImageProgress;
 
     private SessionManager sessionManager;
     String sendingData[] = new String[3];
@@ -90,14 +92,9 @@ public class HomeFragment extends Fragment {
         searchExpand = view.findViewById(R.id.searchExpand);
         moreInfo = view.findViewById(R.id.moreInfo);
 
-//        dialogCreation();
-//        moreInfo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.show();
-//
-//            }
-//        });
+        ImageProgress = new ProgressDialog(getContext());
+        ImageProgress.setContentView(R.layout.image_progress);
+        ImageProgress.show();
 
 
 
@@ -114,8 +111,8 @@ public class HomeFragment extends Fragment {
                 if (snapshot.exists()) {
                     String _img = snapshot.child(_number).child("profileImg").getValue(String.class);
                     String _fullName = snapshot.child(_number).child("fullName").getValue(String.class);
-
                     Glide.with(getContext()).load(_img).into(active_person);
+                    ImageProgress.dismiss();
                     sendingData[0] = _fullName;
                     sendingData[1] = "+91 " + _number;
                     sendingData[2] = _img;
@@ -152,9 +149,12 @@ public class HomeFragment extends Fragment {
         RecipientExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent RecipientIntent = new Intent(getContext(), RecipientForm.class);
-                RecipientIntent.putExtra("Recipient", sendingData);
-                startActivity(RecipientIntent);
+                if (checkBeforeApplyRecipient("+91 " + _number) == 1) {
+                    Intent RecipientIntent = new Intent(getContext(), RecipientForm.class);
+                    RecipientIntent.putExtra("Recipient", sendingData);
+                    startActivity(RecipientIntent);
+                }
+
             }
         });
 
@@ -211,6 +211,28 @@ public class HomeFragment extends Fragment {
     private int checkBeforeApplyDonation(String number) {
 
         Query donationDetails = FirebaseDatabase.getInstance().getReference("DonationDetails").orderByChild("phoneNumber").equalTo(number);
+        donationDetails.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Toast.makeText(getContext(), "You already applied", Toast.LENGTH_SHORT).show();
+                    chckFlag = 0;
+                } else {
+                    chckFlag = 1;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                chckFlag = 0;
+            }
+        });
+        return chckFlag;
+    }
+
+    private int checkBeforeApplyRecipient(String number) {
+
+        Query donationDetails = FirebaseDatabase.getInstance().getReference("RecipientDetails").orderByChild("phoneNumber").equalTo(number);
         donationDetails.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

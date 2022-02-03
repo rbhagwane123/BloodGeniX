@@ -15,8 +15,8 @@
         android:name="com.example.bloodgenix.ui.notification.NotificationFragment"
         tools:layout="@layout/fragment_notification"/>
 
-    <fragment android:id="@+id/profile"
-        android:label="Profile"
+    <fragment android:id="@+id/map"
+        android:label="Map"
         android:name="com.example.bloodgenix.ui.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile"/>
 
