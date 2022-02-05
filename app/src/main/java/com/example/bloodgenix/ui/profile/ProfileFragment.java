@@ -2,45 +2,43 @@ package com.example.bloodgenix.ui.profile;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.bloodgenix.JsonParser;
 import com.example.bloodgenix.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,7 +46,7 @@ import java.util.List;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,10 +57,20 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private GoogleMap mMap;
+//    private ActivityMapsBinding binding;
+    private GoogleApiClient googleApiClient;
+    private LocationRequest locationRequest;
+    private Location lastLocation;
+    private Marker currentUserLocationMarker;
+    private static final int Request_User_Location_Code = 99;
+    private double latitude, longitude;
+    private int ProximityRadius;
+
     //UI components Initialise
-    Button btn_find;
+    ImageButton btn_find;
     Spinner sp_type;
-    SupportMapFragment supportMapFragment;
+//    SupportMapFragment supportMapFragment;
     GoogleMap map;
     FusedLocationProviderClient fusedLocationProviderClient;
     double currentLat = 0, currentLong = 0;
@@ -103,150 +111,212 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        sp_type = view.findViewById(R.id.sp_type);
+//        sp_type = view.findViewById(R.id.sp_type);
         btn_find = view.findViewById(R.id.btn_find);
+        EditText addressField = view.findViewById(R.id.location_search);
 
-        supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
-
-        String[] placeTypeList = {"atm", "bank", "hospital", "movie_theater", "restaurant", "water_park", "petrol_pump", "stationary", "lakes"};
-        String[] bloodNameList = {"A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"};
-        sp_type.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, bloodNameList));
-
-        //Initialise fused location provider client
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-
-        //check permission
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getCurrentLocation();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            checkUserLocationPermission();
         }
-        else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-        }
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.google_map);
+        mapFragment.getMapAsync(this);
+
         btn_find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i = sp_type.getSelectedItemPosition();
-                String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
-                        "?location="+currentLat + ","+ currentLong + "&radius=5000" +
-                        "&types=" + placeTypeList[i] +
-                        "&sensor=true"+
-                        "&key="+ getResources().getString(R.string.google_maps_key);
 
-                Log.i("URL VALUE ", url);
-                Toast.makeText(getContext(), url, Toast.LENGTH_SHORT).show();
-                new PlaceTask().execute(url);
+                mMap.clear();
+                String address = addressField.getText().toString();
+
+                List<Address> addressList = null;
+                MarkerOptions userMarkerOption =  new MarkerOptions();
+
+                if (!TextUtils.isEmpty(address))
+                {
+                    Geocoder geocoder = new Geocoder(getContext());
+                    try {
+                        addressList = geocoder.getFromLocationName(address, 6);
+                        if (addressList != null){
+                            for (int i=0; i<addressList.size(); i++)
+                            {
+                                Address userAddress = addressList.get(i);
+//                                Toast.makeText(getContext(), String.valueOf(userAddress.getLatitude())+"\n"+String.valueOf(userAddress.getLongitude()), Toast.LENGTH_SHORT).show();
+                                LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
+
+                                userMarkerOption.position(latLng);
+                                userMarkerOption.title(address);
+                                userMarkerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+
+                                mMap.addMarker(userMarkerOption);
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                mMap.animateCamera(CameraUpdateFactory.zoomBy(14));
+                            }
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }else{
+                    Toast.makeText(getContext(), "Please write any location name", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         return view;
     }
 
-    public void getCurrentLocation() {
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Task<Location> task = fusedLocationProviderClient.getLastLocation();
-            task.addOnSuccessListener(new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(@NonNull Location location) {
-                    if (location != null) {
-                        currentLat = location.getLatitude();
-                        currentLong = location.getLongitude();
-
-                        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                            @Override
-                            public void onMapReady(@NonNull GoogleMap googleMap) {
-                                map = googleMap;
-                                map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(currentLat, currentLong), 10
-                                ));
-                            }
-                        });
-                    }else{
-                        Toast.makeText(getContext(), "empty location", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        }else{
-            Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+    public boolean checkUserLocationPermission()
+    {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_User_Location_Code);
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_User_Location_Code);
+            }
+            return false;
+        } else {
+            return true;
         }
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 44) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getCurrentLocation();
-            }
+    public void onConnected(@Nullable Bundle bundle) {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(1100);
+        locationRequest.setFastestInterval(1100);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+            return;
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            buildGoogleApiClient();
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        lastLocation = location;
+        if (currentUserLocationMarker != null)
+        {
+            currentUserLocationMarker.remove();
+        }
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title("Rupesh location");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+        currentUserLocationMarker = mMap.addMarker(markerOptions);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomBy(12));
+
+        if (googleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         }
     }
 
 
-    private class PlaceTask extends AsyncTask<String, Integer, String> {
-        @Override
-        protected String doInBackground(String... strings) {
-            String data = null;
-            try {
-                data = downloadUrl(strings[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            new ParserTask().execute(s);
-        }
-    }
-
-    private String downloadUrl(String string) throws IOException {
-        URL url = new URL(string);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.connect();
-        InputStream stream = connection.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        StringBuilder builder = new StringBuilder();
-        String line="";
-        while ((line = reader.readLine()) != null){
-            builder.append(line);
-        }
-        String data = builder.toString();
-        reader.close();
-        return data;
-    }
-
-    private class ParserTask extends AsyncTask<String, Integer, List<HashMap<String, String>>> {
-
-        @Override
-        protected List<HashMap<String, String>> doInBackground(String... strings) {
-            JsonParser jsonParser = new JsonParser();
-            List<HashMap<String, String >> mapList = null;
-            JSONObject object = null;
-            try {
-                object = new JSONObject(strings[0]);
-                mapList = jsonParser.parseResult(object);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return mapList;
-        }
-
-        @Override
-        protected void onPostExecute(List<HashMap<String, String>> hashMaps) {
-            map.clear();
-            for (int i=0; i < hashMaps.size(); i++){
-                HashMap<String, String> hashMapList = hashMaps.get(i);
-                double lat = Double.parseDouble(hashMapList.get("lat"));
-                double lng = Double.parseDouble(hashMapList.get("lng"));
-                String name = hashMapList.get("name");
-                LatLng latLng = new LatLng(lat, lng);
-                MarkerOptions options = new MarkerOptions();
-                options.position(latLng);
-                options.title(name);
-                map.addMarker(options);
-
-            }
-        }
-    }
+//    private class PlaceTask extends AsyncTask<String, Integer, String> {
+//        @Override
+//        protected String doInBackground(String... strings) {
+//            String data = null;
+//            try {
+//                data = downloadUrl(strings[0]);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return data;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String s) {
+//            new ParserTask().execute(s);
+//        }
+//    }
+//
+//    private String downloadUrl(String string) throws IOException {
+//        URL url = new URL(string);
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.connect();
+//        InputStream stream = connection.getInputStream();
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//        StringBuilder builder = new StringBuilder();
+//        String line="";
+//        while ((line = reader.readLine()) != null){
+//            builder.append(line);
+//        }
+//        String data = builder.toString();
+//        reader.close();
+//        return data;
+//    }
+//
+//    private class ParserTask extends AsyncTask<String, Integer, List<HashMap<String, String>>> {
+//
+//        @Override
+//        protected List<HashMap<String, String>> doInBackground(String... strings) {
+//            JsonParser jsonParser = new JsonParser();
+//            List<HashMap<String, String >> mapList = null;
+//            JSONObject object = null;
+//            try {
+//                object = new JSONObject(strings[0]);
+//                mapList = jsonParser.parseResult(object);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            return mapList;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<HashMap<String, String>> hashMaps) {
+//            map.clear();
+//            for (int i=0; i < hashMaps.size(); i++){
+//                HashMap<String, String> hashMapList = hashMaps.get(i);
+//                double lat = Double.parseDouble(hashMapList.get("lat"));
+//                double lng = Double.parseDouble(hashMapList.get("lng"));
+//                String name = hashMapList.get("name");
+//                LatLng latLng = new LatLng(lat, lng);
+//                MarkerOptions options = new MarkerOptions();
+//                options.position(latLng);
+//                options.title(name);
+//                map.addMarker(options);
+//
+//            }
+//        }
+//    }
 }

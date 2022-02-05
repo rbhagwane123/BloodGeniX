@@ -54,8 +54,7 @@ public class Otp_Screen_1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mobileNumb.getText().toString().trim().isEmpty() == false){
-                    if(mobileNumb.getText().length() == 10 || !mobileNumb.getText().toString().equals("12345678") || !mobileNumb.getText().toString().equals("123456789")){
-//                        _full_number.matches(phoneNumberPattern)
+                    if(mobileNumb.getText().length() == 10 && !mobileNumb.getText().toString().equals("1234567890")){
                         Query personCheck = FirebaseDatabase.getInstance().getReference("Users").orderByChild("mobileNumber").equalTo("+91 "+mobileNumb.getText().toString());
                         personCheck.addValueEventListener(new ValueEventListener() {
                             @Override

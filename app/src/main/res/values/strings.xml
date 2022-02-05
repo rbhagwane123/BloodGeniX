@@ -73,7 +73,7 @@
 
 <!--    <string name="google_maps_key">AIzaSyCgXfPPsUeJNU_NLTA-pbqZGdlHKCfOYXI</string>-->
 <!--    <string name="google_maps_key">AIzaSyCq0_Pu01ArQVXzE958EtU9t83i2FNazys</string>-->
-    <string name="google_map_key">AIzaSyCZe6Ny_kM5SBatkNadkJIDwWpLOImygfA</string>
+    <string name="google_map_key">AIzaSyBseaedCRcpDjA108DSEDrMen5uVOe21rY</string>
 <!--    AIzaSyCgXfPPsUeJNU_NLTA-pbqZGdlHKCfOYXI-->
     <string-array name="periodMonth">
         <item>Less than 3 month</item>

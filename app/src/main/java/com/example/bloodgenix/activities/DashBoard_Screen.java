@@ -149,10 +149,7 @@ public class DashBoard_Screen extends AppCompatActivity {
 
                 switch (item.getItemId()) {
 
-                    case R.id.nav_notification:
-                        Toast.makeText(DashBoard_Screen.this, "Notification selected", Toast.LENGTH_SHORT).show();
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                        break;
+
                     case R.id.nav_settings:
                         startActivity(new Intent(DashBoard_Screen.this, Settings.class));
                         drawerLayout.closeDrawer(GravityCompat.START);
