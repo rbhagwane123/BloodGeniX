@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
             @Override
             public void onClick(View v) {
 
-                mMap.clear();
+//                mMap.clear();
                 String address = addressField.getText().toString();
 
                 List<Address> addressList = null;

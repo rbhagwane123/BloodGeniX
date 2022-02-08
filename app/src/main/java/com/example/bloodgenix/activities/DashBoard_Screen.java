@@ -3,7 +3,9 @@ package com.example.bloodgenix.activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +43,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -149,6 +152,12 @@ public class DashBoard_Screen extends AppCompatActivity {
 
                 switch (item.getItemId()) {
 
+                    case R.id.profile_view:
+                        Intent profileIntent = new Intent(DashBoard_Screen.this, User_Profile_View.class);
+                        profileIntent.putExtra("mobile number", full_number);
+                        startActivity(profileIntent);
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
 
                     case R.id.nav_settings:
                         startActivity(new Intent(DashBoard_Screen.this, Settings.class));
@@ -159,13 +168,13 @@ public class DashBoard_Screen extends AppCompatActivity {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     case R.id.nav_sharing:
-                        Intent shareIntent = new Intent(Intent.ACTION_SENDTO);
-                        shareIntent.setType("text/plain");
-                        String shareBody = "Download this Application noe :-https://www.redcrossblood.org/blood-donor-app.html=en";
-                        String shareSub = "BloodGenix App";
-                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                        startActivity(Intent.createChooser(shareIntent, "Share Using"));
+
+                        ApplicationInfo api = getApplicationContext().getApplicationInfo();
+                        String apkpath = api.sourceDir;
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("application/vnd.android.package-archive");
+                        shareIntent.putExtra("AppSharing", Uri.fromFile(new File(apkpath)));
+                        startActivity(Intent.createChooser(shareIntent, "ShareVia"));
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
                     default:
@@ -175,7 +184,8 @@ public class DashBoard_Screen extends AppCompatActivity {
                 return false;
             }
         });
-
+//
+//
         Logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
